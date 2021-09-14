@@ -5,7 +5,7 @@ option java_package = "grpc.control_client";
 
 package control_client;
 
-enum Result {
+enum EControlResult {
   Internal_Server_Error = 0;
   Ok = 1;
   Service_Unavailable = 2;
@@ -20,5 +20,5 @@ message CreateCacheRequest {
 }
 
 message CreateCacheResponse {
-  Result result = 1;
+  EControlResult result = 1;
 }
