@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpc.control_client";
+
+package control_client;
+
+enum Result {
+  Internal_Server_Error = 0;
+  Ok = 1;
+  Service_Unavailable = 2;
+}
+
+service ScsControl {
+  rpc CreateCache (CreateCacheRequest) returns (CreateCacheResponse) {}
+}
+
+message CreateCacheRequest {
+  bytes cache_name = 1;
+}
+
+message CreateCacheResponse {
+  Result result = 1;
+}
