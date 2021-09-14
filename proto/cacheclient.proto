@@ -6,7 +6,7 @@ option java_package = "grpc.cache_client";
 package cache_client;
 
 
-enum Result {
+enum ECacheResult {
   Internal_Server_Error = 0;
   Ok = 1;
   Hit = 2;
@@ -28,7 +28,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  Result result = 1;
+  ECacheResult result = 1;
   bytes cache_body = 2;
   string message = 3;
 }
@@ -40,6 +40,6 @@ message SetRequest {
 }
 
 message SetResponse {
-  Result result = 1;
+  ECacheResult result = 1;
   string message = 2;
 }
