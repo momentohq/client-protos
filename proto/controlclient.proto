@@ -7,7 +7,7 @@ package control_client;
 
 service ScsControl {
   rpc CreateCache (CreateCacheRequest) returns (CreateCacheResponse) {}
-  rpc DeleteCache (DeleteCacheRequest) return (DeleteCacheResponse) {}
+  rpc DeleteCache (DeleteCacheRequest) returns (DeleteCacheResponse) {}
 }
 
 message DeleteCacheRequest {
