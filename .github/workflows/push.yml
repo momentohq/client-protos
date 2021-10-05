@@ -1,0 +1,68 @@
+name: On Push
+
+on:
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  publish_typescript:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure Artifactory publish credentials
+        run: |
+          # lel this is how jfrog wants you to come up with your scoped npm configuration
+          curl -udeploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} https://momento.jfrog.io/artifactory/api/npm/npm-local/auth/momento >> ~/.npmrc
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install protoc
+        run: |
+          set -e
+          set -x
+          sudo apt-get -y install zip
+            curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protoc-3.18.1-linux-x86_64.zip -o protoc.zip
+          unzip -o protoc.zip -d protoc
+          sudo mv protoc/include/* /usr/local/include/
+
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd typescript
+            npm install
+            PATH=node_modules/protoc-gen-ts/bin/:$PATH protoc -I=../proto --ts_out=dist cacheclient.proto controlclient.proto
+            # The build is really just generating proto files above. Could put it in npm but
+            # npm run build
+          popd
+        shell: bash
+
+      - name: Set release
+        id: semrel
+        uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          allow-initial-development-versions: true
+          force-bump-patch-version: true
+
+      - name: Publish npm package to Artifactory
+        run: |
+          export VERSION="${{ steps.semrel.outputs.version }}"
+          echo "Publishing package with version $VERSION"
+          pushd typescript
+            mv package.json package.json.ORIG
+            cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
+            npm publish
+          popd
+        shell: bash

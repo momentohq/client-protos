@@ -1,0 +1,43 @@
+name: On pull request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_typescript:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install protoc
+        run: |
+          set -e
+          set -x
+          sudo apt-get -y install zip
+          curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protoc-3.18.1-linux-x86_64.zip -o protoc.zip
+          unzip -o protoc.zip -d protoc
+          sudo mv protoc/include/* /usr/local/include/
+
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd typescript
+            npm install
+            PATH=node_modules/protoc-gen-ts/bin/:$PATH protoc -I=../proto --ts_out=dist cacheclient.proto controlclient.proto
+            # The build is really just generating proto files above. Could put it in npm but
+            # npm run build
+          popd
+        shell: bash
