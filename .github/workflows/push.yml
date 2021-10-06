@@ -30,10 +30,17 @@ jobs:
         run: |
           set -e
           set -x
-          sudo apt-get -y install zip
-            curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protoc-3.18.1-linux-x86_64.zip -o protoc.zip
-          unzip -o protoc.zip -d protoc
-          sudo mv protoc/include/* /usr/local/include/
+          sudo apt-get install autoconf automake libtool curl make g++ unzip
+          export VERSION=3.18.1
+          curl -L https://github.com/protocolbuffers/protobuf/releases/download/v$VERSION/protobuf-all-$VERSION.tar.gz -o proto.tar.gz
+          tar xvf proto.tar.gz
+          pushd protobuf-$VERSION
+            ./configure
+            make
+            make check
+            sudo make install
+            sudo ldconfig # refresh shared library cache.
+          popd
 
       - name: Build package
         run: |
