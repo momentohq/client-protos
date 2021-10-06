@@ -13,5 +13,8 @@
     "protoc-gen-ts": "0.6.0",
     "typescript": "4.4.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "files": [
+    "dist"
+  ]
 }
