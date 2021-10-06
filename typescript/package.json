@@ -1,6 +1,5 @@
 {
   "name": "@momento/wire-types-typescript",
-  "version": "1.0.0",
   "description": "Types for Momento services",
   "main": "index.js",
   "scripts": {
