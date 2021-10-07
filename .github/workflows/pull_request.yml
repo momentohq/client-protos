@@ -1,0 +1,35 @@
+name: On pull request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_typescript:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Install protoc
+        run: ./install_protoc.sh
+
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd typescript
+            npm install
+            npm run build
+          popd
+        shell: bash
