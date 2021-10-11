@@ -5,8 +5,9 @@
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
-      },
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true
+    },
       "$schema": "https://json.schemastore.org/tsconfig",
       "display": "Recommended"
 }
