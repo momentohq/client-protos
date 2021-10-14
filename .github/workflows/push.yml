@@ -35,7 +35,7 @@ jobs:
           set -x
           export PATH=`pwd`/protoc/bin/:$PATH
           pushd typescript
-            npm install
+            npm ci
             npm run build
           popd
         shell: bash
