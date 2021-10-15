@@ -1,0 +1,2 @@
+rootProject.name = "messages"
+include()
