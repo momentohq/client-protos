@@ -107,5 +107,6 @@ jobs:
           pushd python
             ./generate_protos.sh
             python -m build
+            ls -l src/momento_wire_types
           popd
         shell: bash
