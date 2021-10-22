@@ -152,6 +152,11 @@ jobs:
           pushd python
             ./generate_protos.sh
             export PYPI_MOMENTO_WIRE_TYPE_VERSION="${{needs.release.outputs.version}}"
+            if [ -z "$PYPI_MOMENTO_WIRE_TYPE_VERSION"]
+            then
+              echo "Using default version"
+              export PYPI_MOMENTO_WIRE_TYPE_VERSION="0.0.dev"`date +%s`
+            fi
             echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
             python -m build
             twine upload -r local dist/* --config-file ~/.pypirc

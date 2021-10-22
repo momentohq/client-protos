@@ -104,6 +104,7 @@ jobs:
           set -e
           set -x
           export PATH=`pwd`/protoc/bin/:$PATH
+          export PYPI_MOMENTO_WIRE_TYPE_VERSION=0.0.devBuild
           pushd python
             ./generate_protos.sh
             python -m build
