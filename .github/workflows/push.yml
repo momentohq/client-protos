@@ -127,9 +127,9 @@ jobs:
           python-version: '3.x'
 
       - name: Install python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install setuptools wheel twine
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
 
       - name: Configure Artifactory publish credentials
         run: |
@@ -159,4 +159,3 @@ jobs:
             popd
           popd
         shell: bash
-

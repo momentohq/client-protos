@@ -2,7 +2,8 @@ import setuptools
 import os
 
 version = os.getenv("PYPI_MOMENTO_WIRE_TYPE_VERSION")
-assert version != None
+if [version == None]:
+    version = 0.0.dev
 
 # version is the only dynamic configuration
 setuptools.setup(

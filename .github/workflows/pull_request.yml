@@ -33,7 +33,7 @@ jobs:
             npm run build
           popd
         shell: bash
-  
+
   build_kotlin:
     runs-on: ubuntu-latest
     steps:
@@ -75,3 +75,38 @@ jobs:
           pushd kotlin
             ./gradlew build
           popd
+
+  build_python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install protoc
+        run: ./install_protoc.sh
+
+      - name: Build and publish package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd python
+            ./generate_protos.sh
+            pushd momento
+              python -m build
+            popd
+          popd
+        shell: bash
