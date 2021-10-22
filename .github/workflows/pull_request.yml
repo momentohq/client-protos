@@ -106,8 +106,6 @@ jobs:
           export PATH=`pwd`/protoc/bin/:$PATH
           pushd python
             ./generate_protos.sh
-            pushd momento
-              python -m build
-            popd
+            python -m build
           popd
         shell: bash

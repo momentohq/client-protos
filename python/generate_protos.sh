@@ -2,4 +2,4 @@
 set -e
 set -x
 
-protoc -I=../proto --python_out=momento/wire_types cacheclient.proto controlclient.proto
+protoc -I=../proto --python_out=src/momento_wire_types cacheclient.proto controlclient.proto
