@@ -155,7 +155,7 @@ jobs:
               export PYPI_MOMENTO_WIRE_TYPE_VERSION="${{needs.release.outputs.version}}"
               echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
               python -m build
-              twine upload -r local dist/ --config-file ~/.pypirc
+              twine upload -r local dist/* --config-file ~/.pypirc
             popd
           popd
         shell: bash
