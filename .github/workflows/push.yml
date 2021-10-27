@@ -201,7 +201,7 @@ jobs:
           pushd csharp
             VERSION="${{needs.release.outputs.version}}"
             dotnet build --configuration Release
-            nuget pack -Version ${VERSION}
+            nuget pack -Version ${VERSION} -Properties Configuration=Release
             nuget push Momento.${VERSION}.nupkg -Source Artifactory
           popd
         shell: bash
