@@ -15,153 +15,153 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-#       - name: Set release
-#         id: semrel
-#         uses: go-semantic-release/action@v1
-#         with:
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           allow-initial-development-versions: true
-#           force-bump-patch-version: true
+      - name: Set release
+        id: semrel
+        uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          allow-initial-development-versions: true
+          force-bump-patch-version: true
 
-#       - name: Output release
-#         id: release
-#         run: echo "::set-output name=release::${{ steps.semrel.outputs.version }}"
+      - name: Output release
+        id: release
+        run: echo "::set-output name=release::${{ steps.semrel.outputs.version }}"
 
 
-#   publish_typescript:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     needs: release
+  publish_typescript:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: release
 
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#       - uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
 
-#       - name: Configure Artifactory publish credentials
-#         run: |
-#           # lel this is how jfrog wants you to come up with your scoped npm configuration
-#           curl -udeploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} https://momento.jfrog.io/artifactory/api/npm/npm-public/auth/momento >> ~/.npmrc
+      - name: Configure Artifactory publish credentials
+        run: |
+          # lel this is how jfrog wants you to come up with your scoped npm configuration
+          curl -udeploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} https://momento.jfrog.io/artifactory/api/npm/npm-public/auth/momento >> ~/.npmrc
 
-#       - name: Install Node
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 14
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
 
-#       - name: Install protoc
-#         run: ./install_protoc.sh
+      - name: Install protoc
+        run: ./install_protoc.sh
 
-#       - name: Build package
-#         run: |
-#           set -e
-#           set -x
-#           export PATH=`pwd`/protoc/bin/:$PATH
-#           pushd typescript
-#             npm ci
-#             npm run build
-#           popd
-#         shell: bash
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd typescript
+            npm ci
+            npm run build
+          popd
+        shell: bash
 
-#       - name: Publish npm package to Artifactory
-#         run: |
-#           export VERSION="${{needs.release.outputs.version}}"
-#           echo "Publishing package with version $VERSION"
-#           pushd typescript
-#             mv package.json package.json.ORIG
-#             cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
-#             npm publish
-#           popd
-#         shell: bash
+      - name: Publish npm package to Artifactory
+        run: |
+          export VERSION="${{needs.release.outputs.version}}"
+          echo "Publishing package with version $VERSION"
+          pushd typescript
+            mv package.json package.json.ORIG
+            cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
+            npm publish
+          popd
+        shell: bash
 
-#   publish_kotlin:
-#     runs-on: ubuntu-latest
-#     needs: release
+  publish_kotlin:
+    runs-on: ubuntu-latest
+    needs: release
 
-#     steps:
-#       - name: Assume Role
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           # TODO User: arn:aws:iam::***:user/shared-control-plane-deploy-user is not authorized to perform: sts:TagSession on resource: arn:aws:iam::***:role/control-plane-remote-deployer
-#           role-skip-session-tagging: true
-#           aws-access-key-id: ${{ secrets.PROD_CICD_DEPLOY_USER_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.PROD_CICD_DEPLOY_USER_SECRET_ACCESS_KEY }}
-#           aws-region: us-west-2
-#           role-to-assume: arn:aws:iam::401011790710:role/control-plane-remote-deployer
-#           role-session-name: cicd-deployer
-#           role-duration-seconds: 900
+    steps:
+      - name: Assume Role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          # TODO User: arn:aws:iam::***:user/shared-control-plane-deploy-user is not authorized to perform: sts:TagSession on resource: arn:aws:iam::***:role/control-plane-remote-deployer
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ secrets.PROD_CICD_DEPLOY_USER_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_CICD_DEPLOY_USER_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+          role-to-assume: arn:aws:iam::401011790710:role/control-plane-remote-deployer
+          role-session-name: cicd-deployer
+          role-duration-seconds: 900
 
-#       - name: Get CodeArtifact token
-#         run: |
-#           TOKEN=$(aws codeartifact get-authorization-token \
-#                                             --domain momento-prod --domain-owner 401011790710 \
-#                                             --query authorizationToken --output text)
-#           echo "::add-mask::$TOKEN"
-#           echo "CODEARTIFACT_AUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
-#       - name: Set up JDK 11
-#         uses: actions/setup-java@v1
-#         with:
-#           java-version: 11
+      - name: Get CodeArtifact token
+        run: |
+          TOKEN=$(aws codeartifact get-authorization-token \
+                                            --domain momento-prod --domain-owner 401011790710 \
+                                            --query authorizationToken --output text)
+          echo "::add-mask::$TOKEN"
+          echo "CODEARTIFACT_AUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Publish to CodeArtifact
-#         run: |
-#           VERSION="${{needs.release.outputs.version}}"
-#           echo "version: ${VERSION}"
-#           pushd kotlin
-#             ./gradlew publish -Pversion=$VERSION
-#           popd
+      - name: Publish to CodeArtifact
+        run: |
+          VERSION="${{needs.release.outputs.version}}"
+          echo "version: ${VERSION}"
+          pushd kotlin
+            ./gradlew publish -Pversion=$VERSION
+          popd
 
-#   publish_python:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     needs: release
+  publish_python:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: release
 
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#       - uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
 
-#       - name: Setup Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.x'
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-#       - name: Install python dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install setuptools wheel twine build
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine build
 
-#       - name: Configure Artifactory publish credentials
-#         run: |
-#           set -e
-#           set -x
-#           pushd python
-#             ./jfrog_setup.sh deploy-user ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} >> ~/.pypirc
-#           popd
-#         shell: bash
+      - name: Configure Artifactory publish credentials
+        run: |
+          set -e
+          set -x
+          pushd python
+            ./jfrog_setup.sh deploy-user ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} >> ~/.pypirc
+          popd
+        shell: bash
 
-#       - name: Install protoc
-#         run: ./install_protoc.sh
+      - name: Install protoc
+        run: ./install_protoc.sh
 
-#       - name: Build and publish package
-#         run: |
-#           set -e
-#           set -x
-#           export PATH=`pwd`/protoc/bin/:$PATH
+      - name: Build and publish package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
 
-#           pushd python
-#             ./generate_protos.sh
-#             export PYPI_MOMENTO_WIRE_TYPE_VERSION="${{needs.release.outputs.version}}"
-#             if [ -z "$PYPI_MOMENTO_WIRE_TYPE_VERSION"]
-#             then
-#               echo "Using default version"
-#               export PYPI_MOMENTO_WIRE_TYPE_VERSION="0.0.dev"`date +%s`
-#             fi
-#             echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
-#             python -m build
-#             twine upload -r local dist/* --config-file ~/.pypirc
-#           popd
-#         shell: bash
+          pushd python
+            ./generate_protos.sh
+            export PYPI_MOMENTO_WIRE_TYPE_VERSION="${{needs.release.outputs.version}}"
+            if [ -z "$PYPI_MOMENTO_WIRE_TYPE_VERSION"]
+            then
+              echo "Using default version"
+              export PYPI_MOMENTO_WIRE_TYPE_VERSION="0.0.dev"`date +%s`
+            fi
+            echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
+            python -m build
+            twine upload -r local dist/* --config-file ~/.pypirc
+          popd
+        shell: bash
 
   publish_csharp:
     # The type of runner that the job will run on
@@ -194,12 +194,10 @@ jobs:
         run: |
           set -x
           pushd csharp
-            VERSION="0.0.2"
+            VERSION="${{needs.release.outputs.version}}"
+            echo "version: ${VERSION}"
             dotnet build --configuration Release
-            ls -lah bin/Release
-            ls -lah obj
             nuget pack -Version ${VERSION} -Properties Configuration=Release
-            ls -lah
             nuget push Momento.${VERSION}.nupkg -Source Artifactory -Verbosity detailed
           popd
         shell: bash
