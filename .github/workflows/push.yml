@@ -185,7 +185,7 @@ jobs:
           set -e
           set -x
           pushd csharp
-            nuget sources Add -Name Artifactory -Source https://momento.jfrog.io/artifactory/api/nuget/nuget-public -username deploy-user -password ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
+            nuget sources Add -Name Artifactory -Source https://momento.jfrog.io/artifactory/api/nuget/nuget-local -username deploy-user -password ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
             nuget setapikey deploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} -Source Artifactory
           popd
         shell: bash
@@ -198,8 +198,8 @@ jobs:
             dotnet build --configuration Release
             ls -lah bin/Release
             ls -lah obj
-            ls -lah
             nuget pack -Version ${VERSION} -Properties Configuration=Release
+            ls -lah
             nuget push Momento.${VERSION}.nupkg -Source Artifactory -Verbosity detailed
           popd
         shell: bash
