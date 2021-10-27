@@ -1,8 +1,0 @@
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/Momento.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/Momento.pdb
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/Google.Protobuf.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/System.Buffers.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/System.Memory.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/System.Numerics.Vectors.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/System.Runtime.CompilerServices.Unsafe.dll
-/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/publish/Momento.deps.json
