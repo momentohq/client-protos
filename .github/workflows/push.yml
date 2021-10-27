@@ -193,7 +193,7 @@ jobs:
       - name: Pack and Publish
         run: |
           pushd csharp
-            VERSION="0.0.1"
+            VERSION="0.0.2"
             dotnet build --configuration Release
             ls -lah bin/Release
             ls -lah obj
