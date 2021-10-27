@@ -1,0 +1,2 @@
+obj/Debug/netstandard2.1/Controlclient.cs \
+obj/Debug/netstandard2.1/ControlclientGrpc.cs: ../proto/controlclient.proto

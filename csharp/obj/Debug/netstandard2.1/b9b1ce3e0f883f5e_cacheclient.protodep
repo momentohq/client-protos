@@ -1,0 +1,2 @@
+obj/Debug/netstandard2.1/Cacheclient.cs \
+obj/Debug/netstandard2.1/CacheclientGrpc.cs: ../proto/cacheclient.proto

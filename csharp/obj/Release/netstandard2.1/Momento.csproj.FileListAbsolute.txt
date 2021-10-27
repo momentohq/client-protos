@@ -1,0 +1,10 @@
+/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/Momento.deps.json
+/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/Momento.dll
+/Users/mattstraathof/Projects/Momento/Momento/bin/Release/netstandard2.1/Momento.pdb
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.csproj.AssemblyReference.cache
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.AssemblyInfoInputs.cache
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.AssemblyInfo.cs
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.csproj.CoreCompileInputs.cache
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.dll
+/Users/mattstraathof/Projects/Momento/Momento/obj/Release/netstandard2.1/Momento.pdb
