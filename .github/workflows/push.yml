@@ -162,3 +162,45 @@ jobs:
             twine upload -r local dist/* --config-file ~/.pypirc
           popd
         shell: bash
+
+  publish_csharp:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: release
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '5.x'
+
+      - name: Build Release
+        run: |
+          pushd csharp
+            dotnet build --configuration Release
+          popd
+
+      - name: Configure Artifactory publish credentials
+        run: |
+          set -e
+          set -x
+          pushd csharp
+            nuget sources Add -Name Artifactory -Source https://momento.jfrog.io/artifactory/api/nuget/nuget-public -username deploy-user -password ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
+            nuget setapikey deploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} -Source Artifactory
+          popd
+        shell: bash
+
+      - name: Pack and Publish
+        run: |
+        pushd csharp
+          VERSION="${{needs.release.outputs.version}}"
+          nuget pack -Version ${VERSION}
+          nuget push Momento.${VERSION}.nupkg -Source Artifactory
+        popd
+        shell: bash
