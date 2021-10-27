@@ -198,9 +198,9 @@ jobs:
 
       - name: Pack and Publish
         run: |
-        pushd csharp
-          VERSION="${{needs.release.outputs.version}}"
-          nuget pack -Version ${VERSION}
-          nuget push Momento.${VERSION}.nupkg -Source Artifactory
-        popd
+          pushd csharp
+            VERSION="${{needs.release.outputs.version}}"
+            nuget pack -Version ${VERSION}
+            nuget push Momento.${VERSION}.nupkg -Source Artifactory
+          popd
         shell: bash
