@@ -102,7 +102,7 @@ jobs:
           set -x
           export PYPI_MOMENTO_WIRE_TYPE_VERSION=0.0.devBuild
           pushd python
-            python -m grpc_tools.protoc -I../protos --python_out=src/momento_types --grpc_python_out=src/momento_types cacheclient.proto controlclient.proto
+            python -m grpc_tools.protoc -I../proto --python_out=src/momento_wire_types --grpc_python_out=src/momento_wire_types cacheclient.proto controlclient.proto
             python -m build
           popd
         shell: bash
