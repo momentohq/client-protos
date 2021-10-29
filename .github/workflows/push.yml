@@ -152,8 +152,7 @@ jobs:
               export PYPI_MOMENTO_WIRE_TYPE_VERSION="0.0.dev"`date +%s`
             fi
             echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
-            python -m grpc_tools.protoc -I../proto --python_out=src/momento_wire_types --grpc_python_out=src/momento_wire_types cacheclient.proto controlclient.proto
-            python -m build
+            ./buildpypi.sh
             twine upload -r local dist/* --config-file ~/.pypirc
           popd
         shell: bash
