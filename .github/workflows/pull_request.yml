@@ -147,6 +147,14 @@ jobs:
         id: current-time
 
       - uses: actions/checkout@v2
+      
+      - name: Setup Cargo Registry
+        run: |
+          cat ~/.cargo/config.toml
+          echo "[registries.momento]" >> ~/.cargo/config.toml
+          echo "index = "https://momento.jfrog.io/artifactory/git/cargo-public.git"" >> ~/.cargo/config.toml
+          cat ~/.cargo/config.toml
+        shell: bash
 
       - name: Install protoc
         run: ./install_protoc.sh
