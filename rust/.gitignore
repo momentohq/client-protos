@@ -1,3 +1,4 @@
 target
-src
+src/cacheclient.rs
+src/controlclient.rs
 .DS_Store
