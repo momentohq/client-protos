@@ -1,7 +1,7 @@
 [package]
 name = "momento-protos"
 version = "0.1.0"
-authors = ["Matt Straathof <matt.straat@gmail.com>"]
+authors = ["Matt Straathof <eng@momentohq.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

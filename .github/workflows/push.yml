@@ -224,6 +224,14 @@ jobs:
       - name: Install protobuf-codegen
         run: cargo install protobuf-codegen
 
+      - name: Update Cargo Version
+        run: |
+          pushd rust
+            chmod +x update_cargo_script.sh
+            ./update_cargo_script.sh ${{ needs.release.outputs.version }}
+          popd
+        shell: bash
+
       - name: Build and Release
         run: |
           set -e
