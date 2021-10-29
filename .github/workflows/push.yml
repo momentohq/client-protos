@@ -201,3 +201,37 @@ jobs:
             nuget push Momento.${VERSION}.nupkg -Source Artifactory -Verbosity detailed
           popd
         shell: bash
+  publish_rust:
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - uses: actions/checkout@v2
+
+      - name: Setup Cargo Registry
+        run: |
+          echo "[registries.momento]" >> ~/.cargo/config.toml
+          echo "index = "https://momento.jfrog.io/artifactory/git/cargo-public.git"" >> ~/.cargo/config.toml
+        shell: bash
+
+      - name: Install protoc
+        run: ./install_protoc.sh
+
+      - name: Install protobuf-codegen
+        run: cargo install protobuf-codegen
+
+      - name: Build and Release
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
+          pushd rust
+            ./generate_protos.sh
+            cargo build --release
+            cargo publish --registry momento --token ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
+          popd
+        shell: bash
