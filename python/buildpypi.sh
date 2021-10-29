@@ -12,7 +12,7 @@ python -m grpc_tools.protoc -I../proto --python_out=src/momento_wire_types --grp
 mv src/momento_wire_types/cacheclient_pb2_grpc.py src/momento_wire_types/cacheclient_pb2_grpc.py.old
 mv src/momento_wire_types/controlclient_pb2_grpc.py src/momento_wire_types/controlclient_pb2_grpc.py.old
 #
-# Replace `import import cacheclient_pb2 as cacheclient__pb2` with `from . import cacheclient_pb2 as cacheclient__pb2`
+# Replace `import cacheclient_pb2 as cacheclient__pb2` with `from . import cacheclient_pb2 as cacheclient__pb2`
 sed -e 's/^import cacheclient_pb2 as cacheclient__pb2$/from . import cacheclient_pb2 as cacheclient__pb2/' src/momento_wire_types/cacheclient_pb2_grpc.py.old > src/momento_wire_types/cacheclient_pb2_grpc.py
 # Replace `import controlclient_pb2 as controlclient__pb2` with `from . import controlclient_pb2 as controlclient__pb2`
 sed -e 's/^import controlclient_pb2 as controlclient__pb2$/from . import controlclient_pb2 as controlclient__pb2/' src/momento_wire_types/controlclient_pb2_grpc.py.old > src/momento_wire_types/controlclient_pb2_grpc.py
