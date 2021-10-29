@@ -240,6 +240,6 @@ jobs:
           pushd rust
             ./generate_protos.sh
             cargo build --release
-            cargo publish --registry momento --token ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
+            cargo publish --registry momento --token ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} --allow-dirty
           popd
         shell: bash
