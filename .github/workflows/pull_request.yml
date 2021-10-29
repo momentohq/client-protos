@@ -150,7 +150,6 @@ jobs:
       
       - name: Setup Cargo Registry
         run: |
-          cat ~/.cargo/config.toml
           echo "[registries.momento]" >> ~/.cargo/config.toml
           echo "index = "https://momento.jfrog.io/artifactory/git/cargo-public.git"" >> ~/.cargo/config.toml
           cat ~/.cargo/config.toml
