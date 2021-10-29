@@ -227,8 +227,8 @@ jobs:
       - name: Update Cargo Version
         run: |
           pushd rust
-            chmod +x update_cargo_script.sh
-            ./update_cargo_script.sh ${{ needs.release.outputs.version }}
+            chmod +x set_cargo_package_version.sh
+            ./set_cargo_package_version.sh ${{ needs.release.outputs.version }}
           popd
         shell: bash
 
