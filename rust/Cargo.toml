@@ -5,7 +5,7 @@ authors = ["<eng@momentohq.com>"]
 edition = "2018"
 
 [lib]
-name = "momento-protos"
+name = "momento_protos"
 path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
