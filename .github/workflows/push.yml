@@ -237,6 +237,7 @@ jobs:
           pushd rust
             ./generate_protos.sh
             cargo build --release
-            cargo publish --registry momento --allow-dirty --no-verify --verbose
+            cargo publish --registry momento --allow-dirty --no-verify --dry-run
+            curl -u deploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} -XPUT "https://momento.jfrog.io/artifactory/cargo-public/crates/momento-protos-0.0.1.crate" -T ./target/package/momento-protos-0.0.1.crate
           popd
         shell: bash
