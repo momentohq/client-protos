@@ -212,7 +212,7 @@ jobs:
           echo 'index = "https://momento.jfrog.io/artifactory/git/cargo-public.git"' >> ~/.cargo/config.toml
 
           echo "[registries.momento]" >> ~/.cargo/credentials.toml
-          echo 'token = "Bearer AP2mKHvH3wq1XfKJWJwfMn7vQcgKL7UVQfp2v5"' >> ~/.cargo/credentials.toml
+          echo 'token = "Bearer ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}"' >> ~/.cargo/credentials.toml
         shell: bash
 
       - name: Install protoc
@@ -237,6 +237,6 @@ jobs:
           pushd rust
             ./generate_protos.sh
             cargo build --release
-            cargo publish --registry momento --allow-dirty --no-verify
+            cargo publish --registry momento --allow-dirty --no-verify --verbose
           popd
         shell: bash
