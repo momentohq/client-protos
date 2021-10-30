@@ -94,21 +94,15 @@ jobs:
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel build
-
-      - name: Install protoc
-        run: ./install_protoc.sh
+          pip install setuptools wheel build grpcio-tools
 
       - name: Build package
         run: |
           set -e
           set -x
-          export PATH=`pwd`/protoc/bin/:$PATH
           export PYPI_MOMENTO_WIRE_TYPE_VERSION=0.0.devBuild
           pushd python
-            ./generate_protos.sh
-            python -m build
-            ls -l src/momento_wire_types
+            ./buildpypi.sh
           popd
         shell: bash
 
