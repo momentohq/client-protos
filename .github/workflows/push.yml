@@ -239,9 +239,7 @@ jobs:
           export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             ./generate_protos.sh
-            git add .
-            git commit -m "feat: publishing latest release ${{ needs.release.outputs.version }}"
             cargo build --release
-            cargo publish --registry momento --token ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }}
+            cargo publish --registry momento --token ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} --allow-dirty --no-verify
           popd
         shell: bash
