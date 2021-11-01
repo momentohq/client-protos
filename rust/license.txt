@@ -1,8 +1,8 @@
 All Rights Reserved
 
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) 2021 Khawaja Shams
 
-Created by Techcable
+Created by Momento
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
