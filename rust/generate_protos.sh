@@ -12,6 +12,6 @@ mkdir src
 protoc -I=../proto --rust_out=./src cacheclient.proto controlclient.proto
 
 pushd src
-    echo "mod cacheclient;" >> lib.rs
-    echo "mod controlclient;" >> lib.rs
+    echo "pub mod cacheclient;" >> lib.rs
+    echo "pub mod controlclient;" >> lib.rs
  popd
