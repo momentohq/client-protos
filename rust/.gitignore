@@ -1,3 +1,5 @@
 target
 .DS_Store
 Cargo.lock
+update_cargo_toml.py
+set_cargo_package_version.sh
