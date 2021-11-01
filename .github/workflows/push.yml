@@ -221,7 +221,7 @@ jobs:
         run: |
           pushd rust
             chmod +x set_cargo_package_version.sh
-            ./set_cargo_package_version.sh 0.0.1
+            ./set_cargo_package_version.sh 0.0.2
           popd
         shell: bash
 
