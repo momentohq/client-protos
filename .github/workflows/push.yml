@@ -232,7 +232,6 @@ jobs:
           export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             ./generate_protos.sh
-            cargo build --release
             cargo publish --allow-dirty --no-verify
           popd
         shell: bash
