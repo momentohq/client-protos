@@ -3,6 +3,8 @@ name = "momento-protos"
 version = "0.1.0"
 authors = ["<eng@momentohq.com>"]
 edition = "2018"
+description = "Generated protobuf clients to interact with Momento services"
+license-file = "license.txt"
 
 [lib]
 name = "momento_protos"
