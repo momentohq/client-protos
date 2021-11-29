@@ -238,7 +238,8 @@ jobs:
             VERSION="${{needs.release.outputs.version}}"
             ./generate_protos.sh
             cargo build --release
-            cargo publish --registry momento --allow-dirty --no-verify --dry-run
+            # FIXME
+            # cargo publish --registry momento --allow-dirty --no-verify --dry-run
             curl -u deploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} -XPUT "https://momento.jfrog.io/artifactory/cargo-public/crates/momento-protos-${VERSION}.crate" -T ./target/package/momento-protos-${VERSION}.crate
           popd
         shell: bash
