@@ -19,7 +19,7 @@ dependencies {
 }
 
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.6.0"
     `kotlin-dsl`
     `idea`
 }
