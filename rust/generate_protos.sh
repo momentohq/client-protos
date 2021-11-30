@@ -8,7 +8,7 @@ if [ "$CURRENT_DIR" != "rust" ]; then
     exit 1
 fi
 
-mkdir src
+# mkdir src
 protoc -I=../proto --rust_out=./src cacheclient.proto controlclient.proto
 
 # pushd src
