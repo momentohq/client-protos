@@ -238,7 +238,7 @@ jobs:
             VERSION="2.0.2"
             ./generate_protos.sh
             cargo build --release
-            ls ./target/package
+            ls target
             echo "https://momento.jfrog.io/artifactory/cargo-public/crates/momento-protos-${VERSION}.crate"
             echo "./target/package/momento-protos-${VERSION}.crate"
             cat config.toml
