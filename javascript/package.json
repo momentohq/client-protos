@@ -1,5 +1,5 @@
 {
-  "name": "@momento/wire-types-typescript",
+  "name": "@momento/wire-types-javascript",
   "description": "Types for Momento services",
   "main": "index.js",
   "types": "index.d.ts",
