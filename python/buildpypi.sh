@@ -17,5 +17,5 @@ sed -e 's/^import cacheclient_pb2 as cacheclient__pb2$/from . import cacheclient
 # Replace `import controlclient_pb2 as controlclient__pb2` with `from . import controlclient_pb2 as controlclient__pb2`
 sed -e 's/^import controlclient_pb2 as controlclient__pb2$/from . import controlclient_pb2 as controlclient__pb2/' src/momento_wire_types/controlclient_pb2_grpc.py.old > src/momento_wire_types/controlclient_pb2_grpc.py
 
-# Build the module
-python -m build
+# Generate distribution files for PyPI
+python setup.py sdist bdist_wheel
