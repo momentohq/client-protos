@@ -135,7 +135,7 @@ jobs:
           set -e
           set -x
           pushd python
-            ./pypi_setup.sh momentoeng ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} >> ~/.pypirc
+            ./pypi_setup.sh momentoeng ${{ secrets.PYPI_PASSWORD }} >> ~/.pypirc
           popd
         shell: bash
 
