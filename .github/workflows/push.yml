@@ -135,7 +135,7 @@ jobs:
           set -e
           set -x
           pushd python
-            ./pypi_setup.sh momentoeng ${{ secrets.PYPI_PASSWORD }} >> ~/.pypirc
+            ./pypi_setup.sh __token__ ${{ secrets.PYPI_AUTH_TOKEN }} >> ~/.pypirc
           popd
         shell: bash
 
