@@ -14,6 +14,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     project_urls={
-        'Source': 'https://github.com/momentohq/client_protos/tree/main/python',
+        'Source': 'https://github.com/momentohq/client_protos',
     },
 )
