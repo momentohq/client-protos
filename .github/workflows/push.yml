@@ -130,12 +130,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools wheel twine build grpcio-tools
 
-      - name: Configure Artifactory publish credentials
+      - name: Configure PyPI publish credentials
         run: |
           set -e
           set -x
           pushd python
-            ./jfrog_setup.sh deploy-user ${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} >> ~/.pypirc
+            ./pypi_setup.sh __token__ ${{ secrets.PYPI_AUTH_TOKEN }} >> ~/.pypirc
           popd
         shell: bash
 
@@ -152,7 +152,7 @@ jobs:
             fi
             echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
             ./buildpypi.sh
-            twine upload -r local dist/* --config-file ~/.pypirc
+            python -m twine upload dist/* --config-file ~/.pypirc
           popd
         shell: bash
 
