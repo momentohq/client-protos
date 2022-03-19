@@ -5,6 +5,10 @@ option java_package = "grpc.cache_client";
 
 package cache_client;
 
+import "google/api/httpbody.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
 
 enum ECacheResult {
   Invalid = 0;
@@ -19,6 +23,21 @@ enum ECacheResult {
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
+}
+
+service HttpCache {
+  rpc Get (_GetRequest) returns (google.api.HttpBody) {
+    option (google.api.http) = {
+      get: "/cache/get/{cache_key}"
+    };
+  }
+  rpc Set (_SetRequest) returns (_SetResponse) {
+    option (google.api.http) = {
+      post: "/cache/set/{cache_key}"
+      body: "cache_body"
+      // ?ttl_milliseconds=ttlMillis
+    };
+  }
 }
 
 
