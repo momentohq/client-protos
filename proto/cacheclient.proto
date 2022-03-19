@@ -7,8 +7,6 @@ package cache_client;
 
 import "google/api/httpbody.proto";
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
-
 
 enum ECacheResult {
   Invalid = 0;
