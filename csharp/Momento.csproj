@@ -5,7 +5,8 @@
   </PropertyGroup>
 
 <ItemGroup>
-  <Protobuf Include="../proto/**/*.proto" />
+  <Protobuf Include="../proto/cacheclient.proto" />
+  <Protobuf Include="../proto/controlclient.proto" />
 </ItemGroup>
 
 

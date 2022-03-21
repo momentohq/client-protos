@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpc.cache_client";
+
+package cache_client;
+
+import "cacheclient.proto";
+import "google/api/httpbody.proto";
+import "google/api/annotations.proto";
+
+service HttpCache {
+  rpc Get (_GetRequest) returns (google.api.HttpBody) {
+    option (google.api.http) = {
+      get: "/cache/get/{cache_key}"
+    };
+  }
+  rpc Set (_SetRequest) returns (_SetResponse) {
+    option (google.api.http) = {
+      post: "/cache/set/{cache_key}"
+      body: "cache_body"
+      // ?ttl_milliseconds=ttlMillis
+    };
+  }
+}
