@@ -9,17 +9,32 @@ import "cacheclient.proto";
 import "google/api/httpbody.proto";
 import "google/api/annotations.proto";
 
+message _HttpGetRequest {
+  bytes cache_name = 1;
+  bytes cache_key = 2;
+  string token = 3;
+}
+
+message _HttpSetRequest {
+  bytes cache_name = 1;
+  bytes cache_key = 2;
+  uint32 ttl_milliseconds = 3;
+  string token = 4;
+  bytes cache_body = 5;
+}
+
 service HttpCache {
-  rpc Get (_GetRequest) returns (google.api.HttpBody) {
+  rpc Get (_HttpGetRequest) returns (google.api.HttpBody) {
     option (google.api.http) = {
-      get: "/cache/get/{cache_key}"
+      // Other fields are set via query parameter
+      get: "/cache/get/{cache_name}/{cache_key}"
     };
   }
-  rpc Set (_SetRequest) returns (_SetResponse) {
+  rpc Set (_HttpSetRequest) returns (_SetResponse) {
     option (google.api.http) = {
-      post: "/cache/set/{cache_key}"
+      // Other fields are set via query parameter
+      post: "/cache/set/{cache_name}/{cache_key}"
       body: "cache_body"
-      // ?ttl_milliseconds=ttlMillis
     };
   }
 }
