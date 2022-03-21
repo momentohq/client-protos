@@ -5,7 +5,6 @@ option java_package = "grpc.cache_client";
 
 package cache_client;
 
-
 enum ECacheResult {
   Invalid = 0;
   Ok = 1;
@@ -20,7 +19,6 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
 }
-
 
 message _GetRequest {
   bytes cache_key = 1;

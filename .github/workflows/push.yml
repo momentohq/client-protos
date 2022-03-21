@@ -107,7 +107,7 @@ jobs:
         run: |
           VERSION="${{needs.release.outputs.version}}"
           echo "version: ${VERSION}"
-          pushd kotlin
+          pushd kotlin-messages
             ./gradlew publish -Pversion=$VERSION
           popd
 

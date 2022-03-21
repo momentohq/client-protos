@@ -72,7 +72,7 @@ jobs:
 
       - name: Build
         run: |
-          pushd kotlin
+          pushd kotlin-messages
             ./gradlew build
           popd
 

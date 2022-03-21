@@ -24,7 +24,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java-util:$grpcProtobufVersion")
     implementation("io.grpc:grpc-kotlin-stub:$grpcKotlinVersion")
 
-    protobuf(files("../proto/"))
+    protobuf(files("../../../proto/"))
 }
 
 publishing {
@@ -55,11 +55,15 @@ protobuf {
         }
     }
     generateProtoTasks {
-        all().forEach {
-            it.plugins {
+        all().forEach { task ->
+            task.plugins {
                 id("grpc")
                 id("grpckt")
             }
+            task.generateDescriptorSet = true
+            task.descriptorSetOptions.path = "$projectDir/generated-sources/descriptors/client_protos.dsc"
+            task.descriptorSetOptions.includeImports = true
+            task.descriptorSetOptions.includeSourceInfo = true
         }
     }
 }
