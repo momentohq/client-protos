@@ -9,6 +9,8 @@ service ScsControl {
   rpc CreateCache (_CreateCacheRequest) returns (_CreateCacheResponse) {}
   rpc DeleteCache (_DeleteCacheRequest) returns (_DeleteCacheResponse) {}
   rpc ListCaches (_ListCachesRequest) returns (_ListCachesResponse) {}
+  rpc CreateSigningKey (_CreateSigningKeyRequest) returns (_CreateSigningKeyResponse) {}
+  rpc DeleteSigningKey (_DeleteSigningKeyRequest) returns (_DeleteSigningKeyResponse) {}
 }
 
 message _DeleteCacheRequest {
@@ -36,4 +38,20 @@ message _Cache {
 message _ListCachesResponse {
   repeated _Cache cache = 1;
   string next_token = 2;
+}
+
+message _CreateSigningKeyRequest {
+}
+
+message _CreateSigningKeyResponse {
+  string key_id = 1;
+  bytes private_key = 2;
+  int32 created_at = 3;
+}
+
+message _DeleteSigningKeyRequest {
+  string key_id = 1;
+}
+
+message _DeleteSigningKeyResponse {
 }
