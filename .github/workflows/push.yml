@@ -60,9 +60,11 @@ jobs:
         run: |
           export VERSION="${{ needs.release.outputs.version }}"
           echo "Publishing package with version $VERSION"
-          mv package.json package.json.ORIG
-          cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
-          npm publish
+          pushd javascript
+            mv package.json package.json.ORIG
+            cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
+            npm publish
+          popd
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
