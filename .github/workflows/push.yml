@@ -36,15 +36,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Configure Artifactory publish credentials
-        run: |
-          # lel this is how jfrog wants you to come up with your scoped npm configuration
-          curl -udeploy-user:${{ secrets.PUBLIC_ARTIFACTORY_DEPLOY_USER_MAGIC_PASSTOKEN }} https://momento.jfrog.io/artifactory/api/npm/npm-public/auth/momento >> ~/.npmrc
-
       - name: Install Node
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install protoc
         run: ./install_protoc.sh
@@ -60,9 +56,9 @@ jobs:
           popd
         shell: bash
 
-      - name: Publish npm package to Artifactory
+      - name: Publish npm package
         run: |
-          export VERSION="${{needs.release.outputs.version}}"
+          export VERSION="${{ needs.release.outputs.version }}"
           echo "Publishing package with version $VERSION"
           pushd javascript
             mv package.json package.json.ORIG
@@ -70,6 +66,8 @@ jobs:
             npm publish
           popd
         shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish_kotlin:
     runs-on: ubuntu-latest
