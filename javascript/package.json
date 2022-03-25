@@ -1,5 +1,5 @@
 {
-  "name": "@momentohq/generated-types",
+  "name": "@gomomento/generated-types",
   "description": "Types for Momento services",
   "version": "0.0.1",
   "main": "index.js",
