@@ -39,7 +39,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v1
         with:
-          node-version: "16"
+          node-version: 16
           registry-url: "https://registry.npmjs.org"
 
       - name: Install protoc
@@ -67,7 +67,7 @@ jobs:
           popd
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
   publish_kotlin:
     runs-on: ubuntu-latest
