@@ -20,7 +20,7 @@ message _HttpSetRequest {
   string cache_key = 2;
   uint64 ttl_milliseconds = 3;
   string token = 4;
-  bytes cache_body = 5;
+  google.api.HttpBody cache_body = 5;
 }
 
 service HttpCache {
