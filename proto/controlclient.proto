@@ -58,7 +58,7 @@ message _RevokeSigningKeyResponse {
 }
 
 message _SigningKey {
-  string key = 1;
+  string key_id = 1;
   uint64 expires_at = 2;
 }
 
