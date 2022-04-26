@@ -19,6 +19,7 @@ enum ECacheResult {
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
+  rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
 }
 
 message _GetRequest {
@@ -30,6 +31,12 @@ message _GetResponse {
   bytes cache_body = 2;
   string message = 3;
 }
+
+message _DeleteRequest {
+  bytes cache_key = 1;
+}
+
+message _DeleteResponse {}
 
 message _SetRequest {
   bytes cache_key = 1;
