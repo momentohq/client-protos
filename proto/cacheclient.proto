@@ -32,11 +32,11 @@ message _GetResponse {
   string message = 3;
 }
 
-message _DeleteRequest {}
-
-message _DeleteResponse {
-  ECacheResult result = 1;
+message _DeleteRequest {
+  bytes cache_key = 1;
 }
+
+message _DeleteResponse {}
 
 message _SetRequest {
   bytes cache_key = 1;
