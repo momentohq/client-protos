@@ -20,6 +20,9 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
+  rpc HashGet (_HashGetRequest) returns (_HashGetResponse) {}
+  rpc HashGetAll (_HashGetAllRequest) returns (_HashGetAllResponse) {}
+  rpc HashSet (_HashSetRequest) returns (_HashSetResponse) {}
 }
 
 message _GetRequest {
@@ -45,6 +48,37 @@ message _SetRequest {
 }
 
 message _SetResponse {
+  ECacheResult result = 1;
+  string message = 2;
+}
+
+message _HashGetRequest {
+  bytes cache_hash_name = 1;
+  bytes cache_hash_key = 2;
+}
+
+message _HashGetResponse {
+  ECacheResult result = 1;
+  bytes cache_body = 2;
+  string message = 3;
+}
+
+message _HashGetAllRequest {
+  bytes cache_hash_name = 1;
+}
+
+message _HashGetAllResponse {
+  ECacheResult result = 1;
+  map<bytes, bytes> cache_body = 2;
+  string message = 3;
+}
+
+message _HashSetRequest {
+  bytes cache_hash_name = 1;
+  map<bytes, bytes> mapping = 2;
+}
+
+message _HashSetResponse {
   ECacheResult result = 1;
   string message = 2;
 }
