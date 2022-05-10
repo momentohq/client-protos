@@ -11,4 +11,4 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-protobuf = { version = "2", features = ["with-bytes"] }
+protobuf = { version = "3", features = ["with-bytes"] }
