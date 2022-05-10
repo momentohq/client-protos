@@ -20,9 +20,9 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
-  rpc HashGet (_HashGetRequest) returns (_HashGetResponse) {}
-  rpc HashGetAll (_HashGetAllRequest) returns (_HashGetAllResponse) {}
-  rpc HashSet (_HashSetRequest) returns (_HashSetResponse) {}
+  rpc DictGet (_DictGetRequest) returns (_DictGetResponse) {}
+  rpc DictGetAll (_DictGetAllRequest) returns (_DictGetAllResponse) {}
+  rpc DictSet (_DictSetRequest) returns (_DictSetResponse) {}
 }
 
 message _GetRequest {
@@ -52,38 +52,38 @@ message _SetResponse {
   string message = 2;
 }
 
-message _HashGetRequest {
-  bytes cache_hash_name = 1;
-  bytes cache_hash_key = 2;
+message _DictGetRequest {
+  bytes dict_name = 1;
+  bytes dict_key = 2;
 }
 
-message _HashGetResponse {
+message _DictGetResponse {
   ECacheResult result = 1;
   bytes cache_body = 2;
   string message = 3;
 }
 
-message _HashGetAllRequest {
-  bytes cache_hash_name = 1;
+message _DictGetAllRequest {
+  bytes dict_name = 1;
 }
 
-message HashKeyValuePair {
+message DictKeyValuePair {
   bytes key = 1;
   bytes value = 2;
 }
 
-message _HashGetAllResponse {
+message _DictGetAllResponse {
   ECacheResult result = 1;
-  repeated HashKeyValuePair cache_body = 2;
+  repeated DictKeyValuePair dict_body = 2;
   string message = 3;
 }
 
-message _HashSetRequest {
-  bytes cache_hash_name = 1;
-  repeated HashKeyValuePair mapping = 2;
+message _DictSetRequest {
+  bytes dict_name = 1;
+  repeated DictKeyValuePair dict_body = 2;
 }
 
-message _HashSetResponse {
+message _DictSetResponse {
   ECacheResult result = 1;
   string message = 2;
 }
