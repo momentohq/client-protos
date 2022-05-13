@@ -38,4 +38,11 @@ service HttpCache {
       body: "cache_body"
     };
   }
+  rpc SetButItsAPut (_HttpSetRequest) returns (_SetResponse) {
+    option (google.api.http) = {
+      // Other fields are set via query parameter
+      put: "/cache/set/{cache_name}/{cache_key}"
+      body: "cache_body"
+    };
+  }
 }
