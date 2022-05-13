@@ -9,9 +9,10 @@ if [ "$CURRENT_DIR" != "rust" ]; then
 fi
 
 mkdir src
-protoc -I=../proto -I=/usr/local/include --rust_out=./src cacheclient.proto controlclient.proto
+protoc -I=../proto -I=/usr/local/include --rust_out=./src cacheclient.proto controlclient.proto momento/auth.proto
 
 pushd src
     echo "mod cacheclient;" >> lib.rs
     echo "mod controlclient;" >> lib.rs
+    echo "mod auth;" >> lib.rs
  popd
