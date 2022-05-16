@@ -1,5 +1,6 @@
 [package]
 name = "momento-protos"
+license = "Apache-2.0"
 version = "0.1.0"
 authors = ["<eng@momentohq.com>"]
 edition = "2018"
