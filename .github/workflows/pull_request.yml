@@ -157,3 +157,24 @@ jobs:
             cargo build
           popd
         shell: bash
+
+      - name: Set dryrun Cargo version
+        run: |
+          pushd rust
+            chmod +x set_cargo_package_version.sh
+            ./set_cargo_package_version.sh 42.42.42
+          popd
+        shell: bash
+
+      - name: Release dryrun
+        env:
+          # TODO: Match the token with https://github.com/momentohq/client-sdk-rust/blob/main/.github/workflows/cd.yml
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_PUBLISH_TOKEN }}
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
+          pushd rust
+            cargo publish --verbose --allow-dirty --no-verify --dry-run
+          popd
+        shell: bash
