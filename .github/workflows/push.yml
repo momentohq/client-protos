@@ -203,12 +203,6 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Install protoc
-        run: ./install_protoc.sh
-
-      - name: Install protobuf-codegen
-        run: cargo install protobuf-codegen
-
       - name: Update Cargo Version
         run: |
           pushd rust
@@ -224,7 +218,6 @@ jobs:
           export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             VERSION="${{needs.release.outputs.version}}"
-            ./generate_protos.sh
             cargo build --release
           popd
         shell: bash
