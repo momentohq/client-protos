@@ -203,12 +203,6 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Install protoc
-        run: ./install_protoc.sh
-
-      - name: Install protobuf-codegen
-        run: cargo install protobuf-codegen
-
       - name: Update Cargo Version
         run: |
           pushd rust
