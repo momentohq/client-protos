@@ -24,7 +24,7 @@ message _LoginResponse {
   message LoggedIn {
     string session_token = 1;
 
-    // How many the token was valid for when issued.
+    // How many seconds the token was valid for when issued.
     // Will vary slightly from reality upon receipt, as
     // time has passed since the token was minted.
     // You might expect to see this true to within 10
