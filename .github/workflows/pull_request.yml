@@ -167,6 +167,7 @@ jobs:
           set -x
           export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
-            cargo publish --verbose --allow-dirty --dry-run
+            # We --no-verify because we have build.rs editing src instead of $BUILD_OUT :-(
+            cargo publish --verbose --allow-dirty --dry-run --no-verify
           popd
         shell: bash
