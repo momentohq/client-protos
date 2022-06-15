@@ -84,6 +84,8 @@ message _DictionaryGetAllResponse {
 message _DictionarySetRequest {
   bytes dictionary_name = 1;
   repeated _DictionaryKeyValuePair dictionary_body = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
 }
 
 message _DictionarySetResponse {
