@@ -20,7 +20,7 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
-  rpc Exists (_ExistsRequest) returns (_ExistsREsponse) {}
+  rpc Exists (_ExistsRequest) returns (_ExistsResponse) {}
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryGetAll (_DictionaryGetAllRequest) returns (_DictionaryGetAllResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
