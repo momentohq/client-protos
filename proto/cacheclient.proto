@@ -47,6 +47,7 @@ message _ExistsRequest {
 }
 
 message _ExistsResponse {
+  // Order and count of results matches the request list.
   repeated bool results = 1;
   string message = 2;
 }
