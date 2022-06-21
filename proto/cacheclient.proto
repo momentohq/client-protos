@@ -47,7 +47,7 @@ message _ExistsRequest {
 }
 
 message _ExistsResponse {
-  repeated bool results;
+  repeated bool results = 1;
   string message = 2;
 }
 
