@@ -23,6 +23,7 @@ service Scs {
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryGetAll (_DictionaryGetAllRequest) returns (_DictionaryGetAllResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
+  rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
 }
 
 message _GetRequest {
@@ -92,3 +93,18 @@ message _DictionarySetResponse {
   ECacheResult result = 1;
   string message = 2;
 }
+
+message _DictionaryDeleteRequest {
+  message Some {
+    repeated bytes keys = 1;
+  }
+  message All { }
+
+  bytes dictionary_name = 1;
+  oneof delete_keys {
+    Some some = 2;
+    All all = 3;
+  }
+}
+
+message _DictionaryDeleteResponse {}
