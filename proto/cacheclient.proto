@@ -108,3 +108,71 @@ message _DictionaryDeleteRequest {
 }
 
 message _DictionaryDeleteResponse {}
+
+message _SetFetchRequest {
+  bytes set_name = 1;
+}
+
+message _SetFetchResponse {
+  ECacheResult result = 1;
+  repeated bytes elements = 2;
+  string message = 3;
+}
+
+message _SetContainsRequest {
+  bytes set_name = 1;
+  repeated bytes elements = 2;
+}
+
+message _SetContainsResponse {
+  repeated bool contains = 1;
+}
+
+message _SetUnionRequest {
+  bytes set_name = 1;
+  repeated bytes elements = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
+}
+
+message _SetUnionResponse {
+  ECacheResult result = 1;
+  string message = 2;
+}
+
+message _SetDifferenceRequest {
+  // cache = request - stored
+  message _Minuend {
+    repeated bytes elements = 1;
+  }
+  // cache = stored - request
+  message _Subtrahend {
+    // Subtract a set of elements
+    message Set {
+      repeated bytes elements = 1;
+    }
+    // Subtract the set's identity (itself) from itself - which deletes it.
+    message _Identity {}
+
+    oneof subtrahend_set {
+      Set set = 1;
+      _Identity identity = 2;
+    }
+  }
+
+  bytes set_name = 1;
+  oneof difference {
+    _Minuend minuend = 2;
+    _Subtrahend subtrahend = 3;
+  }
+}
+
+message _SetDifferenceResponse { }
+
+message _SetIntersectRequest {
+  bytes set_name = 1;
+  repeated bytes elements = 2;
+}
+
+message _SetIntersectResponse {
+}
