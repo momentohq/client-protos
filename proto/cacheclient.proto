@@ -24,6 +24,9 @@ service Scs {
   rpc DictionaryGetAll (_DictionaryGetAllRequest) returns (_DictionaryGetAllResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
   rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
+  rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
+  rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
+  rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
 }
 
 message _GetRequest {
@@ -114,18 +117,16 @@ message _SetFetchRequest {
 }
 
 message _SetFetchResponse {
-  ECacheResult result = 1;
-  repeated bytes elements = 2;
-  string message = 3;
-}
+  message _Found {
+    repeated bytes elements = 1;
+  }
 
-message _SetContainsRequest {
-  bytes set_name = 1;
-  repeated bytes elements = 2;
-}
+  message _Missing {}
 
-message _SetContainsResponse {
-  repeated bool contains = 1;
+  oneof set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
 }
 
 message _SetUnionRequest {
@@ -135,10 +136,7 @@ message _SetUnionRequest {
   bool refresh_ttl = 4;
 }
 
-message _SetUnionResponse {
-  ECacheResult result = 1;
-  string message = 2;
-}
+message _SetUnionResponse {}
 
 message _SetDifferenceRequest {
   // cache = request - stored
@@ -148,14 +146,14 @@ message _SetDifferenceRequest {
   // cache = stored - request
   message _Subtrahend {
     // Subtract a set of elements
-    message Set {
+    message _Set {
       repeated bytes elements = 1;
     }
     // Subtract the set's identity (itself) from itself - which deletes it.
     message _Identity {}
 
     oneof subtrahend_set {
-      Set set = 1;
+      _Set set = 1;
       _Identity identity = 2;
     }
   }
@@ -167,12 +165,4 @@ message _SetDifferenceRequest {
   }
 }
 
-message _SetDifferenceResponse { }
-
-message _SetIntersectRequest {
-  bytes set_name = 1;
-  repeated bytes elements = 2;
-}
-
-message _SetIntersectResponse {
-}
+message _SetDifferenceResponse {}
