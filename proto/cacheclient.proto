@@ -165,4 +165,13 @@ message _SetDifferenceRequest {
   }
 }
 
-message _SetDifferenceResponse {}
+message _SetDifferenceResponse {
+  message _Found {}
+
+  message _Missing {}
+
+  oneof set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
