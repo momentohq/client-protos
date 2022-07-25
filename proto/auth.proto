@@ -53,17 +53,12 @@ message _LoginResponse {
 
 message _CreateApiTokenRequest {
   uint32 validity_seconds = 1;
-  repeated Resources resources = 2;
+  CacheResources cache_resources = 2;
   Role role = 3;
 }
 
-message Resources {
-  enum ResourceType {
-    UNKNOWN = 0;
-    CACHE = 1;
-  }
-  ResourceType type = 1;
-  oneof resource_name {
+message CacheResources {
+  oneof name {
     string regex = 2;
     ResourceNames names = 3;
   }
