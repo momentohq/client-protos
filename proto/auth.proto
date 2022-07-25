@@ -49,44 +49,46 @@ message _LoginResponse {
   message Message {
     string text = 1;
   }
+}
 
-  message _CreateApiTokenRequest {
-    uint32 validity_seconds = 1;
-    repeated Resources resources = 2;
-    Role role = 3;
-  }
+message _CreateApiTokenRequest {
+  uint32 validity_seconds = 1;
+  repeated Resources resources = 2;
+  Role role = 3;
+}
 
-  message Resources {
-    enum ResourceType {
-      CACHE = 1;
-    }
-    ResourceType type = 1;
-    oneof resource_name {
-      string regex = 2;
-      ResourceNames names = 3;
-    }
+message Resources {
+  enum ResourceType {
+    UNKNOWN = 0;
+    CACHE = 1;
   }
+  ResourceType type = 1;
+  oneof resource_name {
+    string regex = 2;
+    ResourceNames names = 3;
+  }
+}
 
-  message ResourceNames {
-    repeated string names = 1;
-  }
+message ResourceNames {
+  repeated string names = 1;
+}
 
-  message Role {
-    enum RoleType {
-      ADMIN = 1;
-      READ_WRITE = 2;
-    }
-    oneof role {
-      RoleType role_type = 1;
-      string role_id = 2;
-    }
+message Role {
+  enum RoleType {
+    UNKNOWN = 0;
+    ADMIN = 1;
+    READ_WRITE = 2;
   }
+  oneof role {
+    RoleType role_type = 1;
+    string role_id = 2;
+  }
+}
 
-  message _CreateApiTokenResponse {
-    Token token = 1;
-  }
+message _CreateApiTokenResponse {
+  Token token = 1;
+}
 
-  message Token {
-    string token = 1;
-  }
+message Token {
+  string token = 1;
 }
