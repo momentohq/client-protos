@@ -20,7 +20,7 @@ message _LoginResponse {
     Error error = 4;
   }
 
-  // Terminal state, login success
+  // Terminal state, login success.
   message LoggedIn {
     string session_token = 1;
 
