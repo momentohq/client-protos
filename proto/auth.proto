@@ -7,7 +7,7 @@ package auth;
 
 service Auth {
   rpc Login (_LoginRequest) returns (stream _LoginResponse) {}
-  rpc CreateApiToken(_CreateApiTokenRequest) returns (_CreateApiTokenResponse) {}
+  rpc CreateApiToken (_CreateApiTokenRequest) returns (_CreateApiTokenResponse) {}
 }
 
 message _LoginRequest {
