@@ -58,24 +58,19 @@ message _CreateApiTokenRequest {
 }
 
 message CacheResources {
-  oneof name {
-    string regex = 2;
-    ResourceNames names = 3;
-  }
-}
-
-message ResourceNames {
-  repeated string names = 1;
+  repeated string cache_names = 1;
+  repeated string key_names = 2;
 }
 
 message Role {
   enum RoleType {
-    UNKNOWN = 0;
-    ADMIN = 1;
-    READ_WRITE = 2;
+    ADMIN = 0;
+    DATA_READ = 1;
+    DATA_READ_WRITE = 2;
   }
   oneof role {
     RoleType role_type = 1;
+    // Id for a custom role.
     string role_id = 2;
   }
 }
