@@ -52,14 +52,14 @@ message _LoginResponse {
 }
 
 message _CreateApiTokenRequest {
-  uint32 validity_seconds = 1;
-  CacheResources cache_resources = 2;
+  uint64 expires_at = 1;
+  CacheResources cache_resource = 2;
   Role role = 3;
 }
 
 message CacheResources {
-  repeated string cache_names = 1;
-  repeated string key_names = 2;
+  repeated string cache_names_or_prefixes = 1;
+  repeated string key_names_or_prefixes = 2;
 }
 
 message Role {
@@ -67,6 +67,7 @@ message Role {
     ADMIN = 0;
     DATA_READ = 1;
     DATA_READ_WRITE = 2;
+    DATA_WRITE_ONLY = 3;
   }
   oneof role {
     RoleType role_type = 1;
