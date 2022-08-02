@@ -30,13 +30,13 @@ service Scs {
   rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
   rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
  
-  rpc _ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
-  rpc _ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
-  rpc _ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {}
-  rpc _ListPopBack(_ListPopBackRequest) returns (_ListPopBackResponse) {}
-  rpc _ListErase(_ListEraseRequest) returns (_ListEraseResponse) {}
-  rpc _ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {}
-  rpc _ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {}
+  rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
+  rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
+  rpc ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {}
+  rpc ListPopBack(_ListPopBackRequest) returns (_ListPopBackResponse) {}
+  rpc ListErase(_ListEraseRequest) returns (_ListEraseResponse) {}
+  rpc ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {}
+  rpc ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {}
 }
 
 message _GetRequest {
