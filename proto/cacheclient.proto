@@ -202,9 +202,9 @@ message _SetDifferenceResponse {
 // stored = request + stored
 message _ListPushFrontRequest {
   bytes list_name = 1;
-  uint64 ttl_milliseconds = 2;
-  bool refresh_ttl = 3;
-  repeated bytes push = 4;
+  repeated bytes values = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
 }
 
 message _ListPushFrontResponse {}
@@ -212,9 +212,9 @@ message _ListPushFrontResponse {}
 // stored = stored + request
 message _ListPushBackRequest {
   bytes list_name = 1;
-  uint64 ttl_milliseconds = 2;
-  bool refresh_ttl = 3;
-  repeated bytes push = 4;
+  repeated bytes values = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
 }
 
 message _ListPushBackResponse {}
@@ -267,8 +267,8 @@ message _ListEraseRequest {
 
   bytes list_name = 1;
   oneof erase {
-    _All all = 2;
-    _ListRanges some = 3;
+    _ListRanges some = 2;
+    _All all = 3;
   }
 }
 
