@@ -20,13 +20,23 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
+  
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
   rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
+  
   rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
   rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
   rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
+ 
+  rpc _ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
+  rpc _ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
+  rpc _ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {}
+  rpc _ListPopBack(_ListPopBackRequest) returns (_ListPopBackResponse) {}
+  rpc _ListErase(_ListEraseRequest) returns (_ListEraseResponse) {}
+  rpc _ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {}
+  rpc _ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {}
 }
 
 message _GetRequest {
@@ -184,6 +194,108 @@ message _SetDifferenceResponse {
   message _Missing {}
 
   oneof set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+// stored = request + stored
+message _ListPushFrontRequest {
+  bytes list_name = 1;
+  uint64 ttl_milliseconds = 2;
+  bool refresh_ttl = 3;
+  repeated bytes push = 4;
+}
+
+message _ListPushFrontResponse {}
+
+// stored = stored + request
+message _ListPushBackRequest {
+  bytes list_name = 1;
+  uint64 ttl_milliseconds = 2;
+  bool refresh_ttl = 3;
+  repeated bytes push = 4;
+}
+
+message _ListPushBackResponse {}
+
+message _ListPopFrontRequest {
+  bytes list_name = 1;
+}
+
+message _ListPopFrontResponse {
+  message _Found {
+    bytes front = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _ListPopBackRequest {
+  bytes list_name = 1;
+}
+
+message _ListPopBackResponse {
+  message _Found {
+    bytes back = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _ListRange {
+  uint32 begin_index = 1;
+  uint32 count = 2;
+}
+
+message _ListEraseRequest {
+  message _All {}
+
+  message _ListRanges {
+    repeated _ListRange ranges = 1;
+  }
+
+  bytes list_name = 1;
+  oneof erase {
+    _All all = 2;
+    _ListRanges some = 3;
+  }
+}
+
+message _ListEraseResponse {}
+
+message _ListRemoveRequest {
+  bytes list_name = 1;
+  oneof remove {
+    // Remove all appearances in the list where the element is this value
+    bytes value = 2;
+  }
+}
+
+message _ListRemoveResponse {}
+
+message _ListFetchRequest {
+  bytes list_name = 1;
+}
+
+message _ListFetchResponse {
+  message _Found {
+    repeated bytes values = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
     _Found found = 1;
     _Missing missing = 2;
   }
