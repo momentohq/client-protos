@@ -278,7 +278,7 @@ message _ListRemoveRequest {
   bytes list_name = 1;
   oneof remove {
     // Remove all appearances in the list where the element is this value
-    bytes value = 2;
+    bytes all_elements_with_value = 2;
   }
 }
 
