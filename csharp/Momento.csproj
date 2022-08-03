@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>Momento.Protos</PackageId>
+    <Authors>Momento</Authors>
+    <Company>Momento Inc</Company>
+    <Description>
+      Generated gRPC and Protocol Buffers types for Momento clients
+    </Description>
+    <PackageTags>caching, cache, serverless, key value, simple caching service</PackageTags>
+    <Copyright>Copyright (c) Momento Inc 2022</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/momentohq/client_protos</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/momentohq/client_protos/</RepositoryUrl>
   </PropertyGroup>
 
 <ItemGroup>
