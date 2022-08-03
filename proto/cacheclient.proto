@@ -117,7 +117,7 @@ message _DictionaryDeleteRequest {
   message All { }
 
   bytes dictionary_name = 1;
-  oneof delete_fields {
+  oneof delete {
     Some some = 2;
     All all = 3;
   }
