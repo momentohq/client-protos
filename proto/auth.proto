@@ -7,7 +7,7 @@ package auth;
 
 service Auth {
   rpc Login (_LoginRequest) returns (stream _LoginResponse) {}
-  rpc GenerateApiV1Token(_GenerateApiV1TokenRequest) returns (_GenerateApiV1TokenResponse) {}
+  rpc GenerateApiVToken(_GenerateApiTokenRequest) returns (_GenerateApiTokenResponse) {}
 }
 
 message _LoginRequest {
@@ -51,11 +51,11 @@ message _LoginResponse {
   }
 }
 
-message _GenerateApiV1TokenRequest {
+message _GenerateApiTokenRequest {
   uint32 expiration_minutes = 1;
 }
 
-message _GenerateApiV1TokenResponse {
+message _GenerateApiTokenResponse {
   _Token token = 1;
 }
 
