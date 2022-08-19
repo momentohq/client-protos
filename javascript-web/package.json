@@ -1,0 +1,29 @@
+{
+  "name": "@gomomento/generated-types-webtext",
+  "description": "Types for Momento services",
+  "version": "0.0.1",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/momentohq/client_protos"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && mkdir dist && ./generate_protos.sh && tsc"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node16": "1.0.2",
+    "@types/node": "16.10.3",
+    "typescript": "4.4.3"
+  },
+  "dependencies": {
+  },
+  "files": [
+    "dist",
+    "index.d.ts",
+    "index.js"
+  ]
+}

@@ -33,6 +33,35 @@ jobs:
             npm run build
           popd
         shell: bash
+  
+  build_javascript-web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install protoc
+        run: ./install_protoc.sh
+
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd javascript
+            npm ci
+            npm run build
+          popd
+        shell: bash
 
   build_java:
     runs-on: ubuntu-latest
