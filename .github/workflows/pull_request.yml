@@ -34,7 +34,7 @@ jobs:
           popd
         shell: bash
   
-  build_javascript-web:
+  build_javascriptweb:
     runs-on: ubuntu-latest
 
     steps:
@@ -57,7 +57,7 @@ jobs:
           set -e
           set -x
           export PATH=`pwd`/protoc/bin/:$PATH
-          pushd javascript
+          pushd javascript-web
             npm ci
             npm run build
           popd
