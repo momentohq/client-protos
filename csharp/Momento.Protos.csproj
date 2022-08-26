@@ -15,29 +15,18 @@
     <RepositoryUrl>https://github.com/momentohq/client_protos/</RepositoryUrl>
   </PropertyGroup>
 
-<ItemGroup>
-  <Protobuf Include="../proto/cacheclient.proto" />
-  <Protobuf Include="../proto/controlclient.proto" />
-</ItemGroup>
-
-
   <ItemGroup>
-    <None Remove="Google.Protobuf" />
-    <None Remove="Grpc.Tools" />
-    <None Remove="src\" />
-    <None Remove="Grpc.Net.Client" />
-    <None Remove="Grpc" />
+    <Protobuf Include="../proto/cacheclient.proto" />
+    <Protobuf Include="../proto/controlclient.proto" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.19.0" />
     <PackageReference Include="Grpc.Tools" Version="2.41.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
     <PackageReference Include="Grpc" Version="2.41.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\" />
-  </ItemGroup>
+
 </Project>
