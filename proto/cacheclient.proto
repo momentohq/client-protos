@@ -209,7 +209,7 @@ message _ListPushFrontRequest {
   bool refresh_ttl = 4;
 
   // ensure total length <= this; remove excess from back of list
-  optional uint32 truncate_tail_to_size = 5;
+  optional uint32 truncate_back_to_size = 5;
 }
 
 message _ListPushFrontResponse {}
@@ -222,7 +222,7 @@ message _ListPushBackRequest {
   bool refresh_ttl = 4;
 
   // ensure total length <= this; remove excess from front of list
-  optional uint32 truncate_head_to_size = 5;
+  optional uint32 truncate_front_to_size = 5;
 }
 
 message _ListPushBackResponse {}
