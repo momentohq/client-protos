@@ -212,7 +212,10 @@ message _ListPushFrontRequest {
   optional uint32 truncate_tail_to_size = 5;
 }
 
-message _ListPushFrontResponse {}
+message _ListPushFrontResponse {
+  // length of the list after the push
+  uint32 list_length = 1;
+}
 
 // stored = stored + request
 message _ListPushBackRequest {
@@ -225,7 +228,10 @@ message _ListPushBackRequest {
   optional uint32 truncate_head_to_size = 5;
 }
 
-message _ListPushBackResponse {}
+message _ListPushBackResponse {
+  // length of the list after the push
+  uint32 list_length = 1;
+}
 
 message _ListPopFrontRequest {
   bytes list_name = 1;
