@@ -17,8 +17,8 @@ enum ECacheResult {
 }
 
 enum ECacheIncrementResult {
-  Ok = 1;
-  ParseError = 2;
+  IncrementOk = 0;
+  IncrementParseError = 1;
 }
 
 service Scs {
