@@ -16,11 +16,6 @@ enum ECacheResult {
   reserved 4 to 6;
 }
 
-enum ECacheIncrementResult {
-  IncrementOk = 0;
-  IncrementParseError = 1;
-}
-
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
@@ -136,8 +131,7 @@ message _DictionaryIncrementRequest {
 }
 
 message _DictionaryIncrementResponse {
-  ECacheIncrementResult status = 1;
-  int64 value = 2;
+  int64 value = 1;
 }
 
 message _DictionaryDeleteRequest {
