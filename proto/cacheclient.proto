@@ -131,14 +131,7 @@ message _DictionaryIncrementRequest {
 }
 
 message _DictionaryIncrementResponse {
-  message Ok {
-    int64 value = 1;
-  }
-  message ParseError { }
-  oneof result {
-    Ok ok = 1;
-    ParseError parse_error = 2;
-  }
+  int64 value = 1;
 }
 
 message _DictionaryDeleteRequest {
@@ -350,4 +343,3 @@ message _ListLengthResponse {
     _Missing missing = 2;
   }
 }
-
