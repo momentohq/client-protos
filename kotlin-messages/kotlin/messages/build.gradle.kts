@@ -12,9 +12,9 @@ plugins {
     idea
 }
 
-val grpcKotlinVersion = "1.1.0"
-val grpcProtobufVersion = "3.17.3"
-val grpcVersion = "1.39.0"
+val grpcKotlinVersion = "1.3.0"
+val grpcProtobufVersion = "3.21.2"
+val grpcVersion = "1.47.0"
 
 dependencies {
     implementation(kotlin("stdlib"))
