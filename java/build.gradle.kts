@@ -12,8 +12,8 @@ plugins {
     idea
 }
 
-val grpcProtobufVersion = "3.17.3"
-val grpcVersion = "1.39.0"
+val grpcProtobufVersion = "3.21.2"
+val grpcVersion = "1.47.0"
 
 dependencies {
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
