@@ -20,17 +20,17 @@ service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
-  
+
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
   rpc DictionaryIncrement (_DictionaryIncrementRequest) returns (_DictionaryIncrementResponse) {}
   rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
-  
+
   rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
   rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
   rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
- 
+
   rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
   rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
   rpc ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {}
@@ -39,6 +39,8 @@ service Scs {
   rpc ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {}
   rpc ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {}
   rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
+  rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
+  rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
 }
 
 message _GetRequest {
@@ -213,6 +215,37 @@ message _SetDifferenceResponse {
   }
 }
 
+message _ListConcatenateFrontRequest {
+  bytes list_name = 1;
+  repeated bytes values = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
+
+  // ensure total length <= this; remove excess from back of list
+  uint32 truncate_back_to_size = 5;
+}
+
+message _ListConcatenateFrontResponse {
+  // length of the list after the concatenation
+  uint32 list_length = 1;
+}
+
+
+message _ListConcatenateBackRequest {
+  bytes list_name = 1;
+  repeated bytes values = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
+
+  // ensure total length <= this; remove excess from front of list
+  uint32 truncate_front_to_size = 5;
+}
+
+message _ListConcatenateBackResponse {
+  // length of the list after the concatenation
+  uint32 list_length = 1;
+}
+
 // stored = request + stored
 message _ListPushFrontRequest {
   bytes list_name = 1;
@@ -221,7 +254,7 @@ message _ListPushFrontRequest {
   bool refresh_ttl = 4;
 
   // ensure total length <= this; remove excess from back of list
-  optional uint32 truncate_back_to_size = 5;
+  uint32 truncate_back_to_size = 5;
 }
 
 message _ListPushFrontResponse {
@@ -237,7 +270,7 @@ message _ListPushBackRequest {
   bool refresh_ttl = 4;
 
   // ensure total length <= this; remove excess from front of list
-  optional uint32 truncate_front_to_size = 5;
+  uint32 truncate_front_to_size = 5;
 }
 
 message _ListPushBackResponse {
