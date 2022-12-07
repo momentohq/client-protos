@@ -21,6 +21,8 @@ service Scs {
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
 
+  rpc SetMultipleIfNotExists (_SetMultipleIfNotExistsRequest) returns (_SetMultipleIfNotExistsResponse) {}
+
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
@@ -68,6 +70,29 @@ message _SetRequest {
 message _SetResponse {
   ECacheResult result = 1;
   string message = 2;
+}
+
+message _KeyValuePair {
+  bytes field = 1;
+  bytes value = 2;
+}
+
+message _SetMultipleIfNotExistsRequest {
+  repeated _KeyValuePair items = 1;
+  uint64 ttl_milliseconds = 2;
+  bool refresh_ttl = 3;
+}
+
+message _SetMultipleIfNotExistsResponse {
+  message _SetMultipleIfNotExistsResponsePart {
+    oneof result {
+      Ok ok = 1;
+      NotStored not_stored = 2;
+    }
+    message Ok { }
+    message NotStored { }
+  }
+  repeated _SetMultipleIfNotExistsResponsePart items = 1;
 }
 
 message _DictionaryGetRequest {
