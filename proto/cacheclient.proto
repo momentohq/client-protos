@@ -16,9 +16,14 @@ enum ECacheResult {
   reserved 4 to 6;
 }
 
-service Scs {
+service PingService {
   rpc Ping (_PingRequest) returns (_PingResponse) {}
+}
 
+message _PingRequest {}
+message _PingResponse {}
+
+service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
@@ -44,9 +49,6 @@ service Scs {
   rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
   rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
 }
-
-message _PingRequest {}
-message _PingResponse {}
 
 message _GetRequest {
   bytes cache_key = 1;
