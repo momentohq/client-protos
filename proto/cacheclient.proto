@@ -16,13 +16,6 @@ enum ECacheResult {
   reserved 4 to 6;
 }
 
-service PingService {
-  rpc Ping (_PingRequest) returns (_PingResponse) {}
-}
-
-message _PingRequest {}
-message _PingResponse {}
-
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}

@@ -18,6 +18,7 @@
   <ItemGroup>
     <Protobuf Include="../proto/cacheclient.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/controlclient.proto" GrpcServices="Client" />
+    <Protobuf Include="../proto/cacheping.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
