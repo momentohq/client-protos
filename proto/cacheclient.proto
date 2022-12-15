@@ -19,7 +19,7 @@ enum ECacheResult {
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
-  rpc Add (_AddRequest) returns (_AddResponse) {}
+  rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
 
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
@@ -71,13 +71,13 @@ message _SetResponse {
   string message = 2;
 }
 
-message _AddRequest {
+message _SetIfNotExistsRequest {
   bytes cache_key = 1;
   bytes cache_body = 2;
   uint64 ttl_milliseconds = 3;
 }
 
-message _AddResponse {
+message _SetIfNotExistsResponse {
   oneof result {
     _Stored stored = 1;
     _NotStored not_stored = 2;
