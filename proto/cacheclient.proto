@@ -42,6 +42,10 @@ service Scs {
   rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
   rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
   rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
+
+  rpc IntegerGet(_IntegerGetRequest) returns (_IntegerGetRequest) {}
+  rpc IntegerIncrement(_IntegerIncrementRequest) returns (_IntegerIncrementResponse) {}
+  rpc IntegerSet(_IntegerSetRequest) returns (_IntegerSetResponse) {}
 }
 
 message _GetRequest {
@@ -391,3 +395,40 @@ message _ListLengthResponse {
     _Missing missing = 2;
   }
 }
+
+message _IntegerGetRequest {
+  bytes integer_name = 1;
+}
+
+message _IntegerGetResponse {
+  message _Found {
+    int64 value = 1;
+  }
+
+  message _Missing {}
+
+  oneof integer {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _IntegerIncrementRequest {
+  bytes integer_name = 1;
+  int64 increment_by = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
+}
+
+message _IntegerIncrementResponse {
+  int64 value = 1;
+}
+
+message _IntegerSetRequest {
+  bytes integer_name = 1;
+  int64 value = 2;
+  uint64 ttl_milliseconds = 3;
+  bool refresh_ttl = 4;
+}
+
+message _IntegerSetResponse {}
