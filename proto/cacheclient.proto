@@ -139,6 +139,16 @@ message _DictionarySetRequest {
 
 message _DictionarySetResponse {}
 
+message _IncrementRequest {
+  bytes cache_key = 1;
+  int64 increment_by = 2;
+  uint64 ttl_milliseconds = 3;
+}
+
+message _IncrementResponse {
+  int64 value = 1;
+}
+
 message _DictionaryIncrementRequest {
   bytes dictionary_name = 1;
   bytes field = 2;
