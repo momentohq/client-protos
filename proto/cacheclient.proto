@@ -21,6 +21,7 @@ service Scs {
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
+  rpc Increment (_IncrementRequest) returns (_IncrementResponse) {}
 
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
@@ -85,6 +86,20 @@ message _SetIfNotExistsResponse {
   message _Stored { }
   message _NotStored { }
 }
+
+message _IncrementRequest {
+  bytes cache_key = 1;
+  // Amount to add to the stored value.
+  // If this key doesn't currently exist, it's created with this value (encoded as a base 10 string)
+  int64 increment_by = 2;
+  uint64 ttl_milliseconds = 3;
+}
+
+message _IncrementResponse {
+  // The value stored after the increment operation.
+  int64 value = 1;
+}
+
 message _DictionaryGetRequest {
   bytes dictionary_name = 1;
   repeated bytes fields = 2;
