@@ -58,7 +58,7 @@ service Scs {
   rpc SortedSetFetch(_SortedSetFetchRequest) returns (_SortedSetFetchResponse) {}
   // Gets the specified element and its associated score if it exists in the
   // sorted set.
-  rpc SortedSetScore(_SortedSetScoreRequest) returns (_SortedSetScoreResponse) {}
+  rpc SortedSetGetScore(_SortedSetGetScoreRequest) returns (_SortedSetGetScoreResponse) {}
   // Removes specified elements and their associated scores
   rpc SortedSetRemove(_SortedSetRemoveRequest) returns (_SortedSetRemoveResponse) {}
   // Changes the score associated with the element by specified amount.
@@ -70,7 +70,7 @@ service Scs {
   // score is created.
   rpc SortedSetIncrement(_SortedSetIncrementRequest) returns (_SortedSetIncrementResponse) {}
   // Gives the rank of an element.
-  rpc SortedSetRank(_SortedSetRankRequest) returns (_SortedSetRankResponse) {}
+  rpc SortedSetGetRank(_SortedSetGetRankRequest) returns (_SortedSetGetRankResponse) {}
 }
 
 message _GetRequest {
@@ -484,19 +484,19 @@ message _SortedSetFetchResponse {
   }
 }
 
-message _SortedSetScoreRequest {
+message _SortedSetGetScoreRequest {
   bytes set_name = 1;
   repeated bytes element_name = 2;
 }
 
-message _SortedSetScoreResponse {
-  message _SortedSetScoreResponsePart {
+message _SortedSetGetScoreResponse {
+  message _SortedSetGetScoreResponsePart {
     ECacheResult result = 1;
     double score = 2;
   }
 
   message _SortedSetFound {
-    repeated _SortedSetScoreResponsePart elements = 1;
+    repeated _SortedSetGetScoreResponsePart elements = 1;
   }
 
   message _SortedSetMissing {
@@ -532,12 +532,12 @@ message _SortedSetIncrementRequest {
 
 message _SortedSetIncrementResponse {}
 
-message _SortedSetRankRequest {
+message _SortedSetGetRankRequest {
   bytes set_name = 1;
   bytes element_name = 2;
 }
 
-message _SortedSetRankResponse {
+message _SortedSetGetRankResponse {
   message _RankResponsePart {
     ECacheResult result = 1;
     uint64 rank = 2;
