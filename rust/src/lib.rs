@@ -1,3 +1,1 @@
-pub mod cache_client;
-pub mod control_client;
-pub mod auth;
+include!(concat!(env!("OUT_DIR"), "/mod.rs"));
