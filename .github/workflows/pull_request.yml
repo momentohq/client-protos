@@ -199,6 +199,9 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Install protoc
+        run: ./install_protoc.sh
+
       - name: Build package
         run: |
           set -e
@@ -223,7 +226,6 @@ jobs:
         run: |
           set -e
           set -x
-          export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             # We --no-verify because we have build.rs editing src instead of $BUILD_OUT :-(
             cargo publish --verbose --allow-dirty --dry-run --no-verify
