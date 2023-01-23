@@ -4,6 +4,10 @@ pub mod auth {
 
 pub mod cache_client {
   tonic::include_proto!("cache_client");
+
+  pub mod pubsub {
+    tonic::include_proto!("cache_client.pubsub");
+  }
 }
 
 pub mod control_client {
