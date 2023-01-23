@@ -53,7 +53,7 @@ service Scs {
   // element and its associated score.
   // If an element exists, then its associate score gets overridden with the one
   // provided in this operation.
-  rpc SortedSetPut(_SortedSetPutRequest) returns (_SortedSetputResponse) {}
+  rpc SortedSetPut(_SortedSetPutRequest) returns (_SortedSetPutResponse) {}
   // Fetches all the elements in the sorted set.
   rpc SortedSetFetch(_SortedSetFetchRequest) returns (_SortedSetFetchResponse) {}
   // Gets the specified element and its associated score if it exists in the
