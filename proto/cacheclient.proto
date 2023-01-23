@@ -53,7 +53,7 @@ service Scs {
   // element and its associated score.
   // If an element exists, then its associate score gets overridden with the one
   // provided in this operation.
-  rpc SortedSetAdd(_SortedSetAddRequest) returns (_SortedSetAddResponse) {}
+  rpc SortedSetPut(_SortedSetPutRequest) returns (_SortedSetputResponse) {}
   // Fetches all the elements in the sorted set.
   rpc SortedSetFetch(_SortedSetFetchRequest) returns (_SortedSetFetchResponse) {}
   // Gets the specified element and its associated score if it exists in the
@@ -440,14 +440,14 @@ message _SortedSetElement {
   double score = 2;
 }
 
-message _SortedSetAddRequest {
+message _SortedSetPutRequest {
   bytes set_name = 1;
   repeated _SortedSetElement elements = 2;
   uint64 ttl_milliseconds = 3;
   bool refresh_ttl = 4;
 }
 
-message _SortedSetAddResponse {}
+message _SortedSetPutResponse {}
 
 message _SortedSetFetchRequest {
   enum Order {
