@@ -239,6 +239,9 @@ jobs:
 
       - uses: actions/checkout@v2
 
+      - name: Install protoc
+        run: ./install_protoc.sh
+
       - name: Update Cargo Version
         run: |
           pushd rust
@@ -251,7 +254,6 @@ jobs:
         run: |
           set -e
           set -x
-          export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             VERSION="${{needs.release.outputs.version}}"
             cargo build --release
@@ -265,7 +267,6 @@ jobs:
         run: |
           set -e
           set -x
-          export PATH=`pwd`/protoc/bin/:$HOME/.cargo/bin:$PATH
           pushd rust
             cargo publish --allow-dirty --no-verify
           popd

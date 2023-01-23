@@ -6,7 +6,9 @@ repository = "https://github.com/momentohq/client_protos"
 license = "Apache-2.0"
 version = "0.1.0"
 authors = ["<eng@momentohq.com>"]
-edition = "2018"
+edition = "2021"
+keywords = ["service", "performance", "cache"]
+categories = ["web-programming"]
 includes = [
     "Cargo.toml",
     "src/**/*.rs",
@@ -20,8 +22,8 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-prost = "0.10.3"
-tonic = "0.7.2"
+prost = "0.11"
+tonic = "0.8"
 
 [build-dependencies]
-tonic-build = "0.7.2"
+tonic-build = "0.8"
