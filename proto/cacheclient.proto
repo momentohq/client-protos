@@ -532,7 +532,7 @@ message _SortedSetIncrementRequest {
 
 message _SortedSetIncrementResponse {
   // The value stored after the increment operation.
-  int64 value = 1;
+  double value = 1;
 }
 
 message _SortedSetGetRankRequest {
