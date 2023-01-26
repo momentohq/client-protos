@@ -514,7 +514,7 @@ message _SortedSetRemoveRequest {
   message _Some {
     repeated bytes element_name = 1;
   }
-  oneof remove_elemnts {
+  oneof remove_elements {
     _All all = 2;
     _Some some = 3;
   }
