@@ -451,9 +451,8 @@ message _SortedSetPutResponse {}
 
 message _SortedSetFetchRequest {
   enum Order {
-    UNKNOWN = 0;
-    ASCENDING = 1;
-    DESCENDING = 2;
+    ASCENDING = 0;
+    DESCENDING = 1;
   }
 
   message _All {}
