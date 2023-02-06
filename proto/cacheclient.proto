@@ -119,7 +119,7 @@ message _IncrementRequest {
   bytes cache_key = 1;
   // Amount to add to the stored value.
   // If this key doesn't currently exist, it's created with this value (encoded as a base 10 string)
-  int64 increment_by = 2;
+  int64 amount = 2;
   uint64 ttl_milliseconds = 3;
 }
 
