@@ -461,11 +461,20 @@ message _SortedSetFetchRequest {
     uint32 limit = 1;
   }
 
+  // Closed interval - min and max (inclusive)
+  message FilterByScore {
+    double min = 1;
+    double max = 2;
+  }
+
   bytes set_name = 1;
   Order order = 2;
   oneof num_results {
     _All all = 3;
     _Limit limit = 4;
+  }
+  oneof filter {
+    FilterByScore by_score = 5;
   }
 }
 
