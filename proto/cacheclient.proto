@@ -469,7 +469,7 @@ message _SortedSetFetchRequest {
     message _Endpoint {
       message _Score {
         double score = 1;
-        bool open = 2;
+        bool open = 2; // if true, the endpoint is open (exclusive); false, closed (inclusive)
       }
 
       message _Inf {}
