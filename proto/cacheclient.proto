@@ -43,6 +43,8 @@ service Scs {
   rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
   rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
   rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
+  rpc ListTrim(_ListTrimRequest) returns (_ListTrimResponse) {}
+  rpc ListRange(_ListRangeRequest) returns (_ListRangeResponse) {}
 
   // Sorted Set Operations
   // A sorted set is a collection of elements ordered by their score.
@@ -434,6 +436,47 @@ message _ListLengthResponse {
     _Missing missing = 2;
   }
 }
+
+message _ListTrimRequest {
+  bytes list_name = 1;
+  optional sint32 start = 2;
+  optional sint32 end = 3;
+  optional sint32 step = 4;
+}
+
+message _ListTrimResponse {
+  message _Found {
+    repeated bytes values = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _ListRangeRequest {
+  bytes list_name = 1;
+  optional sint32 start = 2;
+  optional sint32 end = 3;
+  optional sint32 step = 4;
+}
+
+message _ListRangeResponse {
+  message _Found {
+    repeated bytes values = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
 
 message _SortedSetElement {
   bytes name = 1;
