@@ -461,7 +461,6 @@ message _ListRangeRequest {
   bytes list_name = 1;
   optional sint32 start = 2;
   optional sint32 end = 3;
-  optional sint32 step = 4;
 }
 
 message _ListRangeResponse {
