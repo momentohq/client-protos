@@ -583,6 +583,9 @@ message _SortedSetGetRankRequest {
 message _SortedSetGetRankResponse {
   message _RankResponsePart {
     ECacheResult result = 1;
+    // Rank is 0-based i.e. when sort order is descending the rank of the
+    // element with the highest score will be 0. Similarly for ascending order,
+    // element with the lowest score will have rank 0.
     uint64 rank = 2;
   }
 
