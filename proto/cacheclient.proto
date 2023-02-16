@@ -573,7 +573,7 @@ message _SortedSetGetRankRequest {
   //
   // When Order.ASCENDING is specified, will return the rank of the element
   // when sorted set scores are ordered from low to high. This is the default
-  // when no Order isn't specified.
+  // when no Order is specified.
   //
   // When Order.DESCENDING is specified, will return the rank of the element
   // when sorted set scores are ordered from high to low.
