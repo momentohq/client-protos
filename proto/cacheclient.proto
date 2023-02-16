@@ -459,7 +459,8 @@ message _SortedSetFetchRequest {
   message _All {}
 
   message _Limit {
-    uint32 limit = 1;
+    uint32 limit = 1;   // aka count; number of elements to return
+    uint32 offset = 2;  // number of elements to skip
   }
 
   // range fields
