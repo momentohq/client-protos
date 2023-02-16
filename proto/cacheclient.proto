@@ -562,8 +562,22 @@ message _SortedSetIncrementResponse {
 }
 
 message _SortedSetGetRankRequest {
+  enum Order {
+    ASCENDING = 0;
+    DESCENDING = 1;
+  }
+
   bytes set_name = 1;
   bytes element_name = 2;
+  // The order in which sorted set will be sorted to determine the rank.
+  //
+  // When Order.ASCENDING is specified, will return the rank of the element
+  // when sorted set scores are ordered from low to high. This is the default
+  // when no Order isn't specified.
+  //
+  // When Order.DESCENDING is specified, will return the rank of the element
+  // when sorted set scores are ordered from high to low.
+  Order order = 3;
 }
 
 message _SortedSetGetRankResponse {
