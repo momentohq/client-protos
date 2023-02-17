@@ -43,8 +43,7 @@ service Scs {
   rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
   rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
   rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
-  rpc ListTrim(_ListTrimRequest) returns (_ListTrimResponse) {}
-  rpc ListRange(_ListRangeRequest) returns (_ListRangeResponse) {}
+  rpc ListTrim(_ListRetainRequest) returns (_ListRetainResponse) {}
 
   // Sorted Set Operations
   // A sorted set is a collection of elements ordered by their score.
@@ -405,6 +404,8 @@ message _ListRemoveResponse {}
 
 message _ListFetchRequest {
   bytes list_name = 1;
+  optional uint32 count = 2;
+  optional sint32 start_index = 3;
 }
 
 message _ListFetchResponse {
@@ -437,14 +438,15 @@ message _ListLengthResponse {
   }
 }
 
-message _ListTrimRequest {
+message _ListRetainRequest {
   bytes list_name = 1;
-  optional sint32 start = 2;
-  optional sint32 end = 3;
-  optional sint32 step = 4;
+  optional uint32 count = 2;
+  optional sint32 start_index = 3;
+  optional uint64 ttl_milliseconds = 4;
+  optional bool refresh_ttl = 5;
 }
 
-message _ListTrimResponse {
+message _ListRetainResponse {
   message _Found {
     repeated bytes values = 1;
   }
@@ -456,26 +458,6 @@ message _ListTrimResponse {
     _Missing missing = 2;
   }
 }
-
-message _ListRangeRequest {
-  bytes list_name = 1;
-  optional sint32 start = 2;
-  optional sint32 end = 3;
-}
-
-message _ListRangeResponse {
-  message _Found {
-    repeated bytes values = 1;
-  }
-
-  message _Missing {}
-
-  oneof list {
-    _Found found = 1;
-    _Missing missing = 2;
-  }
-}
-
 
 message _SortedSetElement {
   bytes name = 1;
