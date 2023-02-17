@@ -404,9 +404,11 @@ message _ListRemoveResponse {}
 
 message _ListFetchRequest {
   bytes list_name = 1;
-  // Inclusive. 0 (start of list) by default
+  // Inclusive. 0 (start of list) by default.
+  // A negative index counts from the end of the list
   sint32 start_index = 2;
   // If unset or 0, this effectively means list.length()
+  // If count is > the number of elements to return, return as much as you can
   uint32 count = 3;
 }
 
