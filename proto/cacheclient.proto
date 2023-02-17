@@ -43,7 +43,7 @@ service Scs {
   rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
   rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
   rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
-  rpc ListTrim(_ListRetainRequest) returns (_ListRetainResponse) {}
+  rpc ListRetain(_ListRetainRequest) returns (_ListRetainResponse) {}
 
   // Sorted Set Operations
   // A sorted set is a collection of elements ordered by their score.
@@ -446,18 +446,7 @@ message _ListRetainRequest {
   optional bool refresh_ttl = 5;
 }
 
-message _ListRetainResponse {
-  message _Found {
-    repeated bytes values = 1;
-  }
-
-  message _Missing {}
-
-  oneof list {
-    _Found found = 1;
-    _Missing missing = 2;
-  }
-}
+message _ListRetainResponse {}
 
 message _SortedSetElement {
   bytes name = 1;
