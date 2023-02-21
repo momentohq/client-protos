@@ -15,6 +15,7 @@ service ScsControl {
   rpc CreateSigningKey (_CreateSigningKeyRequest) returns (_CreateSigningKeyResponse) {}
   rpc RevokeSigningKey (_RevokeSigningKeyRequest) returns (_RevokeSigningKeyResponse) {}
   rpc ListSigningKeys (_ListSigningKeysRequest) returns (_ListSigningKeysResponse) {}
+  rpc GenerateToken(_GenerateTokenRequest) returns (_GenerateTokenResponse) {}
 }
 
 message _DeleteCacheRequest {
@@ -82,4 +83,17 @@ message _FlushCacheRequest {
 
 message _FlushCacheResponse {
 
+}
+
+message _GenerateTokenRequest {
+  string session_token = 1;
+  uint64 expire_at = 2;
+  string subject = 3;
+}
+
+message _GenerateTokenResponse {
+  string api_token = 1;
+  string refresh_token = 2;
+  string endpoint = 3;
+  uint64 valid_until = 4;
 }
