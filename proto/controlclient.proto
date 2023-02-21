@@ -89,7 +89,6 @@ message _FlushCacheResponse {
 message _GenerateTokenRequest {
   // how many seconds do you want the api token to be valid for?
   uint32 valid_for_seconds = 1;
-  string subject = 2;
 }
 
 message _GenerateTokenResponse {
