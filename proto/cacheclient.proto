@@ -472,16 +472,13 @@ message _SortedSetFetchRequest {
     DESCENDING = 1;
   }
 
-  // num_results fields
-  message _All {}
-
-  message _Limit {
-    uint32 limit = 1;   // aka count; number of elements to return
-    uint32 offset = 2;  // number of elements to skip
+  message _ByIndex {
+    // these indexes specify an inclusive range.
+    // 0 is the first element; a negative index indicates offsets from the end
+    // of the sorted set, with -1 being the last element of the sorted set.
+    sint32 start_index = 1;
+    sint32 end_index = 2;
   }
-
-  // range fields
-  message _ByIndex {}
 
   message _ByScore {
     message _Endpoint {
@@ -500,23 +497,29 @@ message _SortedSetFetchRequest {
 
     _Endpoint min = 1;
     _Endpoint max = 2;
+    uint32 offset = 3;
+    sint32 count = 4; // a negative count returns all elements from the offset
   }
 
   bytes set_name = 1;
   Order order = 2;
-  oneof num_results {
-    _All all = 3;
-    _Limit limit = 4;
-  }
   oneof range {
     _ByIndex by_index = 5;
     _ByScore by_score = 6;
   }
+
+  reserved 3, 4;
 }
 
 message _SortedSetFetchResponse {
   message _Found {
-    repeated _SortedSetElement elements = 1;
+    message _SortedSetFetchResponsePart {
+      oneof element {
+        _SortedSetElement value_with_score = 1;
+        bytes value = 2;
+      }
+    }
+    repeated _SortedSetFetchResponsePart elements = 1;
   }
 
   message _Missing {
