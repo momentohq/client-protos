@@ -402,15 +402,88 @@ message _ListRemoveRequest {
 
 message _ListRemoveResponse {}
 
+// List fetch + retain index behavior
+// This follows redis behavior for the most part, differences
+// 1. end_index is exclusive, unless None
+// 2. `start_index` == 0, then we start at the front of list
+// 2. `end_index` == None, start at the end of the index, inclusive
+/*
+  list_ = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  # Using the slice notation:
+  # start:stop(:step)?
+
+
+  # start=None, end=None
+  list_[:] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+  # start=5, end=None
+  list_[5:] == [5, 6, 7, 8, 9]
+
+  # start=5, end=0
+  list_[5:0] == [5, 6, 7, 8]
+
+  # start=-5, end=None
+  list_[-5:] == [5, 6, 7, 8, 9]
+
+  # start=-5, end=0
+  list_[-5:0] == [5, 6, 7, 8]
+
+
+  # start=None, end=5
+  list_[:5] == [0, 1, 2, 3, 4]
+
+  # start=0, end=5
+  list_[0:5] == [0, 1, 2, 3, 4]
+
+  # start=None, end=-5
+  list_[:-5] == [0, 1, 2, 3, 4]
+
+  # start=0, end=-5
+  list_[0:-5] == [0, 1, 2, 3, 4]
+
+
+  # start=2, end=6
+  list_[2:6] == [2, 3, 4, 5]
+
+  # start=2, end=-6
+  list_[2:-6] == [2, 3]
+
+  # start=-7, end=-2
+  list_[-7:-2] == [3, 4, 5, 6, 7]
+
+  // if using ltrim, this will remove all elements in the list
+  # start=-2, end=-6
+  list_[2:-6] == []
+
+  # empty list
+  list_[-1:1] == []
+ */
+
 message _ListFetchRequest {
   bytes list_name = 1;
   // Inclusive. 0 (start of list) by default.
   // A negative index counts from the end of the list
   sint32 start_index = 2;
-  // If unset or 0, this effectively means list.length()
+  // Exclusive if set.
+  // If unset, inclusive, this effectively means list.length()
   // If count is > the number of elements to return, return as much as you can
-  uint32 count = 3;
+  // Must include `optional`, without, the default value will become 0, we need `optional` so that the
+  // explicit presence identifier, optional<end_index> is generated instead of end_index: 0
+  // https://github.com/protocolbuffers/protobuf/blob/main/docs/implementing_proto3_presence.md
+  optional sint32 end_index = 3;
 }
+
+message _ListRetainRequest {
+  bytes list_name = 1;
+  sint32 start_index = 2;
+  optional sint32 end_index = 3;
+  uint64 ttl_milliseconds = 4;
+  bool refresh_ttl = 5;
+}
+
+message _ListRetainResponse {}
 
 message _ListFetchResponse {
   message _Found {
@@ -441,16 +514,6 @@ message _ListLengthResponse {
     _Missing missing = 2;
   }
 }
-
-message _ListRetainRequest {
-  bytes list_name = 1;
-  uint32 count = 2;
-  sint32 start_index = 3;
-  uint64 ttl_milliseconds = 4;
-  bool refresh_ttl = 5;
-}
-
-message _ListRetainResponse {}
 
 message _SortedSetElement {
   bytes value = 1;
