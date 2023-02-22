@@ -518,6 +518,7 @@ message _SortedSetFetchRequest {
     _ByIndex by_index = 5;
     _ByScore by_score = 6;
   }
+  bool with_scores = 7;
 
   // TODO: deprecate num_results when all sdk's are using start/end index
   // reserved 3, 4;
