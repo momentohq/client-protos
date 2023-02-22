@@ -414,8 +414,8 @@ message _ListRemoveResponse {}
   # start:stop(:step)?
 
 
-  # start=None, end=None
-  list_[:] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  # start=0, end=None
+  list_[0:] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
   # start=5, end=None
@@ -431,14 +431,14 @@ message _ListRemoveResponse {}
   list_[-5:0] == []
 
 
-  # start=None, end=5
-  list_[:5] == [0, 1, 2, 3, 4]
+  # start=0, end=5
+  list_[0:5] == [0, 1, 2, 3, 4]
 
   # start=0, end=5
   list_[0:5] == [0, 1, 2, 3, 4]
 
-  # start=None, end=-5
-  list_[:-5] == [0, 1, 2, 3, 4]
+  # start=0, end=-5
+  list_[0:-5] == [0, 1, 2, 3, 4]
 
   # start=0, end=-5
   list_[0:-5] == [0, 1, 2, 3, 4]
