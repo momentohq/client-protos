@@ -422,13 +422,13 @@ message _ListRemoveResponse {}
   list_[5:] == [5, 6, 7, 8, 9]
 
   # start=5, end=0
-  list_[5:0] == [5, 6, 7, 8]
+  list_[5:0] == []
 
   # start=-5, end=None
   list_[-5:] == [5, 6, 7, 8, 9]
 
   # start=-5, end=0
-  list_[-5:0] == [5, 6, 7, 8]
+  list_[-5:0] == []
 
 
   # start=None, end=5
