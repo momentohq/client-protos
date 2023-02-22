@@ -498,8 +498,8 @@ message _SortedSetFetchRequest {
       }
     }
 
-    _Endpoint start = 1;
-    _Endpoint stop = 2;
+    _Endpoint min = 1;
+    _Endpoint max = 2;
   }
 
   bytes set_name = 1;
