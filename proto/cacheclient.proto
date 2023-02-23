@@ -460,6 +460,7 @@ message _ListRemoveResponse {}
   # empty list
   list_[-1:1] == []
  */
+message Unbounded { }
 
 message _ListFetchRequest {
   bytes list_name = 1;
@@ -469,18 +470,21 @@ message _ListFetchRequest {
   // Exclusive if set.
   // If unset, inclusive, this effectively means list.length()
   // If count is > the number of elements to return, return as much as you can
-  // Must include `optional`, without, the default value will become 0, we need `optional` so that the
-  // explicit presence identifier, optional<end_index> is generated instead of end_index: 0
-  // https://github.com/protocolbuffers/protobuf/blob/main/docs/implementing_proto3_presence.md
-  optional sint32 end_index = 3;
+  oneof end_index {
+    Unbounded unbounded = 3;
+    sint32 inclusive = 4;
+  }
 }
 
 message _ListRetainRequest {
   bytes list_name = 1;
   sint32 start_index = 2;
-  optional sint32 end_index = 3;
-  uint64 ttl_milliseconds = 4;
-  bool refresh_ttl = 5;
+  oneof end_index {
+    Unbounded unbounded = 3;
+    sint32 inclusive = 4;
+  }
+  uint64 ttl_milliseconds = 5;
+  bool refresh_ttl = 6;
 }
 
 message _ListRetainResponse {}
