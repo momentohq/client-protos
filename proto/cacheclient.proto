@@ -472,13 +472,6 @@ message _SortedSetFetchRequest {
     DESCENDING = 1;
   }
 
-  // num_results fields
-  message _All {}
-
-  message _Limit {
-    uint32 limit = 1;
-  }
-
   message _ByIndex {
     // these indexes specify an inclusive range.
     // 0 is the first element; a negative index indicates offsets from the end
@@ -510,18 +503,11 @@ message _SortedSetFetchRequest {
 
   bytes set_name = 1;
   Order order = 2;
-  oneof num_results {
-    _All all = 3;
-    _Limit limit = 4;
-  }
+  bool with_scores = 3;
   oneof range {
-    _ByIndex by_index = 5;
-    _ByScore by_score = 6;
+    _ByIndex by_index = 4;
+    _ByScore by_score = 5;
   }
-  bool with_scores = 7;
-
-  // TODO: deprecate num_results when all sdk's are using start/end index
-  // reserved 3, 4;
 }
 
 message _SortedSetFetchResponse {
@@ -529,20 +515,18 @@ message _SortedSetFetchResponse {
     message _ValuesWithScores {
       repeated _SortedSetElement elements = 1;
     }
+
     message _Values {
       repeated bytes values = 1;
     }
 
-    // TODO: deprecate results when all sdk's are using response_parts
-    repeated _SortedSetElement results = 1;
     oneof elements {
-      _ValuesWithScores values_with_scores = 2;
-      _Values values = 3;
+      _ValuesWithScores values_with_scores = 1;
+      _Values values = 2;
     }
   }
 
-  message _Missing {
-  }
+  message _Missing {}
 
   oneof sorted_set {
     _Found found = 1;
