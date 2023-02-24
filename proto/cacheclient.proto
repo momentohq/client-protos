@@ -413,7 +413,7 @@ message _ListRemoveResponse {}
   # this field has a explicit presence for future compatibility to support reverse order and controlling our stride
 
   # end is exclusive
-  # If end is not set, then the default is Unbounded which becomes (list.len - 1)
+  # If end is not set, then the default is Unbounded which becomes (list.len)
 
   # start and end can be negative numbers, negative indicates offsets starting at the end of the list.
   # For example, -1 is the last element of the list, -2 the penultimate, etc
@@ -486,7 +486,7 @@ message _ListFetchRequest {
   // A negative index counts from the end of the list
   oneof end_index {
     _Unbounded unbounded_end = 4;
-    sint32 inclusive_end = 5;
+    sint32 exclusive_end = 5;
   }
 }
 
@@ -498,7 +498,7 @@ message _ListRetainRequest {
   }
   oneof end_index {
     _Unbounded unbounded_end = 4;
-    sint32 inclusive_end = 5;
+    sint32 exclusive_end = 5;
   }
   uint64 ttl_milliseconds = 6;
   bool refresh_ttl = 7;
