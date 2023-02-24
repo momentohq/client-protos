@@ -484,14 +484,14 @@ message _SortedSetFetchRequest {
     message _Endpoint {
       message _Score {
         double score = 1;
-        bool open = 2; // if true, the endpoint is open (exclusive); false, closed (inclusive)
+        bool exclusive = 2;
       }
 
-      message _Inf {}
+      message _Unbounded {}
 
       oneof kind {
         _Score score = 1;
-        _Inf inf = 2;
+        _Unbounded unbounded = 2;
       }
     }
 
