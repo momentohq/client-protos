@@ -402,21 +402,32 @@ message _ListRemoveRequest {
 
 message _ListRemoveResponse {}
 
-// List fetch + retain index behavior
-// This follows redis behavior for the most part, differences
-// 1. end_index is exclusive, unless Unbounded
-// 2. `start_index` == 0, then we start at the front of list
-// 2. `end_index` == Unbounded, start at the end of the index, inclusive
 /*
+  # ListFetch and ListRetain documentation and examples
+
+  # start and end are zero-based indexes, both are optional
+
+  # start is inclusive
+  # If start is not set, then the default is Unbounded, which is treated as 0
+  # Unbounded == 0,
+  # this field has a explicit presence for future compatibility to support reverse order and controlling our stride
+
+  # end is exclusive
+  # If end is not set, then the default is Unbounded which becomes (list.len - 1)
+
+  # start and end can be negative numbers, negative indicates offsets starting at the end of the list.
+  # For example, -1 is the last element of the list, -2 the penultimate, etc
+  #               [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  # +start/+end    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+  # -start/-end  -10,-9,-8,-7,-6,-5,-4,-3,-2,-1
+
   list_ = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   # Using the slice notation:
   # start:end
 
-
   # start=0, end=Unbounded
   list_[0:] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 
   # start=5, end=Unbounded
   list_[5:] == [5, 6, 7, 8, 9]
@@ -430,7 +441,6 @@ message _ListRemoveResponse {}
   # start=-5, end=0
   list_[-5:0] == []
 
-
   # start=0, end=5
   list_[0:5] == [0, 1, 2, 3]
 
@@ -442,7 +452,6 @@ message _ListRemoveResponse {}
 
   # start=Unbounded, end=-5
   list_[0:-5] == [0, 1, 2, 3, 4]
-
 
   # start=2, end=6
   list_[2:6] == [2, 3, 4, 5]
@@ -460,21 +469,23 @@ message _ListRemoveResponse {}
   # empty list
   list_[-1:1] == []
  */
-message Unbounded { }
+message _Unbounded { }
 
 message _ListFetchRequest {
   bytes list_name = 1;
-  // Inclusive. 0 (start of list) by default.
+  // Inclusive.
+  // If unbounded, 0 (start of list) by default
   // A negative index counts from the end of the list
   oneof start_index {
-    Unbounded unbounded_start = 2;
+    _Unbounded unbounded_start = 2;
     sint32 inclusive_start = 3;
   }
-  // Exclusive if set.
-  // If unset, inclusive, this effectively means list.length()
-  // If count is > the number of elements to return, return as much as you can
+  // Exclusive.
+  // If unbounded, this effectively means list.length()
+  // If end_index is > the number of elements to return, return as much as you can
+  // A negative index counts from the end of the list
   oneof end_index {
-    Unbounded unbounded_end = 4;
+    _Unbounded unbounded_end = 4;
     sint32 inclusive_end = 5;
   }
 }
@@ -482,11 +493,11 @@ message _ListFetchRequest {
 message _ListRetainRequest {
   bytes list_name = 1;
   oneof start_index {
-    Unbounded unbounded_start = 2;
+    _Unbounded unbounded_start = 2;
     sint32 inclusive_start = 3;
   }
   oneof end_index {
-    Unbounded unbounded_end = 4;
+    _Unbounded unbounded_end = 4;
     sint32 inclusive_end = 5;
   }
   uint64 ttl_milliseconds = 6;
