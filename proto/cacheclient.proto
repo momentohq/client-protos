@@ -466,6 +466,8 @@ message _SortedSetPutRequest {
 
 message _SortedSetPutResponse {}
 
+message _Unbounded {}
+
 message _SortedSetFetchRequest {
   enum Order {
     ASCENDING = 0;
@@ -473,32 +475,44 @@ message _SortedSetFetchRequest {
   }
 
   message _ByIndex {
-    // these indexes specify an inclusive range.
-    // 0 is the first element; a negative index indicates offsets from the end
-    // of the sorted set, with -1 being the last element of the sorted set.
-    sint32 start_index = 1;
-    sint32 end_index = 2;
+    // Start and end are zero-based indexes, with 0 being the first element.
+    // A negative index indicates offsets from the end of the sorted set, with
+    // -1 being the last element.
+
+    // Start is inclusive.
+    // Unbounded is treated as 0.
+    oneof start {
+      _Unbounded unbounded_start = 1;
+      sint32 inclusive_start_index = 2;
+    }
+    // End is exclusive.
+    // Unbounded is treated as the number of elements in the sorted set.
+    oneof end {
+      _Unbounded unbounded_end = 3;
+      sint32 exclusive_end_index = 4;
+    }
   }
 
   message _ByScore {
-    message _Endpoint {
-      message _Score {
-        double score = 1;
-        bool exclusive = 2;
-      }
-
-      message _Unbounded {}
-
-      oneof kind {
-        _Score score = 1;
-        _Unbounded unbounded = 2;
-      }
+    message _Score {
+      double score = 1;
+      bool exclusive = 2;
     }
 
-    _Endpoint min = 1;
-    _Endpoint max = 2;
-    uint32 offset = 3;
-    sint32 count = 4; // a negative count returns all elements from the offset
+    oneof min {
+      _Unbounded unbounded_min = 1;
+      _Score min_score = 2;
+    }
+    oneof max {
+      _Unbounded unbounded_max = 3;
+      _Score max_score = 4;
+    }
+    // Offset and count are used to only get a range of the matching elements,
+    // similar to "SELECT LIMIT offset, count" in SQL.
+    // A negative count returns all elements from the offset.
+    // Use (0, -1) to return all matching elements.
+    uint32 offset = 5;
+    sint32 count = 6;
   }
 
   bytes set_name = 1;
