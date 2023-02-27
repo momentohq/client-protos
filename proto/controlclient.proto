@@ -87,15 +87,17 @@ message _FlushCacheResponse {
 }
 
 message _GenerateTokenRequest {
-  message NeverExpire {}
-  message ExpireIn {
+  // generate a token that will never expire
+  message Never {}
+  // generate a token that has an expiry
+  message Expires {
     // how many seconds do you want the api token to be valid for?
     uint32 valid_for_seconds = 1;
   }
 
   oneof expiry {
-    NeverExpire never = 2;
-    ExpireIn expire_in = 3;
+    Never never = 2;
+    Expires expires = 3;
   }
 
   reserved 1;
