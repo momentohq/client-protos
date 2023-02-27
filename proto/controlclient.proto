@@ -87,8 +87,18 @@ message _FlushCacheResponse {
 }
 
 message _GenerateTokenRequest {
-  // how many seconds do you want the api token to be valid for?
-  uint32 valid_for_seconds = 1;
+  message NeverExpire {}
+  message ExpireIn {
+    // how many seconds do you want the api token to be valid for?
+    uint32 valid_for_seconds = 1;
+  }
+
+  oneof expiry {
+    NeverExpire never = 2;
+    ExpireIn expire_in = 3;
+  }
+
+  reserved 1;
 }
 
 message _GenerateTokenResponse {
