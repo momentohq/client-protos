@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/rpc/code.proto";
+
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "grpc.cache_client";
@@ -522,11 +524,9 @@ message _ListRetainRequest {
 message _ListRetainResponse {
   message _Success {}
 
-  message _InvalidBounds {}
-
   oneof list {
     _Success success = 1;
-    _InvalidBounds invalid_bounds = 2;
+    google.rpc.Code invalid_bounds = 2;
   }
 }
 
@@ -537,12 +537,10 @@ message _ListFetchResponse {
 
   message _Missing {}
 
-  message _InvalidBounds {}
-
   oneof list {
     _Found found = 1;
     _Missing missing = 2;
-    _InvalidBounds invalid_bounds = 3;
+    google.rpc.Code invalid_bounds = 3;
   }
 }
 
