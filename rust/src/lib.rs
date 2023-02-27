@@ -1,3 +1,9 @@
+pub mod google {
+  pub mod rpc {
+    tonic::include_proto!("google.rpc");
+  }
+}
+
 pub mod auth {
   tonic::include_proto!("auth");
 }
