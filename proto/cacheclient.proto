@@ -540,7 +540,6 @@ message _ListFetchResponse {
   oneof list {
     _Found found = 1;
     _Missing missing = 2;
-    google.rpc.Code invalid_bounds = 3;
   }
 }
 
