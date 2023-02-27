@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="../proto/google/rpc/code.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/cacheclient.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/controlclient.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/cacheping.proto" GrpcServices="Client" />
