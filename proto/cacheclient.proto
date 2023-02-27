@@ -466,61 +466,81 @@ message _SortedSetPutRequest {
 
 message _SortedSetPutResponse {}
 
+message _Unbounded {}
+
 message _SortedSetFetchRequest {
   enum Order {
     ASCENDING = 0;
     DESCENDING = 1;
   }
 
-  // num_results fields
-  message _All {}
+  message _ByIndex {
+    // Start and end are zero-based indexes, with 0 being the first element.
+    // A negative index indicates offsets from the end of the sorted set, with
+    // -1 being the last element.
 
-  message _Limit {
-    uint32 limit = 1;   // aka count; number of elements to return
-    uint32 offset = 2;  // number of elements to skip
+    // Start is inclusive.
+    // Unbounded is treated as 0.
+    oneof start {
+      _Unbounded unbounded_start = 1;
+      sint32 inclusive_start_index = 2;
+    }
+    // End is exclusive.
+    // Unbounded is treated as the number of elements in the sorted set.
+    oneof end {
+      _Unbounded unbounded_end = 3;
+      sint32 exclusive_end_index = 4;
+    }
   }
 
-  // range fields
-  message _ByIndex {}
-
   message _ByScore {
-    message _Endpoint {
-      message _Score {
-        double score = 1;
-        bool open = 2; // if true, the endpoint is open (exclusive); false, closed (inclusive)
-      }
-
-      message _Inf {}
-
-      oneof kind {
-        _Score score = 1;
-        _Inf inf = 2;
-      }
+    message _Score {
+      double score = 1;
+      bool exclusive = 2;
     }
 
-    _Endpoint start = 1;
-    _Endpoint stop = 2;
+    oneof min {
+      _Unbounded unbounded_min = 1;
+      _Score min_score = 2;
+    }
+    oneof max {
+      _Unbounded unbounded_max = 3;
+      _Score max_score = 4;
+    }
+    // Offset and count are used to only get a range of the matching elements,
+    // similar to "SELECT LIMIT offset, count" in SQL.
+    // A negative count returns all elements from the offset.
+    // Use (0, -1) to return all matching elements.
+    uint32 offset = 5;
+    sint32 count = 6;
   }
 
   bytes set_name = 1;
   Order order = 2;
-  oneof num_results {
-    _All all = 3;
-    _Limit limit = 4;
-  }
+  bool with_scores = 3;
   oneof range {
-    _ByIndex by_index = 5;
-    _ByScore by_score = 6;
+    _ByIndex by_index = 4;
+    _ByScore by_score = 5;
   }
 }
 
 message _SortedSetFetchResponse {
   message _Found {
-    repeated _SortedSetElement elements = 1;
+    message _ValuesWithScores {
+      repeated _SortedSetElement elements = 1;
+    }
+
+    message _Values {
+      repeated bytes values = 1;
+    }
+
+    oneof elements {
+      _ValuesWithScores values_with_scores = 1;
+      _Values values = 2;
+    }
   }
 
-  message _Missing {
-  }
+  message _Missing {}
 
   oneof sorted_set {
     _Found found = 1;
@@ -530,7 +550,7 @@ message _SortedSetFetchResponse {
 
 message _SortedSetGetScoreRequest {
   bytes set_name = 1;
-  repeated bytes element_name = 2;
+  repeated bytes values = 2;
 }
 
 message _SortedSetGetScoreResponse {
@@ -556,7 +576,7 @@ message _SortedSetRemoveRequest {
   bytes set_name = 1;
   message _All {}
   message _Some {
-    repeated bytes value = 1;
+    repeated bytes values = 1;
   }
   oneof remove_elements {
     _All all = 2;
