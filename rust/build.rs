@@ -6,6 +6,7 @@ fn main() -> Result<()> {
         .build_server(true)
         .compile(
             &[
+                "proto/google/rpc/code.proto",
                 "proto/auth.proto",
                 "proto/cacheclient.proto",
                 "proto/cachepubsub.proto",
