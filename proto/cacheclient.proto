@@ -32,6 +32,7 @@ service Scs {
   rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
   rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
   rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
+  rpc SetContains (_SetContainsRequest) returns (_SetContainsResponse) {}
 
   rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
   rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
@@ -265,6 +266,26 @@ message _SetDifferenceRequest {
 
 message _SetDifferenceResponse {
   message _Found {}
+
+  message _Missing {}
+
+  oneof set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _SetContainsRequest {
+  bytes set_name = 1;
+  repeated bytes elements = 2;
+}
+
+message _SetContainsResponse {
+  message _Found {
+    // This will be the same length as the elements passed in the request.
+    // It represents whether each element is a member of the set, with indices corresponding to the request elements.
+    repeated bool contains = 1;
+  }
 
   message _Missing {}
 
