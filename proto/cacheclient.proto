@@ -464,7 +464,7 @@ message _ListRemoveResponse {}
 
   // if using ListRetain, this will remove all elements in the list
   # start=-2, end=-6
-  list_[2:-6] == []
+  list_[-2:-6] == []
 
   # empty list
   list_[0:0] == []
@@ -482,7 +482,7 @@ message _ListRemoveResponse {}
   list_size_one_[0:0] == []
 
   # start=0, end=-1
-  list_size_one_[-1:0] == []
+  list_size_one_[0:-1] == []
  */
 message _Unbounded { }
 
@@ -564,8 +564,6 @@ message _SortedSetPutRequest {
 }
 
 message _SortedSetPutResponse {}
-
-message _Unbounded {}
 
 message _SortedSetFetchRequest {
   enum Order {
