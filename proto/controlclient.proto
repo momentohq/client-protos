@@ -104,7 +104,7 @@ message _GenerateApiTokenRequest {
 }
 
 message _GenerateApiTokenResponse {
-  // the token that will be used to make requests against Momento backend
+  // the api key used for authentication against Momento backend
   string api_key = 1;
   // the token that will allow the api token to be refreshed, which will
   // give you back a new refresh and api token
