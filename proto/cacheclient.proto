@@ -21,6 +21,7 @@ service Scs {
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
+  rpc KeysExists (_KeysExistsRequest) returns (_KeysExistsResponse) {}
   rpc Increment (_IncrementRequest) returns (_IncrementResponse) {}
 
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
@@ -115,6 +116,14 @@ message _SetIfNotExistsResponse {
   }
   message _Stored { }
   message _NotStored { }
+}
+
+message _KeysExistsRequest {
+  repeated bytes cache_keys = 1;
+}
+
+message _KeysExistsResponse {
+  repeated bool exists = 1;
 }
 
 message _IncrementRequest {
