@@ -104,11 +104,13 @@ message _GenerateTokenRequest {
 }
 
 message _GenerateTokenResponse {
-  // the base64 encoded (api_key, endpoint)
+  // the token that will be used to make requests against Momento backend
   string api_token = 1;
   // the token that will allow the api token to be refreshed, which will
   // give you back a new refresh and api token
   string refresh_token = 2;
+  // the Momento endpoint that this token is allowed to make requests against
+  string endpoint = 3;
   // epoch seconds when the api token expires
-  uint64 valid_until = 3;
+  uint64 valid_until = 4;
 }
