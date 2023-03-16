@@ -118,7 +118,7 @@ message _GenerateApiTokenResponse {
 
 message _RefreshApiTokenRequest {
   string api_token = 1;
-	string refresh_token = 2;
+  string refresh_token = 2;
 }
 
 message _RefreshApiTokenResponse {
