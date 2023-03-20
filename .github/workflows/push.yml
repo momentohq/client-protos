@@ -127,10 +127,10 @@ jobs:
           gradle-version: wrapper
       - name: publish to sonatype
         env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SONATYPE_SIGNING_KEY: ${{ secrets.SONATYPE_SIGNING_KEY }}
+          SONATYPE_SIGNING_KEY_PASSWORD: ${{ secrets.SONATYPE_SIGNING_KEY_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           VERSION: ${{ needs.release.outputs.version }}
         uses: gradle/gradle-build-action@v2
         with:

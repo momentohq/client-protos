@@ -117,15 +117,21 @@ nexusPublishing {
         sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username.set(System.getenv("OSSRH_USERNAME"))
-            password.set(System.getenv("OSSRH_PASSWORD"))
+            username.set(System.getenv("SONATYPE_USERNAME"))
+            password.set(System.getenv("SONATYPE_PASSWORD"))
         }
     }
 }
 
 signing {
-    val signingKey: String = System.getenv("SIGNING_KEY")
-    val signingPassword: String = System.getenv("SIGNING_PASSWORD")
+    val signingKey: String = System.getenv("SONATYPE_SIGNING_KEY") ?: ""
+    val signingPassword: String = System.getenv("SONATYPE_SIGNING_KEY_PASSWORD") ?: ""
+
+    // The signing plugin will only run if the key and password are present.
+    // It is not provided by default for normal GitHub builds or local builds.
+    setRequired({
+        signingKey.isNotEmpty() && signingPassword.isNotEmpty()
+    })
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
 }
