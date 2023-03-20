@@ -10,6 +10,7 @@ fn main() -> Result<()> {
                 "proto/cacheclient.proto",
                 "proto/cachepubsub.proto",
                 "proto/controlclient.proto",
+                "proto/token.proto",
             ],
             &["proto"],
         )
