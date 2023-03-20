@@ -7,20 +7,48 @@ import com.google.protobuf.gradle.protoc
 plugins {
     id("momento.java-library-conventions")
 
-    kotlin("jvm")
     id("com.google.protobuf") version "0.8.16"
     idea
+    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+    id("maven-publish")
+    id("signing")
+    id("ca.cutterslade.analyze") version "1.9.0"
 }
 
 val grpcProtobufVersion = "3.21.2"
 val grpcVersion = "1.47.0"
+val guavaVersion = "31.1-android"
 
 dependencies {
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
+    implementation("com.google.api.grpc:proto-google-common-protos:2.0.1")
+
+    implementation("com.google.protobuf:protobuf-java:${grpcProtobufVersion}")
+    implementation("com.google.guava:guava:${guavaVersion}")
+
     implementation("io.grpc:grpc-stub:${grpcVersion}")
-    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("io.grpc:grpc-api:${grpcVersion}")
+    compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 
     protobuf(files("../proto/"))
+}
+
+// Required to generate source and javadoc jars with anything in them
+// Will no longer be needed with protobuf plugin version 9+
+sourceSets.main {
+    java.srcDirs(
+            "build/generated/source/proto/main/grpc",
+            "build/generated/source/proto/main/java",
+    )
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+    // Produce an artifact build for Java 8+
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
 protobuf {
@@ -48,4 +76,50 @@ protobuf {
             task.descriptorSetOptions.includeSourceInfo = true
         }
     }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            artifactId = rootProject.name
+
+            pom {
+                name.set("Momento Client Protocols")
+                description.set("Java protobuf protocols that define the Momento gRPC wire format")
+                url.set("https://github.com/momentohq/client-protos")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("nand4011")
+                        name.set("Nate Anderson")
+                        organization.set("Momento")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/momentohq/client-protos.git")
+                    developerConnection.set("scm:git:git@github.com:momentohq/client-protos.git")
+                    url.set("https://github.com/momentohq/client-protos")
+                }
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["mavenJava"])
 }
