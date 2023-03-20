@@ -69,7 +69,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 # FIXME: currently this is not working because we do not support private packages in our @gomomento npmjs repo so build is failing.
-#        If we intend for this web version of our proto's to be private for now for internal use only then we should revisit and 
+#        If we intend for this web version of our proto's to be private for now for internal use only then we should revisit and
 #        publish to our internal repo's instead. Other wise if we feel we are ready to make this web version of our protos public for
 #        for customer use and want to be public we should add the access public flag explicitly on our package publish steps here with:
 #               npm publish --access public
@@ -115,6 +115,26 @@ jobs:
 #         shell: bash
 #         env:
 #           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+  publish_java:
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+      - name: publish to sonatype
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          VERSION: ${{ needs.release.outputs.version }}
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToSonatype closeSonatypeStagingRepository  #TODO: closeAndReleaseStagingRepository
 
   publish_kotlin:
     runs-on: ubuntu-latest
