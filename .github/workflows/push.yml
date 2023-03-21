@@ -111,6 +111,26 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
+  publish_java:
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+      - name: publish to sonatype
+        env:
+          SONATYPE_SIGNING_KEY: ${{ secrets.SONATYPE_SIGNING_KEY }}
+          SONATYPE_SIGNING_KEY_PASSWORD: ${{ secrets.SONATYPE_SIGNING_KEY_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          JAVA_PROTOS_VERSION: ${{ needs.release.outputs.version }}
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToSonatype closeSonatypeStagingRepository  #TODO: closeAndReleaseStagingRepository
+
   publish_kotlin:
     runs-on: ubuntu-latest
     needs: release
