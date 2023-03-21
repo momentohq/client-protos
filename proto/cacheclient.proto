@@ -453,8 +453,16 @@ message _ListEraseRequest {
 }
 
 message _ListEraseResponse {
-    // length of the list after the erase
+  message _Found {
     uint32 list_length = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
 }
 
 message _ListRemoveRequest {
@@ -466,8 +474,16 @@ message _ListRemoveRequest {
 }
 
 message _ListRemoveResponse {
-    // length of the list after the remove
+  message _Found {
     uint32 list_length = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
 }
 
 /*
@@ -589,8 +605,16 @@ message _ListRetainRequest {
 }
 
 message _ListRetainResponse {
-    // length of the list after the retain
-    uint32 list_length = 1;
+    message _Found {
+      uint32 list_length = 1;
+    }
+  
+    message _Missing {}
+  
+    oneof list {
+      _Found found = 1;
+      _Missing missing = 2;
+    }
 }
 
 message _ListFetchResponse {
