@@ -121,11 +121,10 @@ jobs:
     needs: release
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: wrapper
-      - name: publish to sonatype
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Publish to sonatype
         env:
           SONATYPE_SIGNING_KEY: ${{ secrets.SONATYPE_SIGNING_KEY }}
           SONATYPE_SIGNING_KEY_PASSWORD: ${{ secrets.SONATYPE_SIGNING_KEY_PASSWORD }}
@@ -134,6 +133,8 @@ jobs:
           JAVA_PROTOS_VERSION: ${{ needs.release.outputs.version }}
         uses: gradle/gradle-build-action@v2
         with:
+          build-root-directory: ./java
+          gradle-version: wrapper
           arguments: publishToSonatype closeSonatypeStagingRepository  #TODO: closeAndReleaseStagingRepository
 
   publish_kotlin:
