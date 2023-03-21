@@ -15,6 +15,10 @@ plugins {
     id("ca.cutterslade.analyze") version "1.9.0"
 }
 
+// Use a default SNAPSHOT version if the environment variable cannot be found.
+// The version is specified here to prevent an inconsistent version from being seen by different tasks.
+version = System.getenv("JAVA_PROTOS_VERSION") ?: "0.1.0-SNAPSHOT"
+
 val grpcProtobufVersion = "3.21.2"
 val grpcVersion = "1.47.0"
 val guavaVersion = "31.1-android"
@@ -78,11 +82,24 @@ protobuf {
     }
 }
 
+// Only run publishing tasks if the required environment variables are present
+val safeToPublish = provider {
+    !System.getenv("JAVA_PROTOS_VERSION").isNullOrEmpty() &&
+            !System.getenv("SONATYPE_USERNAME").isNullOrEmpty() &&
+            !System.getenv("SONATYPE_PASSWORD").isNullOrEmpty() &&
+            !System.getenv("SONATYPE_SIGNING_KEY").isNullOrEmpty() &&
+            !System.getenv("SONATYPE_SIGNING_KEY_PASSWORD").isNullOrEmpty()
+}
+
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    onlyIf {
+        safeToPublish.get()
+    }
+}
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            version = System.getenv("JAVA_PROTOS_VERSION")
             artifactId = rootProject.name
 
             pom {
@@ -112,6 +129,11 @@ publishing {
     }
 }
 
+tasks.withType<io.github.gradlenexus.publishplugin.AbstractNexusStagingRepositoryTask>().configureEach {
+    onlyIf {
+        safeToPublish.get()
+    }
+}
 nexusPublishing {
     repositories {
         sonatype {
@@ -123,15 +145,15 @@ nexusPublishing {
     }
 }
 
+tasks.withType<Sign>().configureEach {
+    onlyIf {
+        safeToPublish.get()
+    }
+}
 signing {
-    val signingKey: String = System.getenv("SONATYPE_SIGNING_KEY") ?: ""
-    val signingPassword: String = System.getenv("SONATYPE_SIGNING_KEY_PASSWORD") ?: ""
+    val signingKey = System.getenv("SONATYPE_SIGNING_KEY")
+    val signingPassword = System.getenv("SONATYPE_SIGNING_KEY_PASSWORD")
 
-    // The signing plugin will only run if the key and password are present.
-    // It is not provided by default for normal GitHub builds or local builds.
-    setRequired({
-        signingKey.isNotEmpty() && signingPassword.isNotEmpty()
-    })
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
 }
