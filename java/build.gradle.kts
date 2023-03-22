@@ -1,49 +1,37 @@
-import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.plugins
 import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
 
 plugins {
     id("momento.java-library-conventions")
 
-    id("com.google.protobuf") version "0.8.16"
+    id("com.google.protobuf") version "0.9.2"
     idea
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
     id("maven-publish")
     id("signing")
-    id("ca.cutterslade.analyze") version "1.9.0"
 }
 
 // Use a default SNAPSHOT version if the environment variable cannot be found.
 // The version is specified here to prevent an inconsistent version from being seen by different tasks.
 version = System.getenv("JAVA_PROTOS_VERSION") ?: "0.1.0-SNAPSHOT"
 
-val grpcProtobufVersion = "3.21.2"
-val grpcVersion = "1.47.0"
-val guavaVersion = "31.1-android"
+val grpcProtobufVersion = "3.22.2"
+val grpcVersion = "1.53.0"
 
 dependencies {
-    implementation("io.grpc:grpc-protobuf:$grpcVersion")
-    implementation("com.google.api.grpc:proto-google-common-protos:2.0.1")
+    implementation(platform("io.grpc:grpc-bom:$grpcVersion"))
+    implementation(platform("com.google.protobuf:protobuf-bom:$grpcProtobufVersion"))
 
-    implementation("com.google.protobuf:protobuf-java:${grpcProtobufVersion}")
-    implementation("com.google.guava:guava:${guavaVersion}")
-
-    implementation("io.grpc:grpc-stub:${grpcVersion}")
-    implementation("io.grpc:grpc-api:${grpcVersion}")
+    implementation("io.grpc:grpc-stub")
+    implementation("io.grpc:grpc-api")
+    implementation("io.grpc:grpc-protobuf")
+    implementation("com.google.protobuf:protobuf-java")
+    implementation("com.google.guava:guava:31.1-android") // version pulled from protobuf-java
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 
-    protobuf(files("../proto/"))
-}
+    permitUsedUndeclared("com.google.api.grpc:proto-google-common-protos:2.9.0")
 
-// Required to generate source and javadoc jars with anything in them
-// Will no longer be needed with protobuf plugin version 9+
-sourceSets.main {
-    java.srcDirs(
-            "build/generated/source/proto/main/grpc",
-            "build/generated/source/proto/main/java",
-    )
+    protobuf(files("../proto/"))
 }
 
 java {
@@ -55,10 +43,19 @@ java {
     }
 }
 
+// Silence the pointless javadoc warnings from generated code
+tasks {
+    javadoc {
+        options {
+            (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+        }
+    }
+}
+
 protobuf {
     var systemOverride = ""
     if (System.getProperty("os.name") == "Mac OS X") {
-        println("overiding protobuf artifacts classifier to osx-x86_64 so M1 Macs can find lib")
+        println("overriding protobuf artifacts classifier to osx-x86_64 so M1 Macs can find lib")
         systemOverride = ":osx-x86_64"
     }
     protoc {
@@ -70,14 +67,14 @@ protobuf {
         }
     }
     generateProtoTasks {
-        all().forEach { task ->
-            task.plugins {
+        all().configureEach {
+            plugins {
                 id("grpc")
             }
-            task.generateDescriptorSet = true
-            task.descriptorSetOptions.path = "$projectDir/generated-sources/descriptors/client_protos.dsc"
-            task.descriptorSetOptions.includeImports = true
-            task.descriptorSetOptions.includeSourceInfo = true
+            generateDescriptorSet = true
+            descriptorSetOptions.path = "$projectDir/generated-sources/descriptors/client_protos.dsc"
+            descriptorSetOptions.includeImports = true
+            descriptorSetOptions.includeSourceInfo = true
         }
     }
 }

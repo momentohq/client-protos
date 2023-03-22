@@ -130,7 +130,7 @@ jobs:
         with:
           build-root-directory: ./java
           gradle-version: wrapper
-          arguments: publishToSonatype closeSonatypeStagingRepository  #TODO: closeAndReleaseStagingRepository
+          arguments: publishToSonatype closeAndReleaseStagingRepository
 
   publish_kotlin:
     runs-on: ubuntu-latest
