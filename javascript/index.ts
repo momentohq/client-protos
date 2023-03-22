@@ -1,3 +1,5 @@
 export * as cache from './dist/cacheclient'
 export * as control from './dist/controlclient'
 export * as pubsub from './dist/cachepubsub'
+export * as ping from './dist/cacheping'
+export * as auth from './dist/auth'
