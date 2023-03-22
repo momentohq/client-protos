@@ -29,6 +29,8 @@ dependencies {
     implementation("com.google.guava:guava:31.1-android") // version pulled from protobuf-java
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 
+    permitUsedUndeclared("com.google.api.grpc:proto-google-common-protos:2.9.0")
+
     protobuf(files("../proto/"))
 }
 
