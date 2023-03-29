@@ -1,1 +1,1 @@
-rootProject.name = "client-protos-java"
+rootProject.name = "client-protos"

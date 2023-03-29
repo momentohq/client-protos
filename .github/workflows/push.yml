@@ -27,6 +27,25 @@ jobs:
         id: release
         run: echo "::set-output name=release::${{ steps.semrel.outputs.version }}"
 
+  # Detect changes to specific directories to let downstream release jobs run conditionally
+  changes:
+    name: Detect changes in last commit
+    runs-on: ubuntu-latest
+    outputs:
+      protos: ${{ steps.filter.outputs.protos }}
+      java: ${{ steps.filter.outputs.java }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: main
+          filters: |
+            protos:
+              - 'protos/**'
+            java:
+              - 'java/**'
+
   publish_javascript:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -68,53 +87,70 @@ jobs:
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
-# FIXME: currently this is not working because we do not support private packages in our @gomomento npmjs repo so build is failing.
-#        If we intend for this web version of our proto's to be private for now for internal use only then we should revisit and 
-#        publish to our internal repo's instead. Other wise if we feel we are ready to make this web version of our protos public for
-#        for customer use and want to be public we should add the access public flag explicitly on our package publish steps here with:
-#               npm publish --access public
 
-#   publish_javascript-web:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     needs: release
+  publish_javascript-web:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: release
 
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#       - uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
 
-#       - name: Install Node
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 16
-#           registry-url: "https://registry.npmjs.org"
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: "https://registry.npmjs.org"
 
-#       - name: Install protoc
-#         run: ./install_protoc.sh
+      - name: Install protoc
+        run: ./install_protoc.sh
 
-#       - name: Build package
-#         run: |
-#           set -e
-#           set -x
-#           export PATH=`pwd`/protoc/bin/:$PATH
-#           pushd javascript-web
-#             npm ci
-#             npm run build
-#           popd
-#         shell: bash
+      - name: Build package
+        run: |
+          set -e
+          set -x
+          export PATH=`pwd`/protoc/bin/:$PATH
+          pushd javascript-web
+            npm ci
+            npm run build
+          popd
+        shell: bash
 
-#       - name: Publish npm package
-#         run: |
-#           export VERSION="${{ needs.release.outputs.version }}"
-#           echo "Publishing package with version $VERSION"
-#           pushd javascript-web
-#             mv package.json package.json.ORIG
-#             cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
-#             npm publish
-#           popd
-#         shell: bash
-#         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      - name: Publish npm package
+        run: |
+          export VERSION="${{ needs.release.outputs.version }}"
+          echo "Publishing package with version $VERSION"
+          pushd javascript-web
+            mv package.json package.json.ORIG
+            cat package.json.ORIG|jq ". += {\"version\": \"$VERSION\"}" > package.json
+            npm publish --access public
+          popd
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+  publish_java:
+    runs-on: ubuntu-latest
+    needs: [release, changes]
+    if: ${{ needs.changes.outputs.protos == 'true' || needs.changes.outputs.java == 'true' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Publish to sonatype
+        env:
+          SONATYPE_SIGNING_KEY: ${{ secrets.SONATYPE_SIGNING_KEY }}
+          SONATYPE_SIGNING_KEY_PASSWORD: ${{ secrets.SONATYPE_SIGNING_KEY_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          JAVA_PROTOS_VERSION: ${{ needs.release.outputs.version }}
+        uses: gradle/gradle-build-action@v2
+        with:
+          build-root-directory: ./java
+          gradle-version: wrapper
+          arguments: publishToSonatype closeAndReleaseStagingRepository
 
   publish_kotlin:
     runs-on: ubuntu-latest

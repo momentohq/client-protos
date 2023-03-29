@@ -34,8 +34,8 @@ mkdir $out
 
 protoc -I=../proto -I=/usr/local/include \
   --js_out=import_style=commonjs:$out \
-  cacheclient.proto controlclient.proto auth.proto
+  cacheclient.proto controlclient.proto auth.proto cacheping.proto
 
 protoc -I=../proto -I=/usr/local/include \
   --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
-  cacheclient.proto controlclient.proto auth.proto
+  cacheclient.proto controlclient.proto auth.proto cacheping.proto
