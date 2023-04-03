@@ -17,36 +17,90 @@ enum ECacheResult {
 }
 
 service Scs {
-  rpc Get (_GetRequest) returns (_GetResponse) {}
-  rpc Set (_SetRequest) returns (_SetResponse) {}
-  rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
-  rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
-  rpc KeysExist (_KeysExistRequest) returns (_KeysExistResponse) {}
-  rpc Increment (_IncrementRequest) returns (_IncrementResponse) {}
-  rpc UpdateTtl (_UpdateTtlRequest) returns (_UpdateTtlResponse) {}
+  rpc Get (_GetRequest) returns (_GetResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc Set (_SetRequest) returns (_SetResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc Delete (_DeleteRequest) returns (_DeleteResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc KeysExist (_KeysExistRequest) returns (_KeysExistResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc Increment (_IncrementRequest) returns (_IncrementResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc UpdateTtl (_UpdateTtlRequest) returns (_UpdateTtlResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
 
-  rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
-  rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
-  rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
-  rpc DictionaryIncrement (_DictionaryIncrementRequest) returns (_DictionaryIncrementResponse) {}
-  rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
+  rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc DictionaryIncrement (_DictionaryIncrementRequest) returns (_DictionaryIncrementResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
 
-  rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
-  rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
-  rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
-  rpc SetContains (_SetContainsRequest) returns (_SetContainsResponse) {}
+  rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc SetContains (_SetContainsRequest) returns (_SetContainsResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 
-  rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
-  rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
-  rpc ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {}
-  rpc ListPopBack(_ListPopBackRequest) returns (_ListPopBackResponse) {}
-  rpc ListErase(_ListEraseRequest) returns (_ListEraseResponse) {}
-  rpc ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {}
-  rpc ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {}
-  rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {}
-  rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {}
-  rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {}
-  rpc ListRetain(_ListRetainRequest) returns (_ListRetainResponse) {}
+  rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListPopFront(_ListPopFrontRequest) returns (_ListPopFrontResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListPopBack(_ListPopBackRequest) returns (_ListPopBackResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListErase(_ListEraseRequest) returns (_ListEraseResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListRemove(_ListRemoveRequest) returns (_ListRemoveResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
+  rpc ListFetch(_ListFetchRequest) returns (_ListFetchResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc ListLength(_ListLengthRequest) returns (_ListLengthResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc ListConcatenateFront(_ListConcatenateFrontRequest) returns (_ListConcatenateFrontResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListConcatenateBack(_ListConcatenateBackRequest) returns (_ListConcatenateBackResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+  rpc ListRetain(_ListRetainRequest) returns (_ListRetainResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
 
   // Sorted Set Operations
   // A sorted set is a collection of elements ordered by their score.
@@ -57,14 +111,22 @@ service Scs {
   // element and its associated score.
   // If an element exists, then its associate score gets overridden with the one
   // provided in this operation.
-  rpc SortedSetPut(_SortedSetPutRequest) returns (_SortedSetPutResponse) {}
+  rpc SortedSetPut(_SortedSetPutRequest) returns (_SortedSetPutResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
   // Fetches a subset of elements in the sorted set.
-  rpc SortedSetFetch(_SortedSetFetchRequest) returns (_SortedSetFetchResponse) {}
+  rpc SortedSetFetch(_SortedSetFetchRequest) returns (_SortedSetFetchResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
   // Gets the specified element and its associated score if it exists in the
   // sorted set.
-  rpc SortedSetGetScore(_SortedSetGetScoreRequest) returns (_SortedSetGetScoreResponse) {}
+  rpc SortedSetGetScore(_SortedSetGetScoreRequest) returns (_SortedSetGetScoreResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
   // Removes specified elements and their associated scores
-  rpc SortedSetRemove(_SortedSetRemoveRequest) returns (_SortedSetRemoveResponse) {}
+  rpc SortedSetRemove(_SortedSetRemoveRequest) returns (_SortedSetRemoveResponse) {
+    option idempotency_level = IDEMPOTENT;
+  }
   // Changes the score associated with the element by specified amount.
   // If the provided amount is negative, then the score associated with the
   // element is decremented.
@@ -72,9 +134,13 @@ service Scs {
   // set, it is added with specified number as the score.
   // If the set itself doesn't exist then a new one with specified element and
   // score is created.
-  rpc SortedSetIncrement(_SortedSetIncrementRequest) returns (_SortedSetIncrementResponse) {}
+  rpc SortedSetIncrement(_SortedSetIncrementRequest) returns (_SortedSetIncrementResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
   // Gives the rank of an element.
-  rpc SortedSetGetRank(_SortedSetGetRankRequest) returns (_SortedSetGetRankResponse) {}
+  rpc SortedSetGetRank(_SortedSetGetRankRequest) returns (_SortedSetGetRankResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
 }
 
 message _GetRequest {
