@@ -402,6 +402,8 @@ message _ListPopFrontRequest {
 message _ListPopFrontResponse {
   message _Found {
     bytes front = 1;
+    // length of the list after the pop
+    uint32 list_length = 2;
   }
 
   message _Missing {}
@@ -419,6 +421,8 @@ message _ListPopBackRequest {
 message _ListPopBackResponse {
   message _Found {
     bytes back = 1;
+    // length of the list after the pop
+    uint32 list_length = 2;
   }
 
   message _Missing {}
@@ -448,7 +452,18 @@ message _ListEraseRequest {
   }
 }
 
-message _ListEraseResponse {}
+message _ListEraseResponse {
+  message _Found {
+    uint32 list_length = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
 
 message _ListRemoveRequest {
   bytes list_name = 1;
@@ -458,7 +473,18 @@ message _ListRemoveRequest {
   }
 }
 
-message _ListRemoveResponse {}
+message _ListRemoveResponse {
+  message _Found {
+    uint32 list_length = 1;
+  }
+
+  message _Missing {}
+
+  oneof list {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
 
 /*
   # ListFetch and ListRetain documentation and examples
@@ -578,7 +604,18 @@ message _ListRetainRequest {
   bool refresh_ttl = 7;
 }
 
-message _ListRetainResponse {}
+message _ListRetainResponse {
+    message _Found {
+      uint32 list_length = 1;
+    }
+  
+    message _Missing {}
+  
+    oneof list {
+      _Found found = 1;
+      _Missing missing = 2;
+    }
+}
 
 message _ListFetchResponse {
   message _Found {
