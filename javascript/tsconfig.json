@@ -2,7 +2,12 @@
     "compilerOptions": {
         "target": "ES2015",
         "module": "commonjs",
-        "strict": true,
+        // google/protobuf/descriptor is an old proto2 file. It generates a couple of tsc errors like:
+        //   error TS7023: 'fromObject' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+        //   error TS7022: 'message' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+        // While we would like to have strictness on, our use of descriptors combined with tsc's current
+        //   lack of a file-based strictness skipping leaves us with not many choices.
+        "strict": false,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
