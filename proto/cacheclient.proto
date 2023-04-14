@@ -24,6 +24,8 @@ service Scs {
   rpc KeysExist (_KeysExistRequest) returns (_KeysExistResponse) {}
   rpc Increment (_IncrementRequest) returns (_IncrementResponse) {}
   rpc UpdateTtl (_UpdateTtlRequest) returns (_UpdateTtlResponse) {}
+  rpc ItemGetTtl (_ItemGetTtlRequest) returns (_ItemGetTtlResponse) {}
+  rpc ItemGetType (_ItemGetTypeRequest) returns (_ItemGetTypeResponse) {}
 
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
@@ -164,6 +166,43 @@ message _UpdateTtlResponse {
     _Set set = 1;
     _NotSet not_set = 2;
     _Missing missing = 3;
+  }
+}
+
+message _ItemGetTtlRequest {
+  bytes cache_key = 1;
+}
+
+message _ItemGetTtlResponse {
+  message _Found{
+    uint64 remaining_ttl_millis = 1;
+  }
+  message _Missing{}
+  oneof result {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _ItemGetTypeRequest {
+  bytes cache_key = 1;
+}
+
+message _ItemGetTypeResponse {
+  enum ItemType {
+    SCALAR = 0;
+    DICTIONARY = 1;
+    SET = 2;
+    LIST = 3;
+    SORTED_SET = 4;
+  }
+  message _Found{
+    ItemType item_type = 1;
+  }
+  message _Missing{}
+  oneof result {
+    _Found found = 1;
+    _Missing missing = 2;
   }
 }
 
