@@ -8,8 +8,10 @@ package auth;
 
 service Auth {
   rpc Login (_LoginRequest) returns (stream _LoginResponse) {}
-    // api for programatically generating api and refresh tokens
+  // api for initially generating api and refresh tokens
   rpc GenerateApiToken(_GenerateApiTokenRequest) returns (_GenerateApiTokenResponse) {}
+  // api for programmatically refreshing api and refresh tokens
+  rpc RefreshApiToken(_RefreshApiTokenRequest) returns (_RefreshApiTokenResponse) {}
 }
 
 message _LoginRequest {
@@ -81,4 +83,24 @@ message _GenerateApiTokenResponse {
     string endpoint = 3;
     // epoch seconds when the api token expires
     uint64 valid_until = 4;
+}
+
+message _RefreshApiTokenRequest {
+  // the existing api token to be refreshed
+  string api_key = 1;
+  // the refresh token that was generated with that api token
+  string refresh_token = 2;
+}
+
+message _RefreshApiTokenResponse {
+  // the new api key used for authentication against Momento backend
+  string api_key = 1;
+  // the token that will allow the api token to be refreshed, which will
+  // give you back a new refresh and api token
+  string refresh_token = 2;
+  // the Momento endpoint that this token is allowed to make requests against
+  string endpoint = 3;
+  // epoch seconds when the api token expires
+  uint64 valid_until = 4;
+
 }
