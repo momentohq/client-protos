@@ -11,7 +11,8 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "declaration": true
+        "declaration": true,
+        "outDir": "dist"
     },
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Recommended",
