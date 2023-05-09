@@ -22,8 +22,6 @@
   "dependencies": {
   },
   "files": [
-    "dist",
-    "index.d.ts",
-    "index.js"
+    "dist"
   ]
 }
