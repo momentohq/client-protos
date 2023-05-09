@@ -23,7 +23,7 @@ rm -f $plugin
 curl -L https://github.com/grpc/grpc-web/releases/download/$version/protoc-gen-grpc-web-$version-$platform -o $plugin
 chmod +x $plugin
 
-out=./dist
+out=./src
 rm -rf $out
 mkdir $out
 
