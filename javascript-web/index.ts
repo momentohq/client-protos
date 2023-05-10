@@ -1,4 +1,4 @@
-export * as cache from './src/CacheclientServiceClientPb'
-export * as control from './src/ControlclientServiceClientPb'
-export * as auth from './src/AuthServiceClientPb'
-export * as ping from './src/CachepingServiceClientPb'
+export * as cache from './CacheclientServiceClientPb'
+export * as control from './ControlclientServiceClientPb'
+export * as auth from './AuthServiceClientPb'
+export * as ping from './CachepingServiceClientPb'

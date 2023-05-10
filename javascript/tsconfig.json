@@ -12,11 +12,12 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
+        "rootDir": "src",
         "outDir": "dist"
     },
     "$schema": "https://json.schemastore.org/tsconfig",
     "display": "Recommended",
     "exclude": [
-        "dist"
+        "dist", "index.ts"
     ]
 }
