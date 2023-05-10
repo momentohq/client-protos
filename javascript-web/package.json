@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && mkdir dist && ./generate_protos.sh linux && tsc"
+    "build": "rm -rf dist && mkdir dist && ./generate_protos.sh linux && cp index.ts src/ && tsc && cp src/*.d.ts ./dist && cp src/*.js ./dist"
   },
   "author": "",
   "license": "MIT",
