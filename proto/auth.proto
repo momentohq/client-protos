@@ -64,13 +64,33 @@ message _GenerateApiTokenRequest {
         uint32 valid_for_seconds = 1;
     }
 
-    oneof expiry {
+    message GodTierRole {
+      oneof expiry {
         Never never = 1;
         Expires expires = 2;
+      }
     }
 
-    // session token recieved from `momento login` command
-    string session_token = 3;
+    message DataPlaneReadOnlyRole {
+      Expires expires = 1;
+    }
+
+    message TopicSpecificRole {
+      oneof expiry {
+        Never never = 1;
+        Expires expires = 2;
+      }
+    }
+
+    string auth_token = 3;
+
+    oneof role {
+      GodTierRole god_tier_role = 4;
+      DataPlaneReadOnlyRole data_plane_readonly_role = 5;
+      TopicSpecificRole topic_specific_role = 6;
+    }
+
+    reserved 2;
 }
 
 message _GenerateApiTokenResponse {
