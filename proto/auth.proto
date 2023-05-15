@@ -80,6 +80,18 @@ message _GenerateApiTokenRequest {
         Never never = 1;
         Expires expires = 2;
       }
+      string cache_name = 3;
+      string topic_name = 4;
+
+      message ReadOnlyPerms {}
+      message ReadWritePerms {}
+      message AdminPerms {}
+
+      oneof permissions {
+        ReadOnlyPerms readonly_perms = 5;
+        ReadWritePerms read_write_perms = 6;
+        AdminPerms admin_perms = 7;
+      }
     }
 
     string auth_token = 3;
