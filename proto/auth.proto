@@ -64,45 +64,27 @@ message _GenerateApiTokenRequest {
         uint32 valid_for_seconds = 1;
     }
 
-    message GodTierRole {
-      oneof expiry {
-        Never never = 1;
-        Expires expires = 2;
-      }
+    oneof expiry {
+      Never never = 1;
+      Expires expires = 2;
     }
 
-    message DataPlaneReadOnlyRole {
-      Expires expires = 1;
-    }
-
-    message TopicSpecificRole {
-      oneof expiry {
-        Never never = 1;
-        Expires expires = 2;
+    message Restrictions {
+      oneof kind {
+        ApiFamilyEnum family = 1;
       }
-      string cache_name = 3;
-      string topic_name = 4;
 
-      message ReadOnlyPerms {}
-      message ReadWritePerms {}
-      message AdminPerms {}
-
-      oneof permissions {
-        ReadOnlyPerms readonly_perms = 5;
-        ReadWritePerms read_write_perms = 6;
-        AdminPerms admin_perms = 7;
+      enum ApiFamilyEnum {
+        cache = 0;
+        topics = 1;
+        control = 2;
+        all = 3;
       }
     }
 
     string auth_token = 3;
 
-    oneof role {
-      GodTierRole god_tier_role = 4;
-      DataPlaneReadOnlyRole data_plane_readonly_role = 5;
-      TopicSpecificRole topic_specific_role = 6;
-    }
-
-    reserved 2;
+    repeated Restrictions restrictions = 4;
 }
 
 message _GenerateApiTokenResponse {
