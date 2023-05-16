@@ -78,9 +78,9 @@ message _GenerateApiTokenRequest {
 
     string auth_token = 3;
 
-    // Contains the permissions that the token will have for each of our services. If it doesn't exist
+    // Contains the restrictions that the token will have for each of our services. If it doesn't exist
     // on the request, then the token is assumed to have "SuperUser" permissions
-    message Permissions {
+    message Restrictions {
       message CacheRestrictions {
         Role role = 1;
         // eventually could scope this down to a specific cache name or key
@@ -99,7 +99,7 @@ message _GenerateApiTokenRequest {
       TopicsRestrictions topic = 2;
     }
 
-    repeated Permissions permissions = 4;
+    repeated Restrictions restrictions = 4;
 }
 
 message _GenerateApiTokenResponse {
