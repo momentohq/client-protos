@@ -70,10 +70,17 @@ message _GenerateApiTokenRequest {
     }
 
     // Aliases for categories of functionality.
-    enum Role {
-      PermitNone = 0;
-      // Restricts access to apis that read and write data: No higher level resource description or modification.
-      ReadWrite = 1;
+    enum CacheRole {
+      CachePermitNone = 0;
+      // Restricts access to apis that read and write data from caches: No higher level resource description or modification.
+      CacheReadWrite = 1;
+    }
+
+    // Aliases for categories of functionality.
+    enum TopicRole {
+      TopicPermitNone = 0;
+      // Restricts access to apis that read and write data from topics: No higher level resource description or modification.
+      TopicReadWrite = 1;
     }
 
     string auth_token = 3;
@@ -82,14 +89,14 @@ message _GenerateApiTokenRequest {
     // on the request, then the token is assumed to have "SuperUser" permissions
     message Restrictions {
       message CacheRestrictions {
-        Role role = 1;
+        CacheRole role = 1;
         // eventually could scope this down to a specific cache name or key
         // string cache = "an example cache";
         // string caches = ["cache1", "cache2"]
       }
 
       message TopicsRestrictions {
-        Role role = 1;
+        TopicRole role = 1;
         // eventually could scope this down to a specific topic name
         // string topic = "an example topic";
         // string topics = ["topic1", "topic2"]
