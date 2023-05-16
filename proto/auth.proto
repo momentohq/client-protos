@@ -95,8 +95,10 @@ message _GenerateApiTokenRequest {
         // string topics = ["topic1", "topic2"]
       }
 
-      CacheRestrictions cache = 1;
-      TopicsRestrictions topic = 2;
+      oneof kind {
+          CacheRestrictions cache = 1;
+          TopicsRestrictions topic = 2;
+      }
     }
 
     repeated Restrictions restrictions = 4;
