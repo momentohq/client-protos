@@ -99,7 +99,7 @@ message _GenerateApiTokenRequest {
       TopicsRestrictions topic = 2;
     }
 
-    Permissions permissions = 4;
+    repeated Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {
