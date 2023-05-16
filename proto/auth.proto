@@ -69,8 +69,34 @@ message _GenerateApiTokenRequest {
         Expires expires = 2;
     }
 
-    // session token recieved from `momento login` command
-    string session_token = 3;
+    enum Role {
+      ReadWrite = 0;
+    }
+
+    string auth_token = 3;
+
+    // Contains the permissions that the token will have for each of our services. If it doesn't exist
+    // on the request, then the token is assumed to have "SuperUser" permissions
+    message Permissions {
+      message CachePermissions {
+        Role role = 1;
+        // eventually could scope this down to a specific cache name or key
+        // string cache = "an example cache";
+        // string caches = ["cache1", "cache2"]
+      }
+
+      message TopicsPermissions {
+        Role role = 1;
+        // eventually could scope this down to a specific topic name
+        // string topic = "an example topic";
+        // string topics = ["topic1", "topic2"]
+      }
+
+      CachePermissions cache = 1;
+      TopicsPermissions topic = 2;
+    }
+
+    Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {
