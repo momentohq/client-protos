@@ -115,7 +115,7 @@ message _GenerateApiTokenRequest {
       }
     }
 
-    repeated Permissions permissions = 4;
+    Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {
