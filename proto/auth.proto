@@ -85,30 +85,37 @@ message _GenerateApiTokenRequest {
 
     string auth_token = 3;
 
-    // Contains the restrictions that the token will have for each of our services. If it doesn't exist
-    // on the request, then the token is assumed to have "SuperUser" permissions
-    message Restrictions {
-      message CacheRestrictions {
-        CacheRole role = 1;
-        // eventually could scope this down to a specific cache name or key
-        // string cache = "an example cache";
-        // string caches = ["cache1", "cache2"]
-      }
+    enum SuperUserPermissions {
+      SuperUser = 0;
+    }
 
-      message TopicsRestrictions {
-        TopicRole role = 1;
-        // eventually could scope this down to a specific topic name
-        // string topic = "an example topic";
-        // string topics = ["topic1", "topic2"]
-      }
-
+    message Permissions {
       oneof kind {
-          CacheRestrictions cache = 1;
-          TopicsRestrictions topic = 2;
+        SuperUserPermissions super_user = 1;
+        ExplicitPermissions explicit = 2;
       }
     }
 
-    repeated Restrictions restrictions = 4;
+    message ExplicitPermissions {
+      repeated PermissionsType permissions = 1;
+    }
+
+    message PermissionsType {
+      oneof kind {
+        CachePermissions cache_permissions = 1;
+        TopicPermissions topic_permissions = 2;
+      }
+
+      message CachePermissions {
+        CacheRole role = 1;
+      }
+
+      message TopicPermissions {
+        TopicRole role = 1;
+      }
+    }
+
+    Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {
