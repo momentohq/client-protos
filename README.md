@@ -12,7 +12,7 @@ In addition to the protos, this repo contains automation to build the language-s
 * Python: [PyPI: `momento-wire-types`](https://pypi.org/project/momento-wire-types/)
 * .NET: [NuGet: `Momento.Protos`](https://www.nuget.org/packages/Momento.Protos)
 * Rust: [crates.io: `momento-protos`](https://crates.io/crates/momento-protos)
-* Java: Maven Central (TODO)
+* Java: [Maven Central: `client-protos`](https://central.sonatype.com/artifact/software.momento.java/client-protos/)
 
 If you're interested in looking at the protos themselves, here are the most important ones:
 
