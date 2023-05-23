@@ -33,7 +33,7 @@ grpcio = "*"
 
 
 [tool.poetry.group.dev.dependencies]
-grpcio-tools = "^1.54.2"
+grpcio-tools = "^1.48.2"
 
 [build-system]
 requires = ["poetry-core"]
