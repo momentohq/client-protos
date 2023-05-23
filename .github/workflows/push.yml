@@ -215,7 +215,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: python
-        run: poetry install
+        run: make install
 
       - name: Bump version
         working-directory: python
