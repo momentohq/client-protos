@@ -15,7 +15,7 @@ install:
 .PHONY: clean
 ## Remove intermediate files
 clean:
-	@rm -rf dist .mypy_cache .pytest_cache momento_wire_types/*pb2*
+	@rm -rf dist .mypy_cache .pytest_cache momento_wire_types/*pb2* momento_wire_types/v4/*pb2* momento_wire_types/v319/*pb2*
 	@find . -name "*__pycache__*" | xargs rm -rf
 
 .PHONY: protoc
