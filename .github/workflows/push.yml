@@ -199,43 +199,37 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
 
-      - name: Install python dependencies
+      - name: Bootstrap poetry
         run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine build grpcio-tools
+          curl -sL https://install.python-poetry.org | python - -y --version 1.4.2
 
-      - name: Configure PyPI publish credentials
-        run: |
-          set -e
-          set -x
-          pushd python
-            ./pypi_setup.sh __token__ ${{ secrets.CLIENT_PROTO_PYPI_TOKEN }} >> ~/.pypirc
-          popd
-        shell: bash
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
 
-      - name: Build and publish package
-        run: |
-          set -e
-          set -x
-          pushd python
-            export PYPI_MOMENTO_WIRE_TYPE_VERSION="${{needs.release.outputs.version}}"
-            if [ -z "$PYPI_MOMENTO_WIRE_TYPE_VERSION"]
-            then
-              echo "Using default version"
-              export PYPI_MOMENTO_WIRE_TYPE_VERSION="0.0.dev"`date +%s`
-            fi
-            echo "PYPI_MOMENTO_WIRE_TYPE_VERSION=${PYPI_MOMENTO_WIRE_TYPE_VERSION}"
-            ./buildpypi.sh
-            python -m twine upload dist/* --config-file ~/.pypirc
-          popd
-        shell: bash
+      - name: Install dependencies
+        working-directory: python
+        run: poetry install
+
+      - name: Bump version
+        working-directory: python
+        run: poetry version ${{ needs.release.outputs.version }}
+
+      - name: Build package
+        working-directory: python
+        run: make build
+
+      - name: Publish package
+        working-directory: python
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.CLIENT_PROTO_PYPI_TOKEN }}
+        run: poetry publish
 
   publish_csharp:
     # The type of runner that the job will run on
