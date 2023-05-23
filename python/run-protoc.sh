@@ -2,7 +2,7 @@
 set -e
 set -x
 
-src_path=src/momento_wire_types
+src_path=momento_wire_types
 
 # Generate python proto artifacts
 poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path --pyi_out=$src_path --grpc_python_out=$src_path cacheclient.proto controlclient.proto auth.proto

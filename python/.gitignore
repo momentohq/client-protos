@@ -1,8 +1,7 @@
-build
+*.pyc
+*.egg-info
+__pycache__
+.venv
 LICENSE.txt
 dist/
-src/momento_wire_types/*.egg-info
-src/momento_wire_types/*pb2*
-src/momento_wire_types/*.pyc
-src/momento_wire_types/__pycache__
-.venv
+momento_wire_types/*pb2*
