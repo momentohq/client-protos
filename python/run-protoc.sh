@@ -45,6 +45,8 @@ do
     rm $src_path/*.old
 done
 
+# The older versions of protobuf do not support the --pyi_out flag.
+# We can reuse the type interfaces from the newer versions without issue.
 cp $package_path/v4/*pyi $package_path/v319
 
 # Restore the version before running the script
