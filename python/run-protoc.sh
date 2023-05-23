@@ -78,13 +78,13 @@ try:
 except ValueError:
     raise ValueError("Could not parse protobuf version: {}".format(protobuf.__version__))
 
-# Import the correct version of the generated code
-# Because the imports to be dynamic like this, we must now write code like:
-#   from momento_wire_types import cacheclient_pb2 as cache_pb
-#   request = cache_pb.GetRequest()
+# Import the correct version of the generated code.
+# To accomodate the dynamic imports, we must now write code like:
+#       from momento_wire_types import cacheclient_pb2 as cache_pb
+#       request = cache_pb.GetRequest()
 # instead of:
-#   from momento_wire_types.cacheclient_pb2 import GetRequest
-#   request = GetRequest()
+#       from momento_wire_types.cacheclient_pb2 import GetRequest
+#       request = GetRequest()
 # This because the multi-level from will not work with the dynamic imports.
 if major >= 4 or (major == 3 and minor >= 20):
 ${v4_import_string}
