@@ -60,7 +60,9 @@ jobs:
 
       - name: Build package
         working-directory: python
-        run: make build
+        run: |
+          make build
+          ls -lsh dist
 
       - name: Publish package
         working-directory: python
