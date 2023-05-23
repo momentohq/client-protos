@@ -1,6 +1,6 @@
 .PHONY: all
 ## Generate sync unit tests, format, lint, and test
-all: protoc
+all: build
 
 .PHONY: install-poetry
 ## Bootstrap installing poetry
