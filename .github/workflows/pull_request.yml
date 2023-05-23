@@ -14,7 +14,7 @@ jobs:
         id: current-time
 
       - uses: actions/checkout@v2
-      
+
       - name: Commitlint and Other Shared Build Steps
         uses: momentohq/standards-and-practices/github-actions/shared-build@gh-actions-v1
         env:
@@ -38,7 +38,7 @@ jobs:
             npm run build
           popd
         shell: bash
-  
+
   build_javascriptweb:
     runs-on: ubuntu-latest
 
@@ -146,27 +146,27 @@ jobs:
         uses: gerred/actions/current-time@master
         id: current-time
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
 
-      - name: Install python dependencies
+      - name: Bootstrap poetry
         run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel build grpcio-tools
+          curl -sL https://install.python-poetry.org | python - -y --version 1.4.2
+
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Install dependencies
+        working-directory: python
+        run: make install
 
       - name: Build package
-        run: |
-          set -e
-          set -x
-          export PYPI_MOMENTO_WIRE_TYPE_VERSION=0.0.devBuild
-          pushd python
-            ./buildpypi.sh
-          popd
-        shell: bash
+        working-directory: python
+        run: make build
 
   build_csharp:
     runs-on: ubuntu-latest
