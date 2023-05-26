@@ -32,11 +32,13 @@ service Scs {
   rpc DictionarySet (_DictionarySetRequest) returns (_DictionarySetResponse) {}
   rpc DictionaryIncrement (_DictionaryIncrementRequest) returns (_DictionaryIncrementResponse) {}
   rpc DictionaryDelete (_DictionaryDeleteRequest) returns (_DictionaryDeleteResponse) {}
+  rpc DictionaryLength(_DictionaryLengthRequest) returns (_DictionaryLengthResponse) {}
 
   rpc SetFetch (_SetFetchRequest) returns (_SetFetchResponse) {}
   rpc SetUnion (_SetUnionRequest) returns (_SetUnionResponse) {}
   rpc SetDifference (_SetDifferenceRequest) returns (_SetDifferenceResponse) {}
   rpc SetContains (_SetContainsRequest) returns (_SetContainsResponse) {}
+  rpc SetLength(_SetLengthRequest) returns (_SetLengthResponse) {}
 
   rpc ListPushFront(_ListPushFrontRequest) returns (_ListPushFrontResponse) {}
   rpc ListPushBack(_ListPushBackRequest) returns (_ListPushBackResponse) {}
@@ -287,6 +289,23 @@ message _DictionaryDeleteRequest {
 
 message _DictionaryDeleteResponse {}
 
+message _DictionaryLengthRequest {
+  bytes dictionary_name = 1;
+}
+
+message _DictionaryLengthResponse {
+  message _Found {
+    uint32 length = 1;
+  }
+
+  message _Missing {}
+
+  oneof dictionary {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
 message _SetFetchRequest {
   bytes set_name = 1;
 }
@@ -361,6 +380,23 @@ message _SetContainsResponse {
     // This will be the same length as the elements passed in the request.
     // It represents whether each element is a member of the set, with indices corresponding to the request elements.
     repeated bool contains = 1;
+  }
+
+  message _Missing {}
+
+  oneof set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _SetLengthRequest {
+  bytes set_name = 1;
+}
+
+message _SetLengthResponse {
+  message _Found {
+    uint32 length = 1;
   }
 
   message _Missing {}
