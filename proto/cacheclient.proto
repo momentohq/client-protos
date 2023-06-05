@@ -79,6 +79,10 @@ service Scs {
   rpc SortedSetIncrement(_SortedSetIncrementRequest) returns (_SortedSetIncrementResponse) {}
   // Gives the rank of an element.
   rpc SortedSetGetRank(_SortedSetGetRankRequest) returns (_SortedSetGetRankResponse) {}
+  // Returns length of the sorted set
+  rpc SortedSetLength(_SortedSetLengthRequest) returns (_SortedSetLengthResponse) {}
+  // Returns number of elements in the sorted set between a given min and max score
+  rpc SortedSetLengthByScore(_SortedSetLengthByScoreRequest) returns (_SortedSetLengthByScoreResponse) {}
 }
 
 message _GetRequest {
@@ -900,5 +904,49 @@ message _SortedSetGetRankResponse {
   oneof rank {
     _RankResponsePart element_rank = 1;
     _SortedSetMissing missing = 2;
+  }
+}
+
+message _SortedSetLengthRequest {
+  bytes set_name = 1;
+}
+
+message _SortedSetLengthResponse {
+  message _Found {
+    uint32 length = 1;
+  }
+
+  message _Missing {}
+
+  oneof sorted_set {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _SortedSetLengthByScoreRequest {
+  bytes set_name = 1;
+  oneof min {
+    double inclusive_min = 2;
+    double exclusive_min = 3;
+    _Unbounded unbounded_min = 4;
+  };
+  oneof max {
+    double inclusive_max = 5;
+    double exclusive_max = 6;
+    _Unbounded unbounded_max = 7;
+  }
+}
+
+message _SortedSetLengthByScoreResponse {
+  message _Found {
+    uint32 length = 1;
+  }
+
+  message _Missing {}
+
+  oneof sorted_set {
+    _Found found = 1;
+    _Missing missing = 2;
   }
 }
