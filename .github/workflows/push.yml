@@ -284,7 +284,7 @@ jobs:
         run: |
           set -e
           set -x
-          pushd rust
+          pushd rust/momento-protos
             VERSION="${{needs.release.outputs.version}}"
             cargo build --release
           popd
@@ -298,6 +298,9 @@ jobs:
           set -e
           set -x
           pushd rust
-            cargo publish --allow-dirty --no-verify
+            # Because we locally modify Cargo.toml earlier during this publish workflow, we can't simply disallow dirty
+            # and we can't verify. We did a check at PR time to help catch some classes of proto error, but it's still
+            # kind of a loose publish check here.
+            cargo publish -p momento-protos --allow-dirty --no-verify
           popd
         shell: bash
