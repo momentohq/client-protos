@@ -1,0 +1,15 @@
+[package]
+name = "codegenerator"
+edition = "2021"
+description = "Protocol buffers code generator - for making sure you don't need protoc just for momento-protos"
+homepage = "https://gomomento.com/"
+repository = "https://github.com/momentohq/client_protos"
+license = "Apache-2.0"
+version = "0.1.0"
+authors = ["<eng@momentohq.com>"]
+publish = false
+
+[lib]
+
+[build-dependencies]
+tonic-build = { version = "0.9", features = [] }

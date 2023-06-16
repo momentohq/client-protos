@@ -1,29 +1,6 @@
-[package]
-name = "momento-protos"
-description = "Generated GRPC and Protocol Buffers types for Momento clients"
-homepage = "https://gomomento.com/"
-repository = "https://github.com/momentohq/client_protos"
-license = "Apache-2.0"
-version = "0.1.0"
-authors = ["<eng@momentohq.com>"]
-edition = "2021"
-keywords = ["service", "performance", "cache"]
-categories = ["web-programming"]
-includes = [
-    "Cargo.toml",
-    "src/**/*.rs",
-    "proto",
+
+[workspace]
+members = [
+    "proto_generator",
+    "momento-protos",
 ]
-
-[lib]
-name = "momento_protos"
-path = "src/lib.rs"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-prost = "0.11"
-tonic = "0.8"
-
-[build-dependencies]
-tonic-build = "0.8"
