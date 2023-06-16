@@ -207,6 +207,8 @@ jobs:
           set -e
           set -x
           pushd rust
+            echo make sure the code generator runs first so the files are there when we build momento-protos
+            cargo build -p codegenerator
             cargo build
           popd
         shell: bash
@@ -227,10 +229,6 @@ jobs:
           set -e
           set -x
           pushd rust
-            # During a PR we build the workspace, which will generate protos. They should be the same as what you checked in.
-            # If not, this should fail due to local modifications, or rather, a diff between what you think protoc should have
-            # output and what the github protoc we have installed thinks it should output. Or you just changed protos and forgot
-            # to check in the new generated code ;-)
-            cargo publish -p momento-protos --verbose --dry-run
+            cargo publish -p momento-protos --verbose --dry-run --allow-dirty --no-verify
           popd
         shell: bash

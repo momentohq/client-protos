@@ -285,6 +285,8 @@ jobs:
           set -e
           set -x
           pushd rust/momento-protos
+            echo make sure the code generator runs first so the files are there when we build momento-protos
+            cargo build -p codegenerator
             VERSION="${{needs.release.outputs.version}}"
             cargo build --release
           popd
