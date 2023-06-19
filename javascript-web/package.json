@@ -13,7 +13,7 @@
     "build": "rm -rf dist && mkdir dist && ./generate_protos.sh linux && cp index.ts src/ && tsc && cp src/*.d.ts ./dist && cp src/*.js ./dist"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@tsconfig/node16": "1.0.2",
     "@types/node": "16.10.3",
