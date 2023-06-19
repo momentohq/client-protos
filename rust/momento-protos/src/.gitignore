@@ -1,2 +1,5 @@
+# We generate source into this directory from proto-generator
 *.rs
+
+# Need this file to list the proto module imports
 !lib.rs

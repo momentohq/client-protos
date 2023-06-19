@@ -299,13 +299,13 @@ jobs:
           pushd rust/momento-protos/src
             echo Removing .gitignore file so cargo publish picks up the generated proto *.rs files.
             echo Cargo publish respects .gitignore, but we use that file to help developers changing protos.
-            echo Once we're on github and publishing, that file's presence blocks us from publishing the
+            echo Once we are on github and publishing, the presence of that file blocks us from publishing the
             echo generated protos. Since that is what we are trying to do, we have to remove it during the
             echo github publish.
-            echo Note that it's still helpful to have it in local clones, as you can still generate your protos
+            echo Note that it is still helpful to have it in local clones, as you can still generate your protos
             echo and inspect the output over here in momento-protos/src without fear of accidentally submitting
             echo locally generated source files. This is a publish-time concern only!
-            echo In case you're curious, we're doing all of this so end users of the momento client sdk do not
+            echo In case you are curious, we are doing all of this so end users of the momento client sdk do not
             echo need to have protoc installed solely on our account.
             ls -alh
             rm .gitignore
