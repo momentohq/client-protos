@@ -110,11 +110,11 @@ message _GenerateApiTokenRequest {
         TopicPermissions topic_permissions = 2;
       }
 
-      message Any {}
+      message All {}
 
       message CacheResource {
         oneof kind {
-          Any any = 1;
+          All all = 1;
           string cache_name = 2;
         }
       }
@@ -126,7 +126,7 @@ message _GenerateApiTokenRequest {
 
       message TopicResource {
         oneof kind {
-          Any any = 1;
+          All all = 1;
           string topic_name = 2;
         }
       }
