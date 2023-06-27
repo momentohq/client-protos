@@ -121,7 +121,7 @@ message _GenerateApiTokenRequest {
 
       message CachePermissions {
         CacheRole role = 1;
-        CacheResource cache = 2;
+        repeated CacheResource caches = 2;
       }
 
       message TopicResource {
@@ -134,7 +134,7 @@ message _GenerateApiTokenRequest {
       message TopicPermissions {
         TopicRole role = 1;
         CacheResource cache = 2;
-        TopicResource topic = 3;
+        repeated TopicResource topics = 3;
       }
     }
 
