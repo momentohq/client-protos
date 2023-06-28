@@ -23,7 +23,7 @@ do
     if [[ $python_protobuf_version == "protobuf>4" ]]; then
         pyi_out="--pyi_out=$src_path"
     fi
-    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path cacheclient.proto controlclient.proto auth.proto cachepubsub.proto
+    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path extensions.proto cacheclient.proto controlclient.proto auth.proto cachepubsub.proto
 
     # A shortcoming of the generated code is in the grpc generated code,
     # the protobuf imports are absolute instead of relative.
@@ -40,6 +40,13 @@ do
         # will work when installed, eg:
         # `import cacheclient_pb2 as cacheclient__pb2` -> `from . import cacheclient_pb2 as cacheclient__pb2`
         sed -i.old "s/^\(import $grpc_module_name as \)/from . \1/g" $grpc_src
+    done
+
+    # The same shortcoming affects imports in *_pb2.py files, e.g., `cachepubsub_pb2` importing `extensions_pb2`
+    # `import extensions_pb2 as extensions__pb2` -> `from . import extensions_pb2 as extensions__pb2`
+    for pb2_src in $src_path/*_pb2.py
+    do
+        sed -i.old "s/^\(import extensions_pb2 as \)/from . \1/g"  $pb2_src
     done
 
     rm $src_path/*.old
