@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && ./generate_protos.sh && cp index.ts src/ && tsc"
+    "build": "rm -rf dist && mkdir -p src && ./generate_protos.sh && cp index.ts src/ && tsc"
   },
   "author": "",
   "license": "Apache-2.0",
