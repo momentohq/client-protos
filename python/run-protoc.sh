@@ -15,7 +15,7 @@ do
     src_path=${generated_code_dirs[$index]}
 
     poetry add $python_protobuf_version
-    
+
     # Generate python code from proto files
     # The versions less than 3.20 do not support the --pyi_out flag
     # Regardless we generate once and put in the main package location.
@@ -23,7 +23,7 @@ do
     if [[ $python_protobuf_version == "protobuf>4" ]]; then
         pyi_out="--pyi_out=$src_path"
     fi
-    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path cacheclient.proto controlclient.proto auth.proto
+    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path cacheclient.proto controlclient.proto auth.proto cachepubsub.proto
 
     # A shortcoming of the generated code is in the grpc generated code,
     # the protobuf imports are absolute instead of relative.
@@ -94,5 +94,6 @@ else:
 ${v319_import_string}
 
 __all__ = [$all_string]
-EOF)
+EOF
+)
 printf "$init_contents" > $package_path/__init__.py
