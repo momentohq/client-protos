@@ -36,5 +36,5 @@ if (getResult.getResult() === ECacheResult.HIT) {
 
 # Generating definitions
 ```bash
-./generate_protos.sh [osx, linux, windows]
+./generate_protos.sh
 ```
