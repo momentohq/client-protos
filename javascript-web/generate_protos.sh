@@ -4,20 +4,25 @@ set -x
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   platform='darwin-x86_64'
+  sed_command="sed -i ''"
 elif [[ "$OSTYPE" == "linux"* ]]; then
   platform='linux-x86_64'
+  sed_command="sed -i"
 elif [[ "$OSTYPE" == "cygwin"* || "$OSTYPE" == "msys"* ]]; then
   platform='windows-x86_64'
+  sed_command="sed -i"
 else
   echo "Unknown OS: $OSTYPE"
   exit 1
 fi
 
 version='1.3.1'
-plugin='/usr/local/bin/protoc-gen-grpc-web'
-sudo rm -f $plugin
-sudo curl -L https://github.com/grpc/grpc-web/releases/download/$version/protoc-gen-grpc-web-$version-$platform -o $plugin
-sudo chmod a+x $plugin
+mkdir -p $HOME/bin
+export PATH=$PATH:$HOME/bin
+plugin="$HOME/bin/protoc-gen-grpc-web"
+rm -f $plugin
+curl -L https://github.com/grpc/grpc-web/releases/download/$version/protoc-gen-grpc-web-$version-$platform -o $plugin
+chmod a+x $plugin
 
 out=./src
 rm -rf $out
@@ -62,29 +67,22 @@ mkdir $out
 
 proto_file_list=" extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto "
 
+echo "Backing up protos dir"
+cp -r ../proto ../proto.bak
+
 echo "Commenting out package declarations"
 for f in $proto_file_list
 do
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
-  else
-    sed -i 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
-  fi
+  $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
 done
 
 protoc -I=../proto -I=/usr/local/include \
   --js_out=import_style=commonjs_strict:$out \
   ${proto_file_list}
 
-echo "Uncommenting package declarations"
-for f in $proto_file_list
-do
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' 's/^\/\/package \(.*\)/package \1/g' ../proto/${f}
-  else
-    sed -i 's/^\/\/package \(.*\)/package \1/g' ../proto/${f}
-  fi
-done
+echo "Restoring backed up protos"
+rm -rf ../proto
+mv ../proto.bak ../proto
 
 protoc -I=../proto -I=/usr/local/include \
   --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
