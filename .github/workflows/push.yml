@@ -45,6 +45,10 @@ jobs:
               - 'protos/**'
             java:
               - 'java/**'
+      - name: Debug Outputs
+        run: |
+          echo "Protos output: ${{ steps.filter.outputs.protos }}"
+          echo "Java output: ${{ steps.filter.outputs.java }}"
 
   publish_javascript:
     # The type of runner that the job will run on
@@ -133,7 +137,8 @@ jobs:
   publish_java:
     runs-on: ubuntu-latest
     needs: [release, changes]
-    if: ${{ needs.changes.outputs.protos == 'true' || needs.changes.outputs.java == 'true' }}
+    # Temporarily disable this while debugging conditional release action
+    #if: ${{ needs.changes.outputs.protos == 'true' || needs.changes.outputs.java == 'true' }}
 
     steps:
       - name: Checkout code

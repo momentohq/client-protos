@@ -26,12 +26,14 @@ dependencies {
     implementation("io.grpc:grpc-api")
     implementation("io.grpc:grpc-protobuf")
     implementation("com.google.protobuf:protobuf-java")
+    implementation("com.google.api.grpc:proto-google-common-protos:2.9.0") // version pulled from protobuf-java
     implementation("com.google.guava:guava:31.1-android") // version pulled from protobuf-java
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 
-    permitUsedUndeclared("com.google.api.grpc:proto-google-common-protos:2.9.0")
-
-    protobuf(files("../proto/"))
+    protobuf(files(fileTree("../proto") {
+        include("*.proto")
+        exclude("**/*/*.proto")
+    }))
 }
 
 java {
@@ -111,9 +113,10 @@ publishing {
                 }
                 developers {
                     developer {
-                        id.set("nand4011")
-                        name.set("Nate Anderson")
+                        id.set("momento")
+                        name.set("Momento")
                         organization.set("Momento")
+                        email.set("eng-deveco@momentohq.com")
                     }
                 }
                 scm {
