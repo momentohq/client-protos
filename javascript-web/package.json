@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && mkdir dist && ./generate_protos.sh linux && cp index.ts src/ && tsc && cp src/*.d.ts ./dist && cp src/*.js ./dist"
+    "build": "rm -rf dist && mkdir dist && ./generate_protos.sh && cp index.ts src/ && tsc && cp src/*.d.ts ./dist && cp src/*.js ./dist",
+    "build-only": "rm -rf dist && mkdir dist && cp index.ts src/ && tsc && cp src/*.d.ts ./dist && cp src/*.js ./dist"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -20,6 +21,7 @@
     "typescript": "4.4.3"
   },
   "dependencies": {
+    "grpc-web": "1.4.2"
   },
   "files": [
     "dist"
