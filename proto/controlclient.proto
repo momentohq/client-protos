@@ -22,7 +22,7 @@ service ScsControl {
 
 message _CreateIndexRequest {
   string index_name = 1;
-  uint num_dimensions = 2;
+  uint64 num_dimensions = 2;
 }
 
 message _CreateIndexResponse {
