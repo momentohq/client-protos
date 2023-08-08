@@ -36,6 +36,7 @@ message _DeleteIndexResponse {
 }
 
 message _ListIndexesRequest {
+  string next_token = 1;
 }
 
 message _ListIndexesResponse {
