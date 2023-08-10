@@ -15,7 +15,7 @@ service ScsControl {
   rpc CreateSigningKey (_CreateSigningKeyRequest) returns (_CreateSigningKeyResponse) {}
   rpc RevokeSigningKey (_RevokeSigningKeyRequest) returns (_RevokeSigningKeyResponse) {}
   rpc ListSigningKeys (_ListSigningKeysRequest) returns (_ListSigningKeysResponse) {}
-  rpc CreateIndex (_CreateIndexRequest) returns (_CreateIndexRequest) {}
+  rpc CreateIndex (_CreateIndexRequest) returns (_CreateIndexResponse) {}
   rpc DeleteIndex(_DeleteIndexRequest) returns (_DeleteIndexResponse) {}
   rpc ListIndexes(_ListIndexesRequest) returns (_ListIndexesResponse) {}
 }
