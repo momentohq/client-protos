@@ -1,3 +1,7 @@
+pub mod permissions {
+  include!("permissions.rs");
+}
+
 pub mod auth {
   include!("auth.rs");
 }
