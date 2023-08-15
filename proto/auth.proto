@@ -76,6 +76,8 @@ message _GenerateApiTokenRequest {
       CacheReadWrite = 1;
       // Restricts access to apis that read from caches: No higher level resource description or modification.
       CacheReadOnly = 2;
+      // Doesn't allow conditional write APIs (SetIfNotExists, IncreaseTTL etc)
+      CacheWriteOnly = 3;
     }
 
     // Aliases for categories of functionality.
@@ -85,6 +87,8 @@ message _GenerateApiTokenRequest {
       TopicReadWrite = 1;
       // Restricts access to apis that read from topics: No higher level resource description or modification.
       TopicReadOnly = 2;
+      // Only publish allowed
+      TopicWriteOnly = 3;
     }
 
     string auth_token = 3;
@@ -118,12 +122,23 @@ message _GenerateApiTokenRequest {
         }
       }
 
+      message CacheItemSelector {
+        oneof kind {
+          bytes key = 1;
+          bytes key_prefix = 2;
+        }
+      }
+
       message CachePermissions {
         CacheRole role = 1;
         oneof cache {
           All all_caches = 2;
           CacheSelector cache_selector = 3;
-        } 
+        }
+        oneof cache_item {
+          All all_items = 4;
+          CacheItemSelector item_selector = 5;
+        }
       }
 
       message TopicSelector {
