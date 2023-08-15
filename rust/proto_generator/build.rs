@@ -15,7 +15,9 @@ fn main() {
         .out_dir(out_dir)
         .compile(
             &[
+                format!("{proto_dir}/permissions.proto"),
                 format!("{proto_dir}/auth.proto"),
+                format!("{proto_dir}/token.proto"),
                 format!("{proto_dir}/cacheclient.proto"),
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),
