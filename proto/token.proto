@@ -19,7 +19,9 @@ message _GenerateTempAuthTokenRequest {
 
     Expires expires = 1;
 
-    Permissions permissions = 2;
+  string auth_token = 2;
+
+    Permissions permissions = 3;
 }
 
 message _GenerateTempAuthTokenResponse {
