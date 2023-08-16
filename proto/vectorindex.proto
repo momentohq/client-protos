@@ -3,30 +3,30 @@ syntax = "proto3";
 package vectorindex;
 
 service VectorIndex {
-    rpc UpsertItemBatch(UpsertItemBatchRequest) returns (UpsertItemBatchResponse) {}
-    rpc Search(SearchRequest) returns (SearchResponse) {}
+    rpc UpsertItemBatch(_UpsertItemBatchRequest) returns (_UpsertItemBatchResponse) {}
+    rpc Search(_SearchRequest) returns (_SearchResponse) {}
 }
 
-message Item {
+message _Item {
     string id = 1;
-    Vector vector = 2;
-    repeated Metadata metadata = 3;
+    _Vector vector = 2;
+    repeated _Metadata metadata = 3;
 }
 
-message UpsertItemBatchRequest {
+message _UpsertItemBatchRequest {
     string index_name = 1;
-    repeated Item items = 2;
+    repeated _Item items = 2;
 }
 
-message UpsertItemBatchResponse {
+message _UpsertItemBatchResponse {
     repeated uint32 error_indices = 1;
 }
 
-message Vector {
+message _Vector {
     repeated float elements = 1;
 }
 
-message Metadata {
+message _Metadata {
     string field = 1;
     oneof value {
         // Eventually can support ints, dates, etc
@@ -34,7 +34,7 @@ message Metadata {
     }
 }
 
-message MetadataRequest {
+message _MetadataRequest {
     message Some {
         repeated string fields = 1;
     }
@@ -45,19 +45,19 @@ message MetadataRequest {
     }
 }
 
-message SearchRequest {
+message _SearchRequest {
     string index_name = 1;
     uint32 top_k = 2;
-    Vector query_vector = 3;
-    MetadataRequest metadata_fields = 4;
+    _Vector query_vector = 3;
+    _MetadataRequest metadata_fields = 4;
 }
 
-message SearchHit {
+message _SearchHit {
     string id = 1;
     float distance = 2;
-    repeated Metadata metadata = 3;
+    repeated _Metadata metadata = 3;
 }
 
-message SearchResponse {
-    repeated SearchHit hits = 1;
+message _SearchResponse {
+    repeated _SearchHit hits = 1;
 }
