@@ -6,8 +6,6 @@ option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "momento.auth";
 
-package token;
-
 service Token {
   rpc GenerateTempAuthToken (_GenerateTempAuthTokenRequest) returns (stream _GenerateTempAuthTokenResponse) {}
 }
@@ -21,7 +19,7 @@ message _GenerateTempAuthTokenRequest {
 
     Expires expires = 1;
 
-    permissions.Permissions permissions = 2;
+    Permissions permissions = 2;
 }
 
 message _GenerateTempAuthTokenResponse {

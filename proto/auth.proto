@@ -73,7 +73,7 @@ message _GenerateApiTokenRequest {
 
     string auth_token = 3;
 
-  permissions.Permissions permissions = 4;
+    Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {
