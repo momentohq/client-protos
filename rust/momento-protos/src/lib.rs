@@ -1,3 +1,5 @@
+use crate::permissions::Permissions;
+
 pub mod permissions {
   include!("permissions.rs");
 }

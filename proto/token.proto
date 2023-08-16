@@ -4,7 +4,7 @@ import "permissions.proto";
 
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
-option java_package = "momento.auth";
+option java_package = "momento.token";
 
 service Token {
   rpc GenerateTempAuthToken (_GenerateTempAuthTokenRequest) returns (stream _GenerateTempAuthTokenResponse) {}
