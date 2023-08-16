@@ -74,6 +74,7 @@ echo "Commenting out package declarations"
 for f in $proto_file_list
 do
   $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
+  $sed_command 's/permissions.Permissions/Permissions/g' ../proto/${f}
 done
 
 protoc -I=../proto -I=/usr/local/include \
