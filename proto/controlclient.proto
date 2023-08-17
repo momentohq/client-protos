@@ -39,7 +39,7 @@ message _ListIndexesRequest {
 }
 
 message _ListIndexesResponse {
-  repeated string indexes = 1;
+  repeated string index_names = 1;
 }
 
 message _DeleteCacheRequest {
