@@ -4,6 +4,7 @@ package vectorindex;
 
 service VectorIndex {
     rpc AddItemBatch(_AddItemBatchRequest) returns (_AddItemBatchResponse) {}
+    rpc DeleteItemBatch(_DeleteItemBatchRequest) returns (_DeleteItemBatchResponse) {}
     rpc Search(_SearchRequest) returns (_SearchResponse) {}
 }
 
@@ -20,6 +21,14 @@ message _AddItemBatchRequest {
 
 message _AddItemBatchResponse {
     repeated uint32 error_indices = 1;
+}
+
+message _DeleteItemBatchRequest {
+    string index_name = 1;
+    repeated string ids = 2;
+}
+
+message _DeleteItemBatchResponse {
 }
 
 message _Vector {
