@@ -9,13 +9,18 @@ fn main() {
     eprintln!("workspace projects - because this project is _specifically_ supposed to not be a Cargo dependency.");
     eprintln!("We did this so downstream users don't need to have protoc when compiling momento-protos!");
 
+    eprintln!("If you are finding that your builds work locally, but not in CI, then you need to manual cleanup some artifacts");
+    eprintln!("Clear out the `momento-protos/src` of all protos besides lib.rs, then run `cargo clean` and `cargo build`.");
+
     tonic_build::configure()
         .build_client(true)
         .build_server(true)
         .out_dir(out_dir)
         .compile(
             &[
+                format!("{proto_dir}/permissions.proto"),
                 format!("{proto_dir}/auth.proto"),
+                format!("{proto_dir}/token.proto"),
                 format!("{proto_dir}/cacheclient.proto"),
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),

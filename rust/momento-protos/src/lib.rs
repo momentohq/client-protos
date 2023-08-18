@@ -1,5 +1,13 @@
+pub mod permissions {
+  include!("permissions.rs");
+}
+
 pub mod auth {
   include!("auth.rs");
+}
+
+pub mod token {
+  include!("token.rs");
 }
 
 pub mod cache_client {
