@@ -65,7 +65,7 @@ mkdir $out
 # So we do a terrible hack to comment out the package declaration before generating the JS types,
 # but add them back before generating the GRPC web bindings
 
-proto_file_list=" permissions.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto "
+proto_file_list=" permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto "
 
 echo "Backing up protos dir"
 cp -r ../proto ../proto.bak
