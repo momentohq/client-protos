@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "permissions.proto";
+import "permissionmessages.proto";
 
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
@@ -73,7 +73,7 @@ message _GenerateApiTokenRequest {
 
     string auth_token = 3;
 
-    permissions.Permissions permissions = 4;
+    permission_messages.Permissions permissions = 4;
 }
 
 message _GenerateApiTokenResponse {

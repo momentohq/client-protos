@@ -1,5 +1,5 @@
-pub mod permissions {
-  include!("permissions.rs");
+pub mod permission_messages {
+  include!("permission_messages.rs");
 }
 
 pub mod auth {
