@@ -3,7 +3,7 @@ syntax = "proto3";
 package vectorindex;
 
 service VectorIndex {
-    rpc UpsertItemBatch(_UpsertItemBatchRequest) returns (_UpsertItemBatchResponse) {}
+    rpc AddItemBatch(_AddItemBatchRequest) returns (_AddItemBatchResponse) {}
     rpc Search(_SearchRequest) returns (_SearchResponse) {}
 }
 
@@ -13,12 +13,12 @@ message _Item {
     repeated _Metadata metadata = 3;
 }
 
-message _UpsertItemBatchRequest {
+message _AddItemBatchRequest {
     string index_name = 1;
     repeated _Item items = 2;
 }
 
-message _UpsertItemBatchResponse {
+message _AddItemBatchResponse {
     repeated uint32 error_indices = 1;
 }
 
