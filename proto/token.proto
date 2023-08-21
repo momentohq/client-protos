@@ -9,7 +9,7 @@ option java_package = "momento.token";
 package token;
 
 service Token {
-  rpc GenerateAuthAcorn (_GenerateDisposableTokenRequest) returns (_GenerateDisposableTokenResponse) {}
+  rpc GenerateDisposableToken (_GenerateDisposableTokenRequest) returns (_GenerateDisposableTokenResponse) {}
 }
 
 message _GenerateDisposableTokenRequest {
