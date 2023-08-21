@@ -9,10 +9,10 @@ option java_package = "momento.token";
 package token;
 
 service Token {
-  rpc GenerateAuthAcorn (_GenerateAuthAcornRequest) returns (_GenerateAuthAcornResponse) {}
+  rpc GenerateDisposableToken (_GenerateDisposableTokenRequest) returns (_GenerateDisposableTokenResponse) {}
 }
 
-message _GenerateAuthAcornRequest {
+message _GenerateDisposableTokenRequest {
     // generate a token that has an expiry
     message Expires {
         // how many seconds do you want the api token to be valid for?
@@ -26,7 +26,7 @@ message _GenerateAuthAcornRequest {
   permission_messages.Permissions permissions = 3;
 }
 
-message _GenerateAuthAcornResponse {
+message _GenerateDisposableTokenResponse {
   // the new api key used for authentication against Momento backend
   string api_key = 1;
   // the Momento endpoint that this token is allowed to make requests against
