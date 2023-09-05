@@ -21,6 +21,7 @@
     <Protobuf Include="../proto/cacheping.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/vectorindex.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/cachepubsub.proto" GrpcServices="Client" />
+    <Protobuf Include="../proto/token.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/extensions.proto" GrpcServices="Client" />
   </ItemGroup>
 
