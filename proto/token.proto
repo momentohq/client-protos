@@ -5,6 +5,7 @@ import "permissionmessages.proto";
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "momento.token";
+option csharp_namespace = "Momento.Protos.TokenClient";
 
 package token;
 
