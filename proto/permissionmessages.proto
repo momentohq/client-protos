@@ -81,6 +81,7 @@ message PermissionsType {
   message TopicSelector {
     oneof kind {
       string topic_name = 1;
+      string topic_name_prefix = 2;
     }
   }
 
