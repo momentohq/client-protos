@@ -171,7 +171,7 @@ message _GetByScoreRequest {
   uint64 offset = 4;
   // How many elements should we limit to returning? (8192 max)
   uint64 limit_elements = 5;
-  _Order order = 4;
+  _Order order = 6;
 }
 
 message _GetByScoreResponse {
