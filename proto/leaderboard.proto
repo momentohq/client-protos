@@ -35,43 +35,20 @@ service Leaderboard {
 
   // Get a range of elements.
   // * Ordinal, 0-based rank.
-  // * Ascending order (0 is your lowest score).
   // * Range can span up to 8192 elements.
   // See RankRange for details about permissible ranges.
-  rpc GetByRankAsc(_GetByRankRequest) returns (_GetByRankResponse);
-
-  // Get a range of elements.
-  // * Ordinal, 0-based rank.
-  // * Descending order (0 is your highest score).
-  // * Range can span up to 8192 elements.
-  // See RankRange for details about permissible ranges.
-  rpc GetByRankDesc(_GetByRankRequest) returns (_GetByRankResponse);
+  rpc GetByRank(_GetByRankRequest) returns (_GetByRankResponse);
 
   // Get the rank of a particular id in the leaderboard.
   // * Ordinal, 0-based rank.
-  // * Ascending order (0 is the lowest-scoring rank).
-  rpc GetRankAsc(_GetRankRequest) returns (_RankedElement);
-
-  // Get the rank of a particular id in the leaderboard.
-  // * Ordinal, 0-based rank.
-  // * Descending order (0 is the highest-scoring rank).
-  rpc GetRankDesc(_GetRankRequest) returns (_RankedElement);
+  rpc GetRank(_GetRankRequest) returns (_RankedElement);
 
   // Get a range of elements by a score range.
   // * Ordinal, 0-based rank.
-  // * Ascending order (0 is the lowest-scoring rank)
   //
   // You can request up to 8192 elements at a time. To page through many elements that all
   // fall into a score range you can repeatedly invoke this api with the offset parameter.
-  rpc GetByScoreAsc(_GetByScoreRequest) returns (_GetByScoreResponse);
-
-  // Get a range of elements by a score range.
-  // * Ordinal, 0-based rank.
-  // * Descending order (0 is the highest-scoring rank)
-  //
-  // You can request up to 8192 elements at a time. To page through many elements that all
-  // fall into a score range you can repeatedly invoke this api with the offset parameter.
-  rpc GetByScoreDesc(_GetByScoreRequest) returns (_GetByScoreResponse);
+  rpc GetByScore(_GetByScoreRequest) returns (_GetByScoreResponse);
 }
 
 // Leaderboards are made up of many of these.
@@ -131,6 +108,13 @@ message _ScoreRange {
   float end_exclusive = 2;
 }
 
+enum _Order {
+  // Ascending order (0 is the lowest-scoring rank)
+  ASCENDING = 0;
+  // Descending order (0 is the highest-scoring rank)
+  DESCENDING = 1;
+}
+
 message _Empty {}
 
 message _DeleteLeaderboardRequest {
@@ -158,6 +142,7 @@ message _GetByRankRequest {
   string cache_name = 1;
   string leaderboard = 2;
   _RankRange rank_range = 3;
+  _Order order = 4;
 }
 
 message _GetByRankResponse {
@@ -168,6 +153,7 @@ message _GetRankRequest {
   string cache_name = 1;
   string leaderboard = 2;
   uint64 id = 3;
+  _Order order = 4;
 }
 
 message _RemoveElementsRequest {
@@ -185,6 +171,7 @@ message _GetByScoreRequest {
   uint64 offset = 4;
   // How many elements should we limit to returning? (8192 max)
   uint64 limit_elements = 5;
+  _Order order = 6;
 }
 
 message _GetByScoreResponse {
