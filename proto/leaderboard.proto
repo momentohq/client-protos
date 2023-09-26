@@ -58,7 +58,7 @@ message _Element {
   // between 0 and 2^63-1 inclusive.
   // An id can only appear in a leaderboard one time. You can't have 2 scores for 1 player,
   // unless that player has 2 ids!
-  uint64 id = 1;
+  uint64 id = 1 [jstype = JS_STRING];
 
   // The value by which this element is sorted within the leaderboard.
   float score = 2;
@@ -67,7 +67,7 @@ message _Element {
 // Query APIs returning RankedElement offer the familiar Element id and score tuple, but they
 // also include the rank per the individual API's ranking semantic.
 message _RankedElement {
-  uint64 id = 1;
+  uint64 id = 1 [jstype = JS_STRING];
   float score = 2;
   uint64 rank = 3;
 }
@@ -152,7 +152,7 @@ message _GetByRankResponse {
 message _GetRankRequest {
   string cache_name = 1;
   string leaderboard = 2;
-  uint64 id = 3;
+  uint64 id = 3 [jstype = JS_STRING];
   _Order order = 4;
 }
 
@@ -160,7 +160,7 @@ message _RemoveElementsRequest {
   string cache_name = 1;
   string leaderboard = 2;
   // You can have up to 8192 ids in this list.
-  repeated uint64 ids = 3;
+  repeated uint64 ids = 3 [jstype = JS_STRING];
 }
 
 message _GetByScoreRequest {
