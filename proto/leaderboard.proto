@@ -106,13 +106,13 @@ message _ScoreRange {
     _Unbounded unbounded_min = 1;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
-    float min_score = 2;
+    float min_inclusive = 2;
   }
   oneof max {
     _Unbounded unbounded_max = 3;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
-    float max_score = 4;
+    float max_exclusive = 4;
   }
 }
 
