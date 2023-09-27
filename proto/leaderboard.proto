@@ -69,7 +69,7 @@ message _Element {
 message _RankedElement {
   uint64 id = 1 [jstype = JS_STRING];
   float score = 2;
-  uint64 rank = 3;
+  uint64 rank = 3 [jstype = JS_STRING];
 }
 
 // Query APIs using RankRange expect a limit of 8192 elements. Requesting a range wider than
@@ -90,8 +90,8 @@ message _RankedElement {
 // * 4..3
 // * 0..8193
 message _RankRange {
-  uint64 start_inclusive = 1;
-  uint64 end_exclusive = 2;
+  uint64 start_inclusive = 1 [jstype = JS_STRING];
+  uint64 end_exclusive = 2 [jstype = JS_STRING];
 }
 
 // Query APIs using ScoreRange may match more than the limit of 8192 elements. These apis will
@@ -128,7 +128,7 @@ message _GetLeaderboardLengthRequest {
 }
 
 message _GetLeaderboardLengthResponse {
-   uint64 count = 1;
+   uint64 count = 1 [jstype = JS_STRING];
 }
 
 message _UpsertElementsRequest {
@@ -168,9 +168,9 @@ message _GetByScoreRequest {
   string leaderboard = 2;
   _ScoreRange score_range = 3;
   // Where should we start returning scores from in the elements within this range?
-  uint64 offset = 4;
+  uint64 offset = 4 [jstype = JS_STRING];
   // How many elements should we limit to returning? (8192 max)
-  uint64 limit_elements = 5;
+  uint64 limit_elements = 5 [jstype = JS_STRING];
   _Order order = 6;
 }
 
