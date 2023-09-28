@@ -7,4 +7,4 @@ set -x
 # tricky to build on mac. This issue showed what I believe is the "official" way to do it now... question mark?
 #   https://github.com/protocolbuffers/protobuf/pull/9874#issuecomment-1481023982
 #
-npx grpc_tools_node_protoc -I=../proto -I=/usr/local/include --ts_out=src permissionmessages.proto cacheclient.proto controlclient.proto cachepubsub.proto auth.proto cacheping.proto vectorindex.proto token.proto
+npx grpc_tools_node_protoc -I=../proto -I=/usr/local/include --ts_out=src permissionmessages.proto cacheclient.proto controlclient.proto cachepubsub.proto auth.proto cacheping.proto vectorindex.proto token.proto leaderboard.proto

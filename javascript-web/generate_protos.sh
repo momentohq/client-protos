@@ -64,27 +64,42 @@ mkdir $out
 # Removing the package permanently is not possible now because it is part of the GRPC method descriptor.
 # So we do a terrible hack to comment out the package declaration before generating the JS types,
 # but add them back before generating the GRPC web bindings
+function generate_proto() {
+  local proto_file_list=("$@")
+  echo "Backing up protos dir"
+  cp -r ../proto ../proto.bak
+
+  echo "Commenting out package declarations"
+  for f in $proto_file_list
+  do
+    $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
+    $sed_command 's/permission_messages.Permissions/Permissions/g' ../proto/${f}
+  done
+
+  protoc -I=../proto -I=/usr/local/include \
+    --js_out=import_style=commonjs_strict:$out \
+    ${proto_file_list}
+
+  echo "Restoring backed up protos"
+  rm -rf ../proto
+  mv ../proto.bak ../proto
+
+  protoc -I=../proto -I=/usr/local/include \
+    --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
+    ${proto_file_list}
+}
 
 proto_file_list=" permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto "
+generate_proto "${proto_file_list[@]}"
 
-echo "Backing up protos dir"
-cp -r ../proto ../proto.bak
+## Second pass for leaderboard.proto
+# The hack we do above removes the `package <pkg-name>` from each proto file, which causes
+# clashes between the multiple _Empty and _Unbounded definitions and prevents the javascript-web 
+# package from building. This second pass isolates the compiling of the leaderboard.proto
+# to prevent such clashes and to avoid having to maintain unique proto names in all files.
 
-echo "Commenting out package declarations"
-for f in $proto_file_list
-do
-  $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
-  $sed_command 's/permission_messages.Permissions/Permissions/g' ../proto/${f}
-done
-
-protoc -I=../proto -I=/usr/local/include \
-  --js_out=import_style=commonjs_strict:$out \
-  ${proto_file_list}
-
-echo "Restoring backed up protos"
-rm -rf ../proto
-mv ../proto.bak ../proto
-
-protoc -I=../proto -I=/usr/local/include \
-  --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
-  ${proto_file_list}
+# Again, this is all supposed to be temporary hacky fixes until the `--js_out` option 
+# supports TypeScript itself. 
+# See https://github.com/grpc/grpc-web/blob/7c528784576abbbfd05eb6085abb8c319d76ab05/README.md?plain=1#L246
+proto_file_list=" leaderboard.proto "
+generate_proto "${proto_file_list[@]}"
