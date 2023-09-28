@@ -21,14 +21,14 @@ package leaderboard;
 // below -16777216 and above 16777216, not all integers are able to be represented.
 service Leaderboard {
   // Deletes a leaderboard. After this call, you're not incurring storage cost for this leaderboard anymore.
-  rpc DeleteLeaderboard(_DeleteLeaderboardRequest) returns (_Empty);
+  rpc DeleteLeaderboard(_DeleteLeaderboardRequest) returns (_Leaderboard_Empty);
 
   // Insert or update elements in a leaderboard. You can do up to 8192 elements per call.
   // There is no partial failure: Upsert succeeds or fails.
-  rpc UpsertElements(_UpsertElementsRequest) returns (_Empty);
+  rpc UpsertElements(_UpsertElementsRequest) returns (_Leaderboard_Empty);
 
   // Remove up to 8192 elements at a time from a leaderboard. Elements are removed by id.
-  rpc RemoveElements(_RemoveElementsRequest) returns (_Empty);
+  rpc RemoveElements(_RemoveElementsRequest) returns (_Leaderboard_Empty);
 
   // Returns the length of a leaderboard in terms of ID count. 
   rpc GetLeaderboardLength(_GetLeaderboardLengthRequest) returns (_GetLeaderboardLengthResponse);
@@ -94,7 +94,7 @@ message _RankRange {
   uint64 end_exclusive = 2 [jstype = JS_STRING];
 }
 
-message _Unbounded { }
+message _Leaderboard_Unbounded { }
 
 // Query APIs using ScoreRange may match more than the limit of 8192 elements. These apis will
 // include an offset and limit parameter pair, which can be used to page through score ranges
@@ -103,13 +103,13 @@ message _Unbounded { }
 // ScoreRange models half-open ranges: 0..4 refers to scores 0, 1.1234, 2.5 and 3.999.
 message _ScoreRange {
   oneof min {
-    _Unbounded unbounded_min = 1;
+    _Leaderboard_Unbounded unbounded_min = 1;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
     float min_inclusive = 2;
   }
   oneof max {
-    _Unbounded unbounded_max = 3;
+    _Leaderboard_Unbounded unbounded_max = 3;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
     float max_exclusive = 4;
@@ -123,7 +123,7 @@ enum _Order {
   DESCENDING = 1;
 }
 
-message _Empty {}
+message _Leaderboard_Empty {}
 
 message _DeleteLeaderboardRequest {
   string cache_name = 1;
