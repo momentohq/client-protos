@@ -92,8 +92,8 @@ protoc -I=../proto -I=/usr/local/include \
 
 ## Second pass for leaderboard.proto
 # The hack we do above removes the `package <pkg-name>` from each proto file, which causes
-# clashes between the multiple _Empty and _Unbounded definitions prevents the javascript-web 
-# package from building. This second pass that isolates the compiling of the leaderboard.proto
+# clashes between the multiple _Empty and _Unbounded definitions and prevents the javascript-web 
+# package from building. This second pass isolates the compiling of the leaderboard.proto
 # to prevent such clashes and to avoid having to maintain unique proto names in all files.
 
 # Again, this is all supposed to be temporary hacky fixes until the `--js_out` option 
