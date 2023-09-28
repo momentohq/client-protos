@@ -88,3 +88,28 @@ mv ../proto.bak ../proto
 protoc -I=../proto -I=/usr/local/include \
   --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
   ${proto_file_list}
+
+
+## Second pass for leaderboard.proto
+proto_file_list=" leaderboard.proto "
+echo "Backing up protos dir"
+cp -r ../proto ../proto.bak
+
+echo "Commenting out package declarations"
+for f in $proto_file_list
+do
+  $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
+  $sed_command 's/permission_messages.Permissions/Permissions/g' ../proto/${f}
+done
+
+protoc -I=../proto -I=/usr/local/include \
+  --js_out=import_style=commonjs_strict:$out \
+  ${proto_file_list}
+
+echo "Restoring backed up protos"
+rm -rf ../proto
+mv ../proto.bak ../proto
+
+protoc -I=../proto -I=/usr/local/include \
+  --grpc-web_out=import_style=typescript,mode=grpcwebtext:$out \
+  ${proto_file_list}
