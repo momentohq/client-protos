@@ -22,8 +22,18 @@ service ScsControl {
 }
 
 message _CreateIndexRequest {
+  message _EuclideanDistance{}
+
+  message _InnerProduct{}
+
+  message _CosineSimilarity{}
   string index_name = 1;
   uint64 num_dimensions = 2;
+  oneof similarity_metric {
+    _EuclideanDistance euclidean_distance = 3;
+    _InnerProduct inner_product = 4;
+    _CosineSimilarity cosine_similarity = 5;
+  }
 }
 
 message _CreateIndexResponse {
