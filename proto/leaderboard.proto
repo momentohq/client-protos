@@ -39,9 +39,9 @@ service Leaderboard {
   // See RankRange for details about permissible ranges.
   rpc GetByRank(_GetByRankRequest) returns (_GetByRankResponse);
 
-  // Get the rank of a particular id in the leaderboard.
+  // Get the rank of a list of particular ids in the leaderboard.
   // * Ordinal, 0-based rank.
-  rpc GetRank(_GetRankRequest) returns (_RankedElement);
+  rpc GetRank(_GetRankRequest) returns (_GetRankResponse);
 
   // Get a range of elements by a score range.
   // * Ordinal, 0-based rank.
@@ -160,8 +160,12 @@ message _GetByRankResponse {
 message _GetRankRequest {
   string cache_name = 1;
   string leaderboard = 2;
-  uint64 id = 3 [jstype = JS_STRING];
+  repeated uint64 ids = 3 [jstype = JS_STRING];
   _Order order = 4;
+}
+
+message _GetRankResponse {
+  repeated _RankedElement elements = 1;
 }
 
 message _RemoveElementsRequest {
