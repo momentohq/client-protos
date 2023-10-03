@@ -46,7 +46,15 @@ do
     # `import extensions_pb2 as extensions__pb2` -> `from . import extensions_pb2 as extensions__pb2`
     for pb2_src in $src_path/*_pb2.py
     do
-        sed -i.old "s/^\(import extensions_pb2 as \)/from . \1/g"  $pb2_src
+        filename=$(basename "$pb2_src")
+
+        # cacheclient_pb2.py -> cacheclient_pb2
+        pb2_module_name=${filename%.py}
+
+        # Replace gRPC absolute imports with relative imports so the package
+        # will work when installed, eg:
+        # `import cacheclient_pb2` -> `from . import cacheclient_pb2`
+        sed -i.old "s/^\(import $pb2_module_name as \)/from . \1/g" $src_path/*_pb2.py
     done
 
     rm $src_path/*.old
