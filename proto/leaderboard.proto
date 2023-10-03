@@ -15,17 +15,14 @@ package leaderboard;
 // Each ID can have only 1 score.
 //
 // For batchy, multi-element apis, limits are 8192 elements per api call.
-//
-// Scores are IEEE 754 single-precision floating point numbers. This has a few
-// implications you should be aware of, but the one most likely to affect you is that
-// below -16777216 and above 16777216, not all integers are able to be represented.
 service Leaderboard {
   // Deletes a leaderboard. After this call, you're not incurring storage cost for this leaderboard anymore.
   rpc DeleteLeaderboard(_DeleteLeaderboardRequest) returns (_Empty);
 
   // Insert or update elements in a leaderboard. You can do up to 8192 elements per call.
   // There is no partial failure: Upsert succeeds or fails.
-  rpc UpsertElements(_UpsertElementsRequest) returns (_Empty);
+  rpc UpsertBigIntElements(_UpsertBigIntElementsRequest) returns (_Empty);
+  rpc UpsertDoubleElements(_UpsertDoubleElementsRequest) returns (_Empty);
 
   // Remove up to 8192 elements at a time from a leaderboard. Elements are removed by id.
   rpc RemoveElements(_RemoveElementsRequest) returns (_Empty);
@@ -37,22 +34,25 @@ service Leaderboard {
   // * Ordinal, 0-based rank.
   // * Range can span up to 8192 elements.
   // See RankRange for details about permissible ranges.
-  rpc GetByRank(_GetByRankRequest) returns (_GetByRankResponse);
+  rpc GetByRankBigInt(_GetByRankBigIntRequest) returns (_GetByRankBigIntResponse);
+  rpc GetByRankDouble(_GetByRankDoubleRequest) returns (_GetByRankDoubleResponse);
 
   // Get the rank of a list of particular ids in the leaderboard.
   // * Ordinal, 0-based rank.
-  rpc GetRank(_GetRankRequest) returns (_GetRankResponse);
+  rpc GetRankBigInt(_GetRankBigIntRequest) returns (_GetRankBigIntResponse);
+  rpc GetRankBigDouble(_GetRankDoubleRequest) returns (_GetRankDoubleResponse);
 
   // Get a range of elements by a score range.
   // * Ordinal, 0-based rank.
   //
   // You can request up to 8192 elements at a time. To page through many elements that all
   // fall into a score range you can repeatedly invoke this api with the offset parameter.
-  rpc GetByScore(_GetByScoreRequest) returns (_GetByScoreResponse);
+  rpc GetByScoreBigInt(_GetByBigIntScoreRequest) returns (_GetByBigIntScoreResponse);
+  rpc GetByScoreDouble(_GetByDoubleScoreRequest) returns (_GetByDoubleScoreResponse);
 }
 
 // Leaderboards are made up of many of these.
-message _Element {
+message _BigIntElement {
   // A player identifier, session identifier, browser identifier or whatever other kind of
   // identifier you use for this scoreboard. The full unsigned 64 bit range is allowed here,
   // between 0 and 2^63-1 inclusive.
@@ -61,14 +61,25 @@ message _Element {
   uint64 id = 1 [jstype = JS_STRING];
 
   // The value by which this element is sorted within the leaderboard.
-  float score = 2;
+  uint64 score = 2;
+}
+
+message _DoubleElement {
+  uint64 id = 1 [jstype = JS_STRING];
+  double score = 2;
 }
 
 // Query APIs returning RankedElement offer the familiar Element id and score tuple, but they
 // also include the rank per the individual API's ranking semantic.
-message _RankedElement {
+message _RankedBigIntElement {
   uint64 id = 1 [jstype = JS_STRING];
   float score = 2;
+  uint64 rank = 3 [jstype = JS_STRING];
+}
+
+message _RankedDoubleElement {
+  uint64 id = 1 [jstype = JS_STRING];
+  double score = 2;
   uint64 rank = 3 [jstype = JS_STRING];
 }
 
@@ -101,7 +112,7 @@ message _Unbounded { }
 // matching many elements.
 //
 // ScoreRange models half-open ranges: 0..4 refers to scores 0, 1.1234, 2.5 and 3.999.
-message _ScoreRange {
+message _BigIntScoreRange {
   oneof min {
     _Unbounded unbounded_min = 1;
     // IEEE 754 single precision 32 bit floating point number.
@@ -113,6 +124,19 @@ message _ScoreRange {
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
     float max_exclusive = 4;
+  }
+}
+
+message _DoubleScoreRange {
+  oneof min {
+    _Unbounded unbounded_min = 1;
+    // Momento does not support NaN or Inf in leaderboards.
+    double min_inclusive = 2;
+  }
+  oneof max {
+    _Unbounded unbounded_max = 3;
+    // Momento does not support NaN or Inf in leaderboards.
+    double max_exclusive = 4;
   }
 }
 
@@ -139,33 +163,58 @@ message _GetLeaderboardLengthResponse {
    uint64 count = 1 [jstype = JS_STRING];
 }
 
-message _UpsertElementsRequest {
+message _UpsertBigIntElementsRequest {
   string cache_name = 1;
   string leaderboard = 2;
   // You can have up to 8192 elements in this list.
-  repeated _Element elements = 3;
+  repeated _BigIntElement elements = 3;
 }
 
-message _GetByRankRequest {
+message _UpsertDoubleElementsRequest {
+  string cache_name = 1;
+  string leaderboard = 2;
+  // You can have up to 8192 elements in this list.
+  repeated _DoubleElement elements = 3;
+}
+
+message _GetByRankBigIntRequest {
+  string cache_name = 1;
+  string leaderboard = 2;
+  _RankRange rank_range = 3;
+  _Order order = 4;
+}
+message _GetByRankDoubleRequest {
   string cache_name = 1;
   string leaderboard = 2;
   _RankRange rank_range = 3;
   _Order order = 4;
 }
 
-message _GetByRankResponse {
-  repeated _RankedElement elements = 1;
+message _GetByRankBigIntResponse {
+  repeated _RankedBigIntElement elements = 1;
+}
+message _GetByRankDoubleResponse {
+  repeated _RankedDoubleElement elements = 1;
 }
 
-message _GetRankRequest {
+message _GetRankBigIntRequest {
+  string cache_name = 1;
+  string leaderboard = 2;
+  repeated uint64 ids = 3 [jstype = JS_STRING];
+  _Order order = 4;
+}
+message _GetRankDoubleRequest {
   string cache_name = 1;
   string leaderboard = 2;
   repeated uint64 ids = 3 [jstype = JS_STRING];
   _Order order = 4;
 }
 
-message _GetRankResponse {
-  repeated _RankedElement elements = 1;
+message _GetRankBigIntResponse {
+  repeated _RankedBigIntElement elements = 1;
+}
+message _GetRankDoubleResponse {
+  repeated _RankedDoubleElement elements = 1;
 }
 
 message _RemoveElementsRequest {
@@ -175,10 +224,10 @@ message _RemoveElementsRequest {
   repeated uint64 ids = 3 [jstype = JS_STRING];
 }
 
-message _GetByScoreRequest {
+message _GetByBigIntScoreRequest {
   string cache_name = 1;
   string leaderboard = 2;
-  _ScoreRange score_range = 3;
+  _BigIntScoreRange score_range = 3;
   // Where should we start returning scores from in the elements within this range?
   uint64 offset = 4 [jstype = JS_STRING];
   // How many elements should we limit to returning? (8192 max)
@@ -186,6 +235,20 @@ message _GetByScoreRequest {
   _Order order = 6;
 }
 
-message _GetByScoreResponse {
-  repeated _RankedElement elements = 1;
+message _GetByDoubleScoreRequest {
+  string cache_name = 1;
+  string leaderboard = 2;
+  _DoubleScoreRange score_range = 3;
+  // Where should we start returning scores from in the elements within this range?
+  uint64 offset = 4 [jstype = JS_STRING];
+  // How many elements should we limit to returning? (8192 max)
+  uint64 limit_elements = 5 [jstype = JS_STRING];
+  _Order order = 6;
+}
+
+message _GetByBigIntScoreResponse {
+  repeated _RankedBigIntElement elements = 1;
+}
+message _GetByDoubleScoreResponse {
+  repeated _RankedDoubleElement elements = 1;
 }
