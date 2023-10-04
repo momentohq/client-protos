@@ -51,6 +51,7 @@ message _MetadataRequest {
 
     oneof kind {
         Some some = 2;
+        All all = 3;
     }
 }
 
