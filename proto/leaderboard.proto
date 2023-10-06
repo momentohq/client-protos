@@ -58,7 +58,7 @@ message _Element {
   // between 0 and 2^63-1 inclusive.
   // An id can only appear in a leaderboard one time. You can't have 2 scores for 1 player,
   // unless that player has 2 ids!
-  uint64 id = 1 [jstype = JS_STRING];
+  uint32 id = 1;
 
   // The value by which this element is sorted within the leaderboard.
   float score = 2;
@@ -67,9 +67,9 @@ message _Element {
 // Query APIs returning RankedElement offer the familiar Element id and score tuple, but they
 // also include the rank per the individual API's ranking semantic.
 message _RankedElement {
-  uint64 id = 1 [jstype = JS_STRING];
+  uint32 id = 1;
   float score = 2;
-  uint64 rank = 3 [jstype = JS_STRING];
+  uint32 rank = 3;
 }
 
 // Query APIs using RankRange expect a limit of 8192 elements. Requesting a range wider than
@@ -90,8 +90,8 @@ message _RankedElement {
 // * 4..3
 // * 0..8193
 message _RankRange {
-  uint64 start_inclusive = 1 [jstype = JS_STRING];
-  uint64 end_exclusive = 2 [jstype = JS_STRING];
+  uint32 start_inclusive = 1;
+  uint32 end_exclusive = 2;
 }
 
 message _Unbounded { }
@@ -136,7 +136,7 @@ message _GetLeaderboardLengthRequest {
 }
 
 message _GetLeaderboardLengthResponse {
-   uint64 count = 1 [jstype = JS_STRING];
+   uint32 count = 1;
 }
 
 message _UpsertElementsRequest {
@@ -160,7 +160,7 @@ message _GetByRankResponse {
 message _GetRankRequest {
   string cache_name = 1;
   string leaderboard = 2;
-  repeated uint64 ids = 3 [jstype = JS_STRING];
+  repeated uint32 ids = 3;
   _Order order = 4;
 }
 
@@ -172,7 +172,7 @@ message _RemoveElementsRequest {
   string cache_name = 1;
   string leaderboard = 2;
   // You can have up to 8192 ids in this list.
-  repeated uint64 ids = 3 [jstype = JS_STRING];
+  repeated uint32 ids = 3;
 }
 
 message _GetByScoreRequest {
@@ -180,9 +180,9 @@ message _GetByScoreRequest {
   string leaderboard = 2;
   _ScoreRange score_range = 3;
   // Where should we start returning scores from in the elements within this range?
-  uint64 offset = 4 [jstype = JS_STRING];
+  uint32 offset = 4;
   // How many elements should we limit to returning? (8192 max)
-  uint64 limit_elements = 5 [jstype = JS_STRING];
+  uint32 limit_elements = 5;
   _Order order = 6;
 }
 
