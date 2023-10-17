@@ -37,9 +37,17 @@ message _Vector {
 
 message _Metadata {
     string field = 1;
+
+    message _ListOfStrings {
+        repeated string values = 1;
+    }
+
     oneof value {
-        // Eventually can support ints, dates, etc
         string string_value = 2;
+        int64 integer_value = 3;
+        double double_value = 4;
+        bool boolean_value = 5;
+        _ListOfStrings list_of_strings_value = 6;
     }
 }
 
