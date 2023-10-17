@@ -37,12 +37,17 @@ message _Vector {
 
 message _Metadata {
     string field = 1;
+
+    message ListOfStrings {
+        repeated string values = 1;
+    }
+
     oneof value {
         string string_value = 2;
-	int64 integer_value = 3;
-	double double_value = 4;
-	bool boolean_value = 5;
-	repeated string list_of_strings_value = 6;
+        int64 integer_value = 3;
+        double double_value = 4;
+        bool boolean_value = 5;
+        ListOfStrings list_of_strings_value = 6;
     }
 }
 
