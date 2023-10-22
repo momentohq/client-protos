@@ -68,12 +68,14 @@ message _SearchRequest {
     uint32 top_k = 2;
     _Vector query_vector = 3;
     _MetadataRequest metadata_fields = 4;
+    bool fetch_vector = 5;
 }
 
 message _SearchHit {
     string id = 1;
     float distance = 2;
     repeated _Metadata metadata = 3;
+    optional _Vector vector = 4;
 }
 
 message _SearchResponse {
