@@ -75,7 +75,7 @@ message _SearchHit {
     string id = 1;
     float distance = 2;
     repeated _Metadata metadata = 3;
-    optional _Vector vector = 4;
+    _Vector vector = 4;
 }
 
 message _SearchResponse {
