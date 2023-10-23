@@ -72,10 +72,14 @@ message _SearchRequest {
 }
 
 message _SearchHit {
+    message _NoVector { }
     string id = 1;
     float distance = 2;
     repeated _Metadata metadata = 3;
-    _Vector vector = 4;
+    oneof result_vector {
+        _Vector vector = 4;
+        _NoVector no_vector= 5;
+    }
 }
 
 message _SearchResponse {
