@@ -6,6 +6,7 @@ service VectorIndex {
     rpc UpsertItemBatch(_UpsertItemBatchRequest) returns (_UpsertItemBatchResponse) {}
     rpc DeleteItemBatch(_DeleteItemBatchRequest) returns (_DeleteItemBatchResponse) {}
     rpc Search(_SearchRequest) returns (_SearchResponse) {}
+    rpc SearchAndFetchVector(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
 }
 
 message _Item {
@@ -68,20 +69,32 @@ message _SearchRequest {
     uint32 top_k = 2;
     _Vector query_vector = 3;
     _MetadataRequest metadata_fields = 4;
-    bool fetch_vector = 5;
+}
+
+message _SearchAndFetchVectorsRequest {
+    string index_name = 1;
+    uint32 top_k = 2;
+    _Vector query_vector = 3;
+    _MetadataRequest metadata_fields = 4;
 }
 
 message _SearchHit {
-    message _NoVector { }
     string id = 1;
     float distance = 2;
     repeated _Metadata metadata = 3;
-    oneof result_vector {
-        _Vector vector = 4;
-        _NoVector no_vector= 5;
-    }
+}
+
+message _SearchAndFetchVectorsHit {
+    string id = 1;
+    float distance = 2;
+    repeated _Metadata metadata = 3;
+    _Vector vector = 4;
 }
 
 message _SearchResponse {
     repeated _SearchHit hits = 1;
+}
+
+message _SearchAndFetchVectorsResponse {
+    repeated _SearchAndFetchVectorsHit hits = 1;
 }
