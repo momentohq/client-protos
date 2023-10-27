@@ -6,7 +6,7 @@ service VectorIndex {
     rpc UpsertItemBatch(_UpsertItemBatchRequest) returns (_UpsertItemBatchResponse) {}
     rpc DeleteItemBatch(_DeleteItemBatchRequest) returns (_DeleteItemBatchResponse) {}
     rpc Search(_SearchRequest) returns (_SearchResponse) {}
-    rpc SearchAndFetchVector(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
+    rpc SearchAndFetchVectors(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
 }
 
 message _Item {
