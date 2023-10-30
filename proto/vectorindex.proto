@@ -64,11 +64,17 @@ message _MetadataRequest {
     }
 }
 
+message _NoScoreThreshold {}
+
 message _SearchRequest {
     string index_name = 1;
     uint32 top_k = 2;
     _Vector query_vector = 3;
     _MetadataRequest metadata_fields = 4;
+    oneof threshold {
+        float score_threshold = 5;
+        _NoScoreThreshold no_score_threshold = 6;
+    }
 }
 
 message _SearchAndFetchVectorsRequest {
@@ -76,6 +82,10 @@ message _SearchAndFetchVectorsRequest {
     uint32 top_k = 2;
     _Vector query_vector = 3;
     _MetadataRequest metadata_fields = 4;
+    oneof threshold {
+        float score_threshold = 5;
+        _NoScoreThreshold no_score_threshold = 6;
+    }
 }
 
 message _SearchHit {
