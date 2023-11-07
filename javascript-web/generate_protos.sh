@@ -89,7 +89,7 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto "
+proto_file_list=" permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto webhook.proto "
 generate_proto "${proto_file_list[@]}"
 
 ## Second pass for leaderboard.proto
