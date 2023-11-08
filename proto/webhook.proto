@@ -23,6 +23,9 @@ message _Webhook {
   _WebhookId webhook_id = 1;
   string topic_name = 2;
   _WebhookDestination destination = 3;
+  oneof secret_string {
+    string secret = 4;
+  }
 }
 
 message _PutWebhookRequest {
