@@ -50,7 +50,7 @@ message _ListWebhookRequest {
 }
 
 message _ListWebhooksResponse {
-  repeated _WebhookItem webhook_secret = 1;
+  repeated _WebhookItem webhook_item = 1;
 }
 
 message _WebhookDestination {
