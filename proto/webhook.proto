@@ -25,7 +25,7 @@ message _Webhook {
   _WebhookDestination destination = 3;
 }
 
-message _WebhookSecret {
+message _WebhookItem {
   _Webhook webhook = 1;
   string secret = 2;
 }
@@ -50,7 +50,7 @@ message _ListWebhookRequest {
 }
 
 message _ListWebhooksResponse {
-  repeated _WebhookSecret webhook_secret = 1;
+  repeated _WebhookItem webhook_secret = 1;
 }
 
 message _WebhookDestination {
