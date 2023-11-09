@@ -26,11 +26,6 @@ message _Webhook {
   _WebhookDestination destination = 3;
 }
 
-message _WebhookItem {
-  _Webhook webhook = 1;
-  string secret = 2;
-}
-
 message _PutWebhookRequest {
   _Webhook webhook = 1;
 }
