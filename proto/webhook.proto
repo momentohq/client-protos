@@ -11,7 +11,7 @@ service Webhook {
   rpc PutWebhook(_PutWebhookRequest) returns (_PutWebhookResponse) {}
   rpc DeleteWebhook(_DeleteWebhookRequest) returns (_DeleteWebhookResponse) {}
   rpc ListWebhooks(_ListWebhookRequest) returns (_ListWebhooksResponse) {}
-  rpc DescribeWebhook(_DescribeWebhookRequest) returns (_DescribeWebhookResponse) {}
+  rpc GetWebhookSecret(_GetWebhookSecretRequest) returns (_GetWebhookSecretResponse) {}
 }
 
 message _WebhookId {
@@ -54,13 +54,15 @@ message _ListWebhooksResponse {
   repeated _Webhook webhook = 1;
 }
 
-message _DescribeWebhookRequest {
+message _GetWebhookSecretRequest {
   string cache_name = 1;
   string webhook_name = 2;
 }
 
-message _DescribeWebhookResponse {
-  repeated _WebhookItem webhook_item = 1;
+message _GetWebhookSecretResponse {
+  string cache_name = 1;
+  string webhook_name = 2;
+  string secret_string = 3;
 }
 
 message _WebhookDestination {
