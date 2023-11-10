@@ -91,13 +91,13 @@ message _SearchAndFetchVectorsRequest {
 
 message _SearchHit {
     string id = 1;
-    float distance = 2;
+    float score = 2;
     repeated _Metadata metadata = 3;
 }
 
 message _SearchAndFetchVectorsHit {
     string id = 1;
-    float distance = 2;
+    float score = 2;
     repeated _Metadata metadata = 3;
     _Vector vector = 4;
 }
