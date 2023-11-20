@@ -157,46 +157,6 @@ jobs:
           gradle-version: wrapper
           arguments: publishToSonatype closeAndReleaseStagingRepository
 
-  publish_kotlin:
-    runs-on: ubuntu-latest
-    needs: release
-
-    steps:
-      - name: Assume Role
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          # TODO User: arn:aws:iam::***:user/shared-control-plane-deploy-user is not authorized to perform: sts:TagSession on resource: arn:aws:iam::***:role/control-plane-remote-deployer
-          role-skip-session-tagging: true
-          aws-access-key-id: ${{ secrets.PROD_CICD_DEPLOY_USER_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_CICD_DEPLOY_USER_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-          role-to-assume: arn:aws:iam::401011790710:role/control-plane-remote-deployer
-          role-session-name: cicd-deployer
-          role-duration-seconds: 900
-
-      - name: Get CodeArtifact token
-        run: |
-          TOKEN=$(aws codeartifact get-authorization-token \
-                                            --domain momento-prod --domain-owner 401011790710 \
-                                            --query authorizationToken --output text)
-          echo "::add-mask::$TOKEN"
-          echo "CODEARTIFACT_AUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Publish to CodeArtifact
-        run: |
-          VERSION="${{needs.release.outputs.version}}"
-          echo "version: ${VERSION}"
-          pushd kotlin-messages
-            ./gradlew publish -Pversion=$VERSION
-          popd
-
   publish_python:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
