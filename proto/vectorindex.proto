@@ -83,42 +83,42 @@ message _NotExpression {
 message _EqualsExpression {
     string field = 1;
     oneof value {
-        string string_val = 2;
-        int64 int_val = 3;
-        float float_val = 4;
-        bool bool_val = 5;
+        string string_value = 2;
+        int64 integer_value = 3;
+        float float_value = 4;
+        bool boolean_value = 5;
     }
 }
 
 message _GreaterThanExpression {
     string field = 1;
     oneof value {
-        int64 int_val = 2;
-        float float_val = 3;
+        int64 integer_value = 2;
+        float float_value = 3;
     }
 }
 
 message _GreaterOrEqualExpression {
     string field = 1;
     oneof value {
-        int64 int_val = 2;
-        float float_val = 3;
+        int64 integer_value = 2;
+        float float_value = 3;
     }
 }
 
 message _LessThanExpression {
     string field = 1;
     oneof value {
-        int64 int_val = 2;
-        float float_val = 3;
+        int64 integer_value = 2;
+        float float_value = 3;
     }
 }
 
 message _LessOrEqualExpression {
     string field = 1;
     oneof value {
-        int64 int_val = 2;
-        float float_val = 3;
+        int64 integer_value = 2;
+        float float_value = 3;
     }
 }
 
@@ -129,15 +129,15 @@ message _ListContainsExpression {
 
 message _FilterExpression {
     oneof expression {
-        _EqualsExpression equals_expr = 1;
-        _AndExpression and_expr = 2;
-        _OrExpression or_expr = 3;
-        _NotExpression not_expr = 4;
-        _GreaterThanExpression greater_than_expr = 5;
-        _GreaterOrEqualExpression greater_or_equal_expr = 6;
-        _LessThanExpression less_than_expr = 7;
-        _LessOrEqualExpression less_or_equal_expr = 8;
-        _ListContainsExpression list_contains_expr = 9;
+        _EqualsExpression equals_expression = 1;
+        _AndExpression and_expression = 2;
+        _OrExpression or_expression = 3;
+        _NotExpression not_expression = 4;
+        _GreaterThanExpression greater_than_expression = 5;
+        _GreaterOrEqualExpression greater_or_equal_expression = 6;
+        _LessThanExpression less_than_expression = 7;
+        _LessOrEqualExpression less_or_equal_expression = 8;
+        _ListContainsExpression list_contains_expression = 9;
     }
 }
 
