@@ -12,6 +12,7 @@ service Webhook {
   rpc DeleteWebhook(_DeleteWebhookRequest) returns (_DeleteWebhookResponse) {}
   rpc ListWebhooks(_ListWebhookRequest) returns (_ListWebhooksResponse) {}
   rpc GetWebhookSecret(_GetWebhookSecretRequest) returns (_GetWebhookSecretResponse) {}
+  rpc RotateWebhookSecret(_RotateWebhookSecretRequest) returns (_RotateWebhookSecretResponse) {}
 }
 
 message _WebhookId {
@@ -64,4 +65,12 @@ message _WebhookDestination {
   oneof kind {
     string post_url = 1;
   }
+}
+
+message _RotateWebhookSecretRequest {
+  _WebhookId webhook_id = 1;
+}
+
+message _RotateWebhookSecretResponse {
+  string secret_string = 1;
 }
