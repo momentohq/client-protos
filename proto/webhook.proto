@@ -72,6 +72,5 @@ message _RotateWebhookSecretRequest {
 }
 
 message _RotateWebhookSecretResponse {
-  _WebhookId webhook_id = 1;
-  string secret_string = 2;
+  string secret_string = 1;
 }
