@@ -194,7 +194,6 @@ message _GetItemMetadataBatchRequest {
     _MetadataRequest metadata_fields = 3;
 }
 
-
 message _ItemMetadataResponse {
     message _Miss {}
     message _Hit {
