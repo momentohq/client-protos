@@ -7,8 +7,8 @@ service VectorIndex {
     rpc DeleteItemBatch(_DeleteItemBatchRequest) returns (_DeleteItemBatchResponse) {}
     rpc Search(_SearchRequest) returns (_SearchResponse) {}
     rpc SearchAndFetchVectors(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
+    rpc GetItemMetadataBatch(_GetItemMetadataBatchRequest) returns (_GetItemMetadataBatchResponse) {}
     rpc GetItemBatch(_GetItemBatchRequest) returns (_GetItemBatchResponse) {}
-    rpc GetItemAndFetchVectorsBatch(_GetItemAndFetchVectorsBatchRequest) returns (_GetItemAndFetchVectorsBatchResponse) {}
 }
 
 message _Item {
@@ -188,13 +188,14 @@ message _SearchAndFetchVectorsResponse {
     repeated _SearchAndFetchVectorsHit hits = 1;
 }
 
-message _GetItemBatchRequest {
+message _GetItemMetadataBatchRequest {
     string index_name = 1;
     repeated string ids = 2;
     _MetadataRequest metadata_fields = 3;
 }
 
-message _ItemResponse {
+
+message _ItemMetadataResponse {
     message _Miss {}
     message _Hit {
         string id = 1;
@@ -206,17 +207,17 @@ message _ItemResponse {
     }
 }
 
-message _GetItemBatchResponse {
-    repeated _ItemResponse item_response = 1;
+message _GetItemMetadataBatchResponse {
+    repeated _ItemMetadataResponse item_metadata_response = 1;
 }
 
-message _GetItemAndFetchVectorsBatchRequest {
+message _GetItemBatchRequest {
     string index_name = 1;
     repeated string ids = 2;
     _MetadataRequest metadata_fields = 3;
 }
 
-message _ItemWithVectorResponse {
+message _ItemResponse {
     message _Miss {}
     message _Hit {
         string id = 1;
@@ -229,6 +230,6 @@ message _ItemWithVectorResponse {
     }
 }
 
-message _GetItemAndFetchVectorsBatchResponse {
-    repeated _ItemWithVectorResponse item_with_vector_response = 1;
+message _GetItemBatchResponse {
+    repeated _ItemResponse item_response = 1;
 }
