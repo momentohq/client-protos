@@ -77,7 +77,7 @@ message _OrExpression {
 }
 
 message _NotExpression {
-    _FilterExpression not_expression = 1;
+    _FilterExpression expression_to_negate = 1;
 }
 
 message _EqualsExpression {
