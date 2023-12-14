@@ -98,7 +98,7 @@ message _GreaterThanExpression {
     }
 }
 
-message _GreaterOrEqualExpression {
+message _GreaterThanOrEqualExpression {
     string field = 1;
     oneof value {
         int64 integer_value = 2;
@@ -114,7 +114,7 @@ message _LessThanExpression {
     }
 }
 
-message _LessOrEqualExpression {
+message _LessThanOrEqualExpression {
     string field = 1;
     oneof value {
         int64 integer_value = 2;
@@ -124,7 +124,9 @@ message _LessOrEqualExpression {
 
 message _ListContainsExpression {
     string field = 1;
-    string value = 2;
+    oneof value {
+        string string_value = 2;
+    }
 }
 
 message _FilterExpression {
@@ -134,9 +136,9 @@ message _FilterExpression {
         _OrExpression or_expression = 3;
         _NotExpression not_expression = 4;
         _GreaterThanExpression greater_than_expression = 5;
-        _GreaterOrEqualExpression greater_or_equal_expression = 6;
+        _GreaterThanOrEqualExpression greater_than_or_equal_expression = 6;
         _LessThanExpression less_than_expression = 7;
-        _LessOrEqualExpression less_or_equal_expression = 8;
+        _LessThanOrEqualExpression less_than_or_equal_expression = 8;
         _ListContainsExpression list_contains_expression = 9;
     }
 }
