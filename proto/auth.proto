@@ -76,6 +76,8 @@ message _GenerateApiTokenRequest {
     permission_messages.Permissions permissions = 4;
 
     string token_id = 5;
+
+    string description = 6;
 }
 
 message _GenerateApiTokenResponse {
