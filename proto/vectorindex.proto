@@ -9,6 +9,7 @@ service VectorIndex {
     rpc SearchAndFetchVectors(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
     rpc GetItemMetadataBatch(_GetItemMetadataBatchRequest) returns (_GetItemMetadataBatchResponse) {}
     rpc GetItemBatch(_GetItemBatchRequest) returns (_GetItemBatchResponse) {}
+    rpc DescribeIndex(_DescribeIndexRequest) returns (_DescribeIndexResponse) {}
 }
 
 message _Item {
@@ -233,4 +234,32 @@ message _ItemResponse {
 
 message _GetItemBatchResponse {
     repeated _ItemResponse item_response = 1;
+}
+
+message _SimilarityMetric {
+    message _EuclideanSimilarity {
+    }
+
+    message _InnerProduct {
+    }
+
+    message _CosineSimilarity {
+    }
+
+    oneof similarity_metric {
+        _EuclideanSimilarity euclidean_similarity = 1;
+        _InnerProduct inner_product = 2;
+        _CosineSimilarity cosine_similarity = 3;
+    }
+}
+
+message _DescribeIndexRequest {
+    string index_name = 1;
+}
+
+message _DescribeIndexResponse {
+    string index_name = 1;
+    uint32 item_count = 2;
+    uint64 num_dimensions = 3;
+    _SimilarityMetric similarity_metric = 4;
 }
