@@ -11,13 +11,7 @@ dependencies {
     // Descriptor.proto is included because there is no lite version of common protos:
     // https://github.com/protocolbuffers/protobuf/issues/1889
     protobuf(files("./google-protos"))
-    protobuf(files(fileTree("../../proto") {
-        include("*.proto")
-        // webhook is temporarily excluded because the kotlin code generation creates non-compiling code
-        // in the case of a proto with a package that shares a name with a message field.
-        exclude("webhook.proto")
-        exclude("**/*/*.proto")
-    }))
+    protobuf(files("../../proto"))
 
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
 
@@ -57,9 +51,6 @@ protobuf {
         all().forEach {
             it.builtins {
                 named("java") {
-                    option("lite")
-                }
-                create("kotlin") {
                     option("lite")
                 }
             }

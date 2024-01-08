@@ -10,9 +10,6 @@ version = rootProject.version
 dependencies {
     protobuf(files(fileTree("../../proto") {
         include("*.proto")
-        // webhook is temporarily excluded because the kotlin code generation creates non-compiling code
-        // in the case of a proto with a package that shares a name with a message field.
-        exclude("webhook.proto")
         exclude("**/*/*.proto")
     }))
 
@@ -54,7 +51,6 @@ protobuf {
         all().forEach {
             it.builtins {
                 named("java")
-                create("kotlin")
             }
             it.plugins {
                 create("grpc")
