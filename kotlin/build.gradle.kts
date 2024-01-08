@@ -9,6 +9,8 @@ ext["grpcKotlinVersion"] = "1.4.0"
 ext["protobufVersion"] = "3.24.1"
 ext["coroutinesVersion"] = "1.7.3"
 
+version = System.getenv("KOTLIN_PROTOS_VERSION") ?: "0.1.0-SNAPSHOT"
+
 subprojects {
     repositories {
         mavenCentral()

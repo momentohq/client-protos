@@ -2,7 +2,10 @@ plugins {
     kotlin("jvm")
     id("com.google.protobuf")
     id("maven-publish")
+    signing
 }
+
+version = rootProject.version
 
 dependencies {
     // Descriptor.proto is included because there is no lite version of common protos:
@@ -22,6 +25,10 @@ dependencies {
     api("io.grpc:grpc-protobuf-lite:${rootProject.ext["grpcVersion"]}")
     api("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     api("com.google.protobuf:protobuf-kotlin-lite:${rootProject.ext["protobufVersion"]}")
+}
+
+java {
+    withSourcesJar()
 }
 
 kotlin {
@@ -68,11 +75,17 @@ protobuf {
     }
 }
 
+val javadocJar = tasks.register("javadocJar", Jar::class.java) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
             artifactId = rootProject.name + "-android"
+
+            artifact(javadocJar)
 
             pom {
                 name.set("Momento Kotlin Android Client Protocols")
@@ -102,3 +115,10 @@ publishing {
     }
 }
 
+val signingKey: String? = System.getenv("SONATYPE_SIGNING_KEY")
+if (signingKey != null) {
+    signing {
+        useInMemoryPgpKeys(signingKey, System.getenv("SONATYPE_SIGNING_KEY_PASSWORD"))
+        sign(publishing.publications["maven"])
+    }
+}

@@ -98,45 +98,30 @@ jobs:
 
   build_kotlin:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Get current time
+        uses: gerred/actions/current-time@master
+        id: current-time
 
-      - name: Assume Role
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          # TODO User: arn:aws:iam::***:user/shared-control-plane-deploy-user is not authorized to perform: sts:TagSession on resource: arn:aws:iam::***:role/control-plane-remote-deployer
-          role-skip-session-tagging: true
-          aws-access-key-id: ${{ secrets.PROD_CICD_DEPLOY_USER_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_CICD_DEPLOY_USER_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-          role-to-assume: arn:aws:iam::401011790710:role/control-plane-remote-deployer
-          role-session-name: cicd-deployer
-          role-duration-seconds: 900
+          java-version: 17
+          distribution: 'corretto'
 
-      - name: Get CodeArtifact token
-        run: |
-          TOKEN=$(aws codeartifact get-authorization-token \
-                                            --domain momento-prod --domain-owner 401011790710 \
-                                            --query authorizationToken --output text)
-          echo "::add-mask::$TOKEN"
-          echo "CODEARTIFACT_AUTH_TOKEN=$TOKEN" >> $GITHUB_ENV
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
+      - name: Install protoc
+        run: ./install_protoc.sh
+
+      - name: Build package
+        uses: gradle/gradle-build-action@v2
         with:
-          java-version: 11
+          build-root-directory: ./kotlin
+          arguments: clean build
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-
-      - name: Build
-        run: |
-          pushd kotlin-messages
-            ./gradlew build
-          popd
 
   build_python:
     runs-on: ubuntu-latest
