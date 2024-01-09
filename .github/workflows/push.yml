@@ -178,7 +178,7 @@ jobs:
         with:
           build-root-directory: ./kotlin
           gradle-version: wrapper
-          arguments: publishToSonatype closeSonatypeStagingRepository
+          arguments: publishToSonatype closeAndReleaseStagingRepository
 
   publish_python:
     # The type of runner that the job will run on
