@@ -7,3 +7,4 @@ build
 # Bring your own IDE. Remember to open settings.gradle.kts As Project.
 .idea
 
+/generated-sources/
