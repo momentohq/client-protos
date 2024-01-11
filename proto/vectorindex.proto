@@ -9,6 +9,7 @@ service VectorIndex {
     rpc SearchAndFetchVectors(_SearchAndFetchVectorsRequest) returns (_SearchAndFetchVectorsResponse) {}
     rpc GetItemMetadataBatch(_GetItemMetadataBatchRequest) returns (_GetItemMetadataBatchResponse) {}
     rpc GetItemBatch(_GetItemBatchRequest) returns (_GetItemBatchResponse) {}
+    rpc CountItems(_CountItemsRequest) returns (_CountItemsResponse) {}
 }
 
 message _Item {
@@ -233,4 +234,16 @@ message _ItemResponse {
 
 message _GetItemBatchResponse {
     repeated _ItemResponse item_response = 1;
+}
+
+message _CountItemsRequest {
+    message All {}
+    string index_name = 1;
+    oneof filter {
+        All all = 2;
+    }
+}
+
+message _CountItemsResponse {
+    uint32 item_count = 1;
 }
