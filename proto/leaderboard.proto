@@ -61,15 +61,18 @@ message _Element {
   uint32 id = 1;
 
   // The value by which this element is sorted within the leaderboard.
-  float score = 2;
+  float score_f32 = 2;
+
+  double score = 3;
 }
 
 // Query APIs returning RankedElement offer the familiar Element id and score tuple, but they
 // also include the rank per the individual API's ranking semantic.
 message _RankedElement {
   uint32 id = 1;
-  float score = 2;
+  float score_f32 = 2;
   uint32 rank = 3;
+  double score = 4;
 }
 
 // Query APIs using RankRange expect a limit of 8192 elements. Requesting a range wider than
@@ -106,13 +109,15 @@ message _ScoreRange {
     _Unbounded unbounded_min = 1;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
-    float min_inclusive = 2;
+    float min_inclusive_f32 = 2;
+    double min_inclusive = 5;
   }
   oneof max {
     _Unbounded unbounded_max = 3;
     // IEEE 754 single precision 32 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
-    float max_exclusive = 4;
+    float max_exclusive_f32 = 4;
+    double max_exclusive = 6;
   }
 }
 
