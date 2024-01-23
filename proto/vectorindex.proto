@@ -245,5 +245,5 @@ message _CountItemsRequest {
 }
 
 message _CountItemsResponse {
-    uint32 item_count = 1;
+    uint64 item_count = 1;
 }
