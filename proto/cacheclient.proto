@@ -18,7 +18,9 @@ enum ECacheResult {
 
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
+  rpc GetBatch (_GetBatchRequest) returns (stream _GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
+  rpc SetBatch (_SetBatchRequest) returns (stream _SetResponse) {}
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
   rpc KeysExist (_KeysExistRequest) returns (_KeysExistResponse) {}
@@ -96,6 +98,10 @@ message _GetResponse {
   string message = 3;
 }
 
+message _GetBatchRequest {
+  repeated _GetRequest items = 1;
+}
+
 message _DeleteRequest {
   bytes cache_key = 1;
 }
@@ -111,6 +117,10 @@ message _SetRequest {
 message _SetResponse {
   ECacheResult result = 1;
   string message = 2;
+}
+
+message _SetBatchRequest {
+  repeated _SetRequest items = 1;
 }
 
 message _SetIfNotExistsRequest {
