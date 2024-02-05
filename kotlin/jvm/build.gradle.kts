@@ -8,6 +8,8 @@ plugins {
 version = rootProject.version
 
 dependencies {
+    // The exclude stops the google protos from being generated.
+    // The dependencies include prebuilt versions.
     protobuf(files(fileTree("../../proto") {
         include("*.proto")
         exclude("**/*/*.proto")
