@@ -130,6 +130,10 @@ message _ListContainsExpression {
     }
 }
 
+message _IdInSetExpression {
+    repeated string ids = 1;
+}
+
 message _FilterExpression {
     oneof expression {
         _EqualsExpression equals_expression = 1;
@@ -141,6 +145,7 @@ message _FilterExpression {
         _LessThanExpression less_than_expression = 7;
         _LessThanOrEqualExpression less_than_or_equal_expression = 8;
         _ListContainsExpression list_contains_expression = 9;
+        _IdInSetExpression id_in_set_expression = 10;
     }
 }
 
