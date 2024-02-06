@@ -160,7 +160,7 @@ message _SearchRequest {
         float score_threshold = 5;
         _NoScoreThreshold no_score_threshold = 6;
     }
-    _FilterExpression filter_expression = 7;
+    _FilterExpression filter = 7;
 }
 
 message _SearchAndFetchVectorsRequest {
@@ -172,7 +172,7 @@ message _SearchAndFetchVectorsRequest {
         float score_threshold = 5;
         _NoScoreThreshold no_score_threshold = 6;
     }
-    _FilterExpression filter_expression = 7;
+    _FilterExpression filter = 7;
 }
 
 message _SearchHit {
