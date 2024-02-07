@@ -30,6 +30,7 @@ message _UpsertItemBatchResponse {
 message _DeleteItemBatchRequest {
     string index_name = 1;
     repeated string ids = 2;
+    _FilterExpression filter = 3;
 }
 
 message _DeleteItemBatchResponse {
@@ -200,6 +201,7 @@ message _GetItemMetadataBatchRequest {
     string index_name = 1;
     repeated string ids = 2;
     _MetadataRequest metadata_fields = 3;
+    _FilterExpression filter = 4;
 }
 
 message _ItemMetadataResponse {
@@ -222,6 +224,7 @@ message _GetItemBatchRequest {
     string index_name = 1;
     repeated string ids = 2;
     _MetadataRequest metadata_fields = 3;
+    _FilterExpression filter = 4;
 }
 
 message _ItemResponse {
