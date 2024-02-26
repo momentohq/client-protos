@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package common;
+
+message Exists { }
+
+message ExistsAndNotEqual {
+  bytes value_to_check = 1;
+}
+
+message NotExists { }
+
+message Equal {
+  bytes value_to_check = 1;
+}
+
+message EqualOrNotExists {
+  bytes value_to_check = 1;
+}
+
+message NotEqual {
+  bytes value_to_check = 1;
+}
