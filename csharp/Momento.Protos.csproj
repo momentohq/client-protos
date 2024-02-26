@@ -27,12 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.19.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.41.1">
+    <PackageReference Include="Google.Protobuf" Version="3.25.3" />
+    <PackageReference Include="Grpc.Tools" Version="2.62.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Grpc" Version="2.41.1" />
+    <PackageReference Include="Grpc" Version="2.61.0" />
   </ItemGroup>
 
 </Project>
