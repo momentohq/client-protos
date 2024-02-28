@@ -2,19 +2,19 @@ syntax = "proto3";
 
 package common;
 
-message Exists { }
+message Present { }
 
-message ExistsAndNotEqual {
+message PresentAndNotEqual {
   bytes value_to_check = 1;
 }
 
-message NotExists { }
+message Absent { }
 
 message Equal {
   bytes value_to_check = 1;
 }
 
-message EqualOrNotExists {
+message AbsentOrEqual {
   bytes value_to_check = 1;
 }
 

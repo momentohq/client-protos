@@ -132,11 +132,11 @@ message _SetIfRequest {
   bytes cache_body = 2;
   uint64 ttl_milliseconds = 3;
   oneof condition {
-    common.Exists exists = 4;
-    common.ExistsAndNotEqual exists_and_not_equal = 5;
-    common.NotExists not_exists = 6;
+    common.Present present = 4;
+    common.PresentAndNotEqual present_and_not_equal = 5;
+    common.Absent absent = 6;
     common.Equal equal = 7;
-    common.EqualOrNotExists equal_or_not_exists = 8;
+    common.AbsentOrEqual absent_or_equal = 8;
     common.NotEqual not_equal = 9;
   }
 }
@@ -481,7 +481,7 @@ message _SetPopResponse {
   oneof set {
     _Found found = 1;
     _Missing missing = 2;
-  } 
+  }
 }
 
 message _ListConcatenateFrontRequest {
