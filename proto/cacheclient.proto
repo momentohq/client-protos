@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "common.proto";
+
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "grpc.cache_client";
@@ -21,6 +23,7 @@ service Scs {
   rpc GetBatch (_GetBatchRequest) returns (stream _GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc SetBatch (_SetBatchRequest) returns (stream _SetResponse) {}
+  rpc SetIf (_SetIfRequest) returns (_SetIfResponse) {}
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {}
   rpc Delete (_DeleteRequest) returns (_DeleteResponse) {}
   rpc KeysExist (_KeysExistRequest) returns (_KeysExistResponse) {}
@@ -122,6 +125,29 @@ message _SetResponse {
 
 message _SetBatchRequest {
   repeated _SetRequest items = 1;
+}
+
+message _SetIfRequest {
+  bytes cache_key = 1;
+  bytes cache_body = 2;
+  uint64 ttl_milliseconds = 3;
+  oneof condition {
+    common.Present present = 4;
+    common.PresentAndNotEqual present_and_not_equal = 5;
+    common.Absent absent = 6;
+    common.Equal equal = 7;
+    common.AbsentOrEqual absent_or_equal = 8;
+    common.NotEqual not_equal = 9;
+  }
+}
+
+message _SetIfResponse {
+  oneof result {
+    _Stored stored = 1;
+    _NotStored not_stored = 2;
+  }
+  message _Stored { }
+  message _NotStored { }
 }
 
 message _SetIfNotExistsRequest {
@@ -455,7 +481,7 @@ message _SetPopResponse {
   oneof set {
     _Found found = 1;
     _Missing missing = 2;
-  } 
+  }
 }
 
 message _ListConcatenateFrontRequest {

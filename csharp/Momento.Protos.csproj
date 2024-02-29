@@ -24,6 +24,7 @@
     <Protobuf Include="../proto/cachepubsub.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/token.proto" GrpcServices="Client" />
     <Protobuf Include="../proto/extensions.proto" GrpcServices="Client" />
+    <Protobuf Include="../proto/common.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>

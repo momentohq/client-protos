@@ -2,6 +2,10 @@ pub mod permission_messages {
   include!("permission_messages.rs");
 }
 
+pub mod common {
+  include!("common.rs");
+}
+
 pub mod auth {
   include!("auth.rs");
 }
