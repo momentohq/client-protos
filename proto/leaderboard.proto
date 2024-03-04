@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "common.proto";
+
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "grpc.leaderboard";
@@ -21,16 +23,16 @@ package leaderboard;
 // below -16777216 and above 16777216, not all integers are able to be represented.
 service Leaderboard {
   // Deletes a leaderboard. After this call, you're not incurring storage cost for this leaderboard anymore.
-  rpc DeleteLeaderboard(_DeleteLeaderboardRequest) returns (_Empty);
+  rpc DeleteLeaderboard(_DeleteLeaderboardRequest) returns (common._Empty);
 
   // Insert or update elements in a leaderboard. You can do up to 8192 elements per call.
   // There is no partial failure: Upsert succeeds or fails.
-  rpc UpsertElements(_UpsertElementsRequest) returns (_Empty);
+  rpc UpsertElements(_UpsertElementsRequest) returns (common._Empty);
 
   // Remove up to 8192 elements at a time from a leaderboard. Elements are removed by id.
-  rpc RemoveElements(_RemoveElementsRequest) returns (_Empty);
+  rpc RemoveElements(_RemoveElementsRequest) returns (common._Empty);
 
-  // Returns the length of a leaderboard in terms of ID count. 
+  // Returns the length of a leaderboard in terms of ID count.
   rpc GetLeaderboardLength(_GetLeaderboardLengthRequest) returns (_GetLeaderboardLengthResponse);
 
   // Get a range of elements.
@@ -98,8 +100,6 @@ message _RankRange {
   uint32 end_exclusive = 2;
 }
 
-message _Unbounded { }
-
 // Query APIs using ScoreRange may match more than the limit of 8192 elements. These apis will
 // include an offset and limit parameter pair, which can be used to page through score ranges
 // matching many elements.
@@ -107,13 +107,13 @@ message _Unbounded { }
 // ScoreRange models half-open ranges: 0..4 refers to scores 0, 1.1234, 2.5 and 3.999.
 message _ScoreRange {
   oneof min {
-    _Unbounded unbounded_min = 1;
+    common._Unbounded unbounded_min = 1;
     // IEEE 754 single precision 64 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
     double min_inclusive = 5;
   }
   oneof max {
-    _Unbounded unbounded_max = 3;
+    common._Unbounded unbounded_max = 3;
     // IEEE 754 single precision 64 bit floating point number.
     // Momento does not support NaN or Inf in leaderboards.
     double max_exclusive = 6;
@@ -128,8 +128,6 @@ enum _Order {
   // Descending order (0 is the highest-scoring rank)
   DESCENDING = 1;
 }
-
-message _Empty {}
 
 message _DeleteLeaderboardRequest {
   string cache_name = 1;
