@@ -39,7 +39,7 @@ mkdir $out
 # TypeScript itself. See https://github.com/grpc/grpc-web/blob/7c528784576abbbfd05eb6085abb8c319d76ab05/README.md?plain=1#L246
 
 # Ramya: We need strict commonjs to allow Cloudflare workers to run the web sdk.
-# After changing to commonjs_strict, the web SDK will build but unit tests and integ tests fail with 
+# After changing to commonjs_strict, the web SDK will build but unit tests and integ tests fail with
 # ```
 # Test suite failed to run
 #    TypeError: Cannot read properties of undefined (reading 'Never')
@@ -74,6 +74,14 @@ function generate_proto() {
   do
     $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
     $sed_command 's/permission_messages.Permissions/Permissions/g' ../proto/${f}
+    $sed_command 's/common._Unbounded/_Unbounded/g' ../proto/${f}
+    $sed_command 's/common._Empty/_Empty/g' ../proto/${f}
+    $sed_command 's/common.Present/Present/g' ../proto/${f}
+    $sed_command 's/common.PresentAndNotEqual/PresentAndNotEqual/g' ../proto/${f}
+    $sed_command 's/common.Absent/Absent/g' ../proto/${f}
+    $sed_command 's/common.Equal/Equal/g' ../proto/${f}
+    $sed_command 's/common.AbsentOrEqual/AbsentOrEqual/g' ../proto/${f}
+    $sed_command 's/common.NotEqual/NotEqual/g' ../proto/${f}
   done
 
   protoc -I=../proto -I=/usr/local/include \
@@ -89,17 +97,5 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto webhook.proto "
-generate_proto "${proto_file_list[@]}"
-
-## Second pass for leaderboard.proto
-# The hack we do above removes the `package <pkg-name>` from each proto file, which causes
-# clashes between the multiple _Empty and _Unbounded definitions and prevents the javascript-web 
-# package from building. This second pass isolates the compiling of the leaderboard.proto
-# to prevent such clashes and to avoid having to maintain unique proto names in all files.
-
-# Again, this is all supposed to be temporary hacky fixes until the `--js_out` option 
-# supports TypeScript itself. 
-# See https://github.com/grpc/grpc-web/blob/7c528784576abbbfd05eb6085abb8c319d76ab05/README.md?plain=1#L246
-proto_file_list=" leaderboard.proto "
+proto_file_list=" common.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto webhook.proto leaderboard.proto "
 generate_proto "${proto_file_list[@]}"
