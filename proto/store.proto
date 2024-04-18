@@ -13,9 +13,16 @@ service Store {
   rpc Delete(_DeleteRequest) returns (_DeleteResponse) {}
 }
 
+message _ValueType {
+  bytes bytes_value = 3;
+  string string_value = 4;
+  int64 integer_value = 5;
+  float float_value = 6;
+}
+
 message _GetRequest {
-  bytes key = 1;
-  string store_id = 2;
+  string store_name = 1;
+  bytes key = 2;
 }
 
 message _GetResponse {
@@ -25,21 +32,21 @@ message _GetResponse {
   }
   message Miss { }
   message Hit {
-    bytes value = 1;
+    _ValueType value = 3;
   }
 }
 
 message _SetRequest {
-  bytes key = 1;
-  bytes value = 2;
-  string store_id = 3;
+  string store_name = 1;
+  bytes key = 2;
+  _ValueType value = 3;
 }
 
 message _SetResponse { }
 
 message _DeleteRequest {
-  bytes key = 1;
-  string store_id = 2;
+  string store_name = 1;
+  bytes key = 2;
 }
 
 message _DeleteResponse { }
