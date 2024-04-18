@@ -27,7 +27,7 @@ message _GetRequest {
 }
 
 message _GetResponse {
-    _Value value = 1;
+  _Value value = 1;
 }
 
 message _SetRequest {
