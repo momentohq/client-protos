@@ -13,8 +13,8 @@ service Store {
   rpc Delete(_DeleteRequest) returns (_DeleteResponse) {}
 }
 
-message _ValueType {
-  oneof type {
+message _Value {
+  oneof value {
     bytes bytes_value = 1;
     string string_value = 2;
     int64 integer_value = 3;
@@ -28,20 +28,13 @@ message _GetRequest {
 }
 
 message _GetResponse {
-  oneof result {
-    Miss miss = 1;
-    Hit hit = 2;
-  }
-  message Miss { }
-  message Hit {
-    _ValueType value = 3;
-  }
+    _Value value = 1;
 }
 
 message _SetRequest {
   string store_name = 1;
   bytes key = 2;
-  _ValueType value = 3;
+  _Value value = 3;
 }
 
 message _SetResponse { }
