@@ -14,10 +14,12 @@ service Store {
 }
 
 message _ValueType {
-  bytes bytes_value = 1;
-  string string_value = 2;
-  int64 integer_value = 3;
-  double double_value = 4;
+  oneof type {
+    bytes bytes_value = 1;
+    string string_value = 2;
+    int64 integer_value = 3;
+    double double_value = 4;
+  }
 }
 
 message _GetRequest {
