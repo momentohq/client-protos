@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
+option java_multiple_files = true;
+option java_package = "grpc.store";
+option csharp_namespace = "Momento.Protos.Store";
+
+package store;
+
+service Store {
+  rpc Get(_GetRequest) returns (_GetResponse) {}
+  rpc Set(_SetRequest) returns (_SetResponse) {}
+  rpc Delete(_DeleteRequest) returns (_DeleteResponse) {}
+}
+
+message _Value {
+  oneof value {
+    bytes bytes_value = 1;
+    string string_value = 2;
+    int64 integer_value = 3;
+    double double_value = 4;
+  }
+}
+
+message _GetRequest {
+  string key = 1;
+}
+
+message _GetResponse {
+  _Value value = 1;
+}
+
+message _SetRequest {
+  string key = 1;
+  _Value value = 2;
+}
+
+message _SetResponse { }
+
+message _DeleteRequest {
+  string key = 1;
+}
+
+message _DeleteResponse { }
