@@ -25,6 +25,7 @@ fn main() {
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),
                 format!("{proto_dir}/vectorindex.proto"),
+                format!("{proto_dir}/store.proto"),
             ],
             &[proto_dir],
         )
