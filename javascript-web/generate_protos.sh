@@ -97,5 +97,5 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" common.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto webhook.proto leaderboard.proto global_admin.proto "
+proto_file_list=" common.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto vectorindex.proto token.proto webhook.proto leaderboard.proto global_admin.proto store.proto "
 generate_proto "${proto_file_list[@]}"
