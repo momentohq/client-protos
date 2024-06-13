@@ -7,7 +7,9 @@ fn main() {
     eprintln!("Hi brave developer! If you are changing protos and momento-protos fails to build, please retry 1 time.");
     eprintln!("Cargo currently does not have a nice way for us to express a dependency order between these 2");
     eprintln!("workspace projects - because this project is _specifically_ supposed to not be a Cargo dependency.");
-    eprintln!("We did this so downstream users don't need to have protoc when compiling momento-protos!");
+    eprintln!(
+        "We did this so downstream users don't need to have protoc when compiling momento-protos!"
+    );
 
     eprintln!("If you are finding that your builds work locally, but not in CI, then you need to manual cleanup some artifacts");
     eprintln!("Clear out the `momento-protos/src` of all protos besides lib.rs, then run `cargo clean` and `cargo build`.");
@@ -24,7 +26,6 @@ fn main() {
                 format!("{proto_dir}/cacheclient.proto"),
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),
-                format!("{proto_dir}/vectorindex.proto"),
                 format!("{proto_dir}/store.proto"),
             ],
             &[proto_dir],
