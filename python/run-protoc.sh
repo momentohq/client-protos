@@ -23,7 +23,7 @@ do
     if [[ $python_protobuf_version == "protobuf>4" ]]; then
         pyi_out="--pyi_out=$src_path"
     fi
-    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cachepubsub.proto vectorindex.proto token.proto
+    poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cachepubsub.proto token.proto
 
     # A shortcoming of the generated code is in the grpc generated code,
     # the protobuf imports are absolute instead of relative.
