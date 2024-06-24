@@ -9,6 +9,7 @@ package global_admin;
 
 service GlobalAdmin {
   rpc GetAccounts(_GetAccountsRequest) returns(_GetAccountsResponse) {}
+  rpc GetAccountSessionToken (_GetAccountSessionTokenRequest) returns(_GetAccountSessionTokenResponse) {}
 }
 
 // No parameters required - we derive identity from the auth header.
@@ -22,4 +23,12 @@ message _GetAccountsResponse {
 message _Account {
   string id = 1;
   string account_name = 2;
+}
+
+message _GetAccountSessionTokenRequest {
+  string account_id = 1;
+}
+
+message _GetAccountSessionTokenResponse {
+  string account_session_token = 1;
 }
