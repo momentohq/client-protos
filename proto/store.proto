@@ -26,6 +26,11 @@ message _StoreGetRequest {
   string key = 1;
 }
 
+// This response is for when a get request concludes successfully.
+// These are some of the Errors and their corresponding GRPC status codes.
+// 1. Invalid argument was provided, value is missing -> grpc code = INVALID_ARGUMENT.  Metadata: "err" -> "momento_general_err"
+// 2. Item does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "item_not_found"
+// 3. Store not found. grpc code = NOT_FOUND. Metadata: "err" -> "store_not_found"
 message _StoreGetResponse {
   _StoreValue value = 1;
 }
@@ -35,10 +40,20 @@ message _StorePutRequest {
   _StoreValue value = 2;
 }
 
+// This response is for when a put request concludes successfully.
+// These are some of the Errors and their corresponding GRPC status codes.
+// 1. Invalid argument was provided, value is missing -> grpc code = INVALID_ARGUMENT.  Metadata: "err" -> "momento_general_err"
+// 2. Store is currently busy. grpc code = UNAVAILABLE. Metadata: "err" -> "server_is_busy", "retry_disposition" -> "retryable"
+// 3. Store not found. grpc code = NOT_FOUND. Metadata: "err" -> "store_not_found"
 message _StorePutResponse { }
 
 message _StoreDeleteRequest {
   string key = 1;
 }
 
+// This response is for when a delete request concludes successfully.
+// These are some of the Errors and their corresponding GRPC status codes.
+// 1. Invalid argument was provided, value is missing -> grpc code = INVALID_ARGUMENT.  Metadata: "err" -> "momento_general_err"
+// 2. Store is currently busy. grpc code = UNAVAILABLE. Metadata: "err" -> "server_is_busy", "retry_disposition" -> "retryable"
+// 3. Store not found. grpc code = NOT_FOUND. Metadata: "err" -> "store_not_found"
 message _StoreDeleteResponse { }
