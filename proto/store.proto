@@ -7,7 +7,7 @@ option csharp_namespace = "Momento.Protos.Store";
 
 package store;
 
-// Possible headers
+// Possible headers returned in grpc error responses
 // {
 //   Key: "err"
 //   Values: [
