@@ -7,6 +7,25 @@ option csharp_namespace = "Momento.Protos.Store";
 
 package store;
 
+// Possible headers
+// {
+//   Key: "err"
+//   Values: [
+//    "momento_general_err",
+//    "server_is_busy",
+//    "invalid_type",
+//    "item_not_found",
+//    "store_not_found"
+//   ]
+// },
+// {
+//   Key: "retry_disposition"
+//   Values: [
+//    "retryable",
+//    "possibly_retryable"
+//   ]
+// }
+
 service Store {
   rpc Get(_StoreGetRequest) returns (_StoreGetResponse) {}
   rpc Put(_StorePutRequest) returns (_StorePutResponse) {}
