@@ -17,7 +17,7 @@ package store;
 //      to complete it either way. A resource was exhausted which prevented the request
 //      from completing.
 //    "server_is_busy",
-//      Indicates that the stored type for the key supplied isn't compatiable with the 
+//      Indicates that the stored type for the key supplied isn't compatible with the
 //      requested operation
 //    "invalid_type",
 //      Indicates the item doesn't exist for the given key
@@ -35,7 +35,7 @@ package store;
 //      This rpc may be safe to retry, but it may have been applied.
 //      Non-idempotent commands should not be retried, unless configured explicitly.
 //      Idempotent commands should be considered eligible for retry.
-//    "possibly_retryable"
+//    "unknown"
 //   ]
 // }
 
