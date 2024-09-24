@@ -15,6 +15,11 @@ service GlobalAdmin {
   rpc ListMembers(_ListMembersRequest) returns(_ListMembersResponse) {}
   rpc GetEndpointsForAccount(_GetEndpointsForAccountRequest) returns (_GetEndpointsForAccountResponse) {}
   rpc SetAccountName(_SetAccountNameRequest) returns (_SetAccountNameResponse) {}
+  rpc InviteMember(_InviteMemberRequest) returns (_InviteMemberResponse) {}
+  rpc AcceptInvitation(_AcceptInvitationRequest) returns (_AcceptInvitationResponse) {}
+  rpc RejectInvitation(_RejectInvitationRequest) returns (_RejectInvitationResponse) {}
+  rpc ListInvitationsForAccount(_ListInvitationsForAccountRequest) returns (_ListInvitationsForAccountResponse) {}
+  rpc RevokeInvitation(_RevokeInvitationRequest) returns (_RevokeInvitationResponse) {}
 }
 
 message _SetAccountNameRequest {
@@ -59,6 +64,57 @@ message _AddMemberRequest {
 // 3. Account has too many Members. grpc code = RESOURCE_EXHAUSTED. Metadata: "err" -> "max_member_count_exceeded".
 message _AddMemberResponse {
 }
+
+// API Key needs to be provided via the "authorization" header.
+// The Account to add the User to is derived from the API key, which is account-scoped.
+message _InviteMemberRequest {
+  string user_name = 1;
+}
+
+// This response is for when a Member is invited to the Account,
+// These are some of the Errors and their corresponding GRPC status codes.
+// 1. User is already a Member. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "already_a_member".
+// 2. Account has too many Members. grpc code = RESOURCE_EXHAUSTED. Metadata: "err" -> "max_member_count_exceeded".
+message _InviteMemberResponse {
+}
+
+// Auth0 Token needs to be provided via the "authorization" header.
+// The user is derived from the Auth0 token and added to the account in the invitation if they match the invitation's user.
+message _AcceptInvitationRequest {
+  string invitation_id = 1;
+}
+
+message _AcceptInvitationResponse {
+}
+
+// Auth0 Token needs to be provided via the "authorization" header.
+// The user is derived from the Auth0 token and the invitation is rejected if they match the invitation's user.
+// Reject is called by a user to reject an offered invitation.
+message _RejectInvitationRequest {
+  string invitation_id = 1;
+}
+
+message _RejectInvitationResponse {
+}
+
+// Account Session Token provides relevant account.
+message _ListInvitationsForAccountRequest {}
+
+message _Invitation {
+  string id = 1;
+  _Member member = 2;
+}
+
+message _ListInvitationsForAccountResponse {
+  repeated _Invitation invitations = 1;
+}
+
+// Revoke is called by an account member to revoke a pending invitation in that account.
+message _RevokeInvitationRequest {
+  string invitation_id = 1;
+}
+
+message _RevokeInvitationResponse {}
 
 // API Key needs to be provided via the "authorization" header.
 // The Account to remove the User from is derived from the API key, which is account-scoped.
