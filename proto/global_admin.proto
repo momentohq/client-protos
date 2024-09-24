@@ -8,7 +8,10 @@ option csharp_namespace = "Momento.Protos.GlobalAdmin";
 package global_admin;
 
 service GlobalAdmin {
-  rpc GetAccounts(_GetAccountsRequest) returns(_GetAccountsResponse) {}
+  rpc GetAccounts(_GetAccountsRequest) returns (_GetAccountsResponse) {}
+  rpc GetInvitationsForUser(_GetInvitationsForUserRequest) returns (_GetInvitationsForUserResponse) {
+
+  }
   rpc GetAccountSessionToken (_GetAccountSessionTokenRequest) returns(_GetAccountSessionTokenResponse) {}
   rpc AddMember(_AddMemberRequest) returns(_AddMemberResponse) {}
   rpc RemoveMember(_RemoveMemberRequest) returns(_RemoveMemberResponse) {}
@@ -26,8 +29,7 @@ message _SetAccountNameRequest {
   string account_name = 1;
 }
 
-message _SetAccountNameResponse {
-}
+message _SetAccountNameResponse {}
 
 // No parameters required - we derive identity from the auth header.
 message _GetAccountsRequest {
@@ -35,6 +37,18 @@ message _GetAccountsRequest {
 
 message _GetAccountsResponse {
   repeated _Account accounts = 1;
+}
+
+message _GetInvitationsForUserRequest {}
+
+message UserInvitation {
+  string account_id = 1;
+  string account_name = 2;
+  string invitation_id = 3;
+}
+
+message _GetInvitationsForUserResponse {
+  repeated UserInvitation invitations = 1;
 }
 
 message _Account {
@@ -126,6 +140,7 @@ message _RemoveMemberRequest {
 // These are some of the Errors and their corresponding GRPC status codes:
 // 1. User is not a Member. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "user_is_not_a_member".
 // 2. a non-owner Member may not be removed. grpc code = PERMISSION_DENIED. Metadata: "err" -> "owner_cannot_be_removed".
+//
 // Note that to remove an Owner, customers need to reach out to us so we can run mm commands for them.
 message _RemoveMemberResponse {
 }
@@ -137,7 +152,7 @@ message _ListMembersRequest {
 
 enum Role {
   OWNER = 0;
-  MEMBER = 1;
+  OPERATOR = 1;
 }
 
 message _Member {
