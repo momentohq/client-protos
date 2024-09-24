@@ -79,14 +79,14 @@ message _RemoveMemberResponse {
 message _ListMembersRequest {
 }
 
-enum MembershipStatus {
+enum Role {
   OWNER = 0;
   MEMBER = 1;
 }
 
 message _Member {
   string user_name = 1;
-  MembershipStatus membership_status = 2;
+  Role role = 2;
 }
 
 message _ListMembersResponse {
