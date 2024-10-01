@@ -82,8 +82,8 @@ message _SubscriptionRequest {
   // a subscription, and ensures the right messages are sent for a given
   // `resume_at_topic_sequence_number`.
   // Include this in your Subscribe() calls when you are reconnecting. The right value
-  // is the last sequence_stamp you received.
-  uint64 sequence_stamp = 4;
+  // is the last sequence_page you received.
+  uint64 sequence_page = 4;
 }
 
 // Possible message kinds from a topic. They can be items when they're from you, or
@@ -118,10 +118,10 @@ message _TopicItem {
   // Authenticated id from Publisher's disposable token
   string publisher_id = 3;
 
-  // Sequence stamps exist to determine which sequence number range a message belongs to. On a topic reset,
-  // the sequence numbers reset and a new sequence_stamp is given.
-  // For a given sequence_stamp, the next message in a topic is topic_sequence_number + 1.
-  uint64 sequence_stamp = 4;
+  // Sequence pages exist to determine which sequence number range a message belongs to. On a topic reset,
+  // the sequence numbers reset and a new sequence_page is given.
+  // For a given sequence_page, the next message in a topic is topic_sequence_number + 1.
+  uint64 sequence_page = 4;
 }
 
 // A value in a topic - published, duplicated and received in a subscription.
@@ -143,11 +143,11 @@ message _Discontinuity {
   uint64 last_topic_sequence = 1;
   // The new topic sequence number after which TopicItems will ostensibly resume.
   uint64 new_topic_sequence = 2;
-  // The new topic sequence_stamp. If you had one before and this one is different, then your topic reset.
-  // If you didn't have one, then this is just telling you what the sequence stamp is expected to be.
+  // The new topic sequence_page. If you had one before and this one is different, then your topic reset.
+  // If you didn't have one, then this is just telling you what the sequence page is expected to be.
   // If you had one before, and this one is the same, then it's just telling you that you missed some messages
   // in the topic. Probably your client is consuming messages a little too slowly in this case!
-  uint64 new_sequence_stamp = 3;
+  uint64 new_sequence_page = 3;
 }
 
 // A message from Momento for when we want to reassure clients or frameworks that a
