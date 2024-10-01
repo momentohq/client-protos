@@ -121,6 +121,8 @@ message _TopicItem {
   // Sequence pages exist to determine which sequence number range a message belongs to. On a topic reset,
   // the sequence numbers reset and a new sequence_page is given.
   // For a given sequence_page, the next message in a topic is topic_sequence_number + 1.
+  //
+  // Later sequence pages are numbered greater than earlier pages, but they don't go one-by-one.
   uint64 sequence_page = 4;
 }
 
