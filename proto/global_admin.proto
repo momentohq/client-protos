@@ -13,7 +13,6 @@ service GlobalAdmin {
 
   }
   rpc GetAccountSessionToken (_GetAccountSessionTokenRequest) returns(_GetAccountSessionTokenResponse) {}
-  rpc AddMember(_AddMemberRequest) returns(_AddMemberResponse) {}
   rpc RemoveMember(_RemoveMemberRequest) returns(_RemoveMemberResponse) {}
   rpc ListMembers(_ListMembersRequest) returns(_ListMembersResponse) {}
   rpc GetEndpointsForAccount(_GetEndpointsForAccountRequest) returns (_GetEndpointsForAccountResponse) {}
@@ -62,21 +61,6 @@ message _GetAccountSessionTokenRequest {
 
 message _GetAccountSessionTokenResponse {
   string account_session_token = 1;
-}
-
-// API Key needs to be provided via the "authorization" header.
-// The Account to add the User to is derived from the API key, which is account-scoped.
-message _AddMemberRequest {
-  string user_name = 1;
-}
-
-// This response is for when a Member is added successfully to the Account,
-// including the case when the Member is already a Member.
-// These are some of the Errors and their corresponding GRPC status codes.
-// 1. User is already a Member. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "already_a_member".
-// 2. User does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "user_not_found".
-// 3. Account has too many Members. grpc code = RESOURCE_EXHAUSTED. Metadata: "err" -> "max_member_count_exceeded".
-message _AddMemberResponse {
 }
 
 // API Key needs to be provided via the "authorization" header.
