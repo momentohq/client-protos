@@ -55,6 +55,7 @@ do
         # will work when installed, eg:
         # `import cacheclient_pb2` -> `from . import cacheclient_pb2`
         sed -i.old "s/^\(import $pb2_module_name as \)/from . \1/g" $src_path/*_pb2.py
+        sed -i.old "s/^\(import $pb2_module_name as \)/from . \1/g" $src_path/*_pb2_grpc.py
     done
 
     rm $src_path/*.old
