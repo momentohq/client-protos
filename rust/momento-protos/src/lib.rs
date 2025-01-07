@@ -29,3 +29,7 @@ pub mod control_client {
 pub mod store {
   include!("store.rs");
 }
+
+pub mod leaderboard {
+  include!("leaderboard.rs");
+}
