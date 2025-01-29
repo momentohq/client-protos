@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "permissionrules.proto";
+
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "grpc.global_admin";
@@ -22,6 +24,9 @@ service GlobalAdmin {
   rpc RejectInvitation(_RejectInvitationRequest) returns (_RejectInvitationResponse) {}
   rpc ListInvitationsForAccount(_ListInvitationsForAccountRequest) returns (_ListInvitationsForAccountResponse) {}
   rpc RevokeInvitation(_RevokeInvitationRequest) returns (_RevokeInvitationResponse) {}
+  rpc ListRolesForAccount(_ListRolesForAccountRequest) returns (_ListRolesForAccountResponse) {}
+  rpc SetMemberRole(_SetMemberRoleRequest) returns (_SetMemberRoleResponse) {}
+
 }
 
 message _SetAccountNameRequest {
@@ -30,7 +35,6 @@ message _SetAccountNameRequest {
 
 message _SetAccountNameResponse {}
 
-// No parameters required - we derive identity from the auth header.
 message _GetAccountsRequest {
 }
 
@@ -53,6 +57,8 @@ message _GetInvitationsForUserResponse {
 message _Account {
   string id = 1;
   string account_name = 2;
+  string role_id = 3;
+  string role_name = 4;
 }
 
 message _GetAccountSessionTokenRequest {
@@ -61,18 +67,21 @@ message _GetAccountSessionTokenRequest {
 
 message _GetAccountSessionTokenResponse {
   string account_session_token = 1;
+  permission_rules.PermissionSet permissions = 2;
 }
 
 // API Key needs to be provided via the "authorization" header.
 // The Account to add the User to is derived from the API key, which is account-scoped.
 message _InviteMemberRequest {
   string user_name = 1;
+  string role_id = 2;
 }
 
 // This response is for when a Member is invited to the Account,
 // These are some of the Errors and their corresponding GRPC status codes.
 // 1. User is already a Member. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "already_a_member".
 // 2. Account has too many Members. grpc code = RESOURCE_EXHAUSTED. Metadata: "err" -> "max_member_count_exceeded".
+// 3. Invalid role. grpc code = INVALID_ARGUMENT.
 message _InviteMemberResponse {
 }
 
@@ -100,7 +109,8 @@ message _ListInvitationsForAccountRequest {}
 
 message _Invitation {
   string id = 1;
-  _Member member = 2;
+  _Member member = 2; // TODO: deprecate after migrating to new roles
+  _AccountMember account_member = 3;
 }
 
 message _ListInvitationsForAccountResponse {
@@ -144,8 +154,15 @@ message _Member {
   Role role = 2;
 }
 
+message _AccountMember {
+  string user_name = 1;
+  string role_id = 2;
+  string role_name = 3;
+}
+
 message _ListMembersResponse {
-  repeated _Member members = 1;
+  repeated _Member members = 1; // TODO: Deprecate this once we migrate to new roles
+  repeated _AccountMember account_members = 2;
 }
 
 // API Key needs to be provided via the "authorization" header.
@@ -161,4 +178,43 @@ message Endpoint {
   string friendly_name = 1; // the name displayed in the Console, e.g. 'us-west-2', 'private-us-west-2', etc.
   string domain_name = 2; // domain name for talking to this Endpoint, e.g. `cell-4-us-west-2-1.prod.a.momentohq.com`
   string region = 3; // AWS region, e.g. `us-west-2`
+}
+
+message _ListRolesForAccountRequest {
+}
+
+
+enum RoleType {
+  SYSTEM = 0;
+  CUSTOM = 1;
+}
+
+message AccountRole {
+  string role_id = 1; // unique identifier
+  string role_name = 2; // friendly name
+  permission_rules.PermissionSet permissions = 3; // permissions associated with the role
+  RoleType role_type = 4; // system or custom role
+}
+
+// This response is when we list all the roles for an account (system roles + custom roles).
+// These are the error cases:
+// 1. Account does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "account_not_found".
+message _ListRolesForAccountResponse {
+  repeated AccountRole roles = 1;
+}
+
+message _SetMemberRoleRequest {
+  string user_name = 1;
+  string desired_role_id = 2;
+}
+
+// This response is when a Member has their membership status changed successfully.
+// These are the error cases:
+// 1. User is not a member. grpc code = NOT_FOUND. Metadata: "err" -> "user_is_not_a_member".
+// 2. User already has the desired membership status. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "same_role".
+// 3. Last Owner cannot be demoted. grpc code = FAILED_PRECONDITION. Metadata: "err" -> "only_owner_cannot_be_removed".
+// 4. User does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "user_not_found".
+// 5. Account does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "account_not_found".
+// 6. Role does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "role_not_found".
+message _SetMemberRoleResponse {
 }
