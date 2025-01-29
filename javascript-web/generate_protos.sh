@@ -74,6 +74,7 @@ function generate_proto() {
   do
     $sed_command 's/^\s*package \(.*\)/\/\/package \1/g' ../proto/${f}
     $sed_command 's/permission_messages.Permissions/Permissions/g' ../proto/${f}
+    $sed_command 's/permission_rules.PermissionSet/PermissionSet/g' ../proto/${f}
     $sed_command 's/common._Unbounded/_Unbounded/g' ../proto/${f}
     $sed_command 's/common._Empty/_Empty/g' ../proto/${f}
     $sed_command 's/common.Present/Present/g' ../proto/${f}
@@ -97,5 +98,5 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" common.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto store.proto "
+proto_file_list=" common.proto permissionrules.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto store.proto "
 generate_proto "${proto_file_list[@]}"
