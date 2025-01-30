@@ -30,3 +30,7 @@ message NotEqual {
 message _Unbounded { }
 
 message _Empty {}
+
+enum SuperUserPermissions {
+  SuperUser = 0;
+}

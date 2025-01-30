@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "common.proto";
+
 option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
 option java_multiple_files = true;
 option java_package = "grpc.permission_messages";
@@ -30,13 +32,9 @@ enum TopicRole {
   TopicWriteOnly = 3;
 }
 
-enum SuperUserPermissions {
-  SuperUser = 0;
-}
-
 message Permissions {
   oneof kind {
-    SuperUserPermissions super_user = 1;
+    common.SuperUserPermissions super_user = 1;
     ExplicitPermissions explicit = 2;
   }
 }
