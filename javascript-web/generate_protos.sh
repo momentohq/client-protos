@@ -70,9 +70,9 @@ function generate_proto() {
   cp -r ../proto ../proto.bak
 
   # resolves the naming conflicts between permissionmessages and permissionrules
-  $sed_command -i 's/SuperUserPermissions/SuperUserPermissionSet/g' ../proto/permissionrules.proto
-  $sed_command -i 's/ExplicitPermissions/ExplicitPermissionSet/g' ../proto/permissionrules.proto
-  $sed_command -i 's/SuperUser/SuperUserSet/g' ../proto/permissionrules.proto
+  $sed_command 's/SuperUserPermissions/SuperUserPermissionSet/g' ../proto/permissionrules.proto
+  $sed_command 's/ExplicitPermissions/ExplicitPermissionSet/g' ../proto/permissionrules.proto
+  $sed_command 's/SuperUser/SuperUserSet/g' ../proto/permissionrules.proto
 
   echo "Commenting out package declarations"
   for f in $proto_file_list
