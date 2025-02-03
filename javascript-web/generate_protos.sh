@@ -69,6 +69,10 @@ function generate_proto() {
   echo "Backing up protos dir"
   cp -r ../proto ../proto.bak
 
+  # resolves the naming conflicts between permissionmessages and permissionrules
+  sed -i 's/SuperUserPermissions/SuperUserPermissionSet/g' ../proto/permissionrules.proto
+  sed -i 's/ExplicitPermissions/ExplicitPermissionSet/g' ../proto/permissionrules.proto
+
   echo "Commenting out package declarations"
   for f in $proto_file_list
   do
@@ -97,5 +101,5 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" common.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto store.proto "
+proto_file_list=" common.proto permissionrules.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto store.proto "
 generate_proto "${proto_file_list[@]}"
