@@ -51,6 +51,12 @@ service Leaderboard {
   // You can request up to 8192 elements at a time. To page through many elements that all
   // fall into a score range you can repeatedly invoke this api with the offset parameter.
   rpc GetByScore(_GetByScoreRequest) returns (_GetByScoreResponse);
+
+
+  // Get the competitive ranks of a list of elements.
+  // Ranks start at 0. The default ordering is descending.
+  // i.e. elements with higher scores have lower ranks.
+  rpc GetCompetitiveRank(_GetCompetitiveRankRequest) returns (_GetCompetitiveRankResponse);
 }
 
 // Leaderboards are made up of many of these.
@@ -191,5 +197,16 @@ message _GetByScoreRequest {
 }
 
 message _GetByScoreResponse {
+  repeated _RankedElement elements = 1;
+}
+
+message _GetCompetitiveRankRequest {
+  string leaderboard = 1;
+  repeated uint32 ids = 2;
+  // If not specified, the order is descending.
+  optional _Order order = 3;
+}
+
+message _GetCompetitiveRankResponse {
   repeated _RankedElement elements = 1;
 }
