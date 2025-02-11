@@ -53,10 +53,10 @@ service Leaderboard {
   rpc GetByScore(_GetByScoreRequest) returns (_GetByScoreResponse);
 
 
-  // Get the competitive ranks of a list of elements.
+  // Get the competition ranks of a list of elements.
   // Ranks start at 0. The default ordering is descending.
   // i.e. elements with higher scores have lower ranks.
-  rpc GetCompetitiveRank(_GetCompetitiveRankRequest) returns (_GetCompetitiveRankResponse);
+  rpc GetCompetitionRank(_GetCompetitionRankRequest) returns (_GetCompetitionRankResponse);
 }
 
 // Leaderboards are made up of many of these.
@@ -200,13 +200,13 @@ message _GetByScoreResponse {
   repeated _RankedElement elements = 1;
 }
 
-message _GetCompetitiveRankRequest {
+message _GetCompetitionRankRequest {
   string leaderboard = 1;
   repeated uint32 ids = 2;
   // If not specified, the order is descending.
   optional _Order order = 3;
 }
 
-message _GetCompetitiveRankResponse {
+message _GetCompetitionRankResponse {
   repeated _RankedElement elements = 1;
 }
