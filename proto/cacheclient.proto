@@ -1054,7 +1054,7 @@ message _SortedSetUnionStoreRequest {
   // The destination set where the result of the union is stored.
   bytes set_name = 1;
 
-  // The sets to compute the union for. Note the desination set is not implicitly included as a source.
+  // The sets to compute the union for. Note that the destination set is not implicitly included as a source.
   // It must be explicitly specified in sources if its current contents need to be included in the union.
   repeated _Source sources = 2;
 
