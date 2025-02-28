@@ -94,6 +94,9 @@ service Scs {
   rpc SortedSetLength(_SortedSetLengthRequest) returns (_SortedSetLengthResponse) {}
   // Returns number of elements in the sorted set between a given min and max score
   rpc SortedSetLengthByScore(_SortedSetLengthByScoreRequest) returns (_SortedSetLengthByScoreResponse) {}
+  // Computes the union of multiple sorted sets using weights and an aggregate function and stores the result in itself
+  // If the sorted set exists, its value is overwritten.
+  rpc SortedSetUnionStore(_SortedSetUnionStoreRequest) returns (_SortedSetUnionStoreResponse) {}
 }
 
 message _GetRequest {
@@ -1023,5 +1026,37 @@ message _SortedSetLengthByScoreResponse {
   oneof sorted_set {
     _Found found = 1;
     _Missing missing = 2;
+  }
+}
+
+message _SortedSetUnionStoreRequest {
+  enum AggregateFunction {
+    SUM = 0;
+    MIN = 1;
+    MAX = 2;
+  }
+
+  message _Source {
+    bytes set_name = 1;
+    optional float weight = 2;
+  }
+
+  bytes set_name = 1;
+  repeated _Source sources = 2;
+  AggregateFunction aggregate = 3;
+  uint64 ttl_milliseconds = 4;
+  bool refresh_ttl = 5;
+}
+
+message _SortedSetUnionStoreResponse {
+  message _Stored {
+    uint32 length = 1;
+  }
+
+  message _NotStored {}
+
+  oneof sorted_set {
+    _Stored stored = 1;
+    _NotStored not_stored = 2;
   }
 }
