@@ -24,6 +24,8 @@ service Scs {
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc SetBatch (_SetBatchRequest) returns (stream _SetResponse) {}
   rpc SetIf (_SetIfRequest) returns (_SetIfResponse) {}
+  // Conditionally set an item based on the value of a token that is stored along with the item
+  rpc SetIfToken (_SetIfTokenRequest) returns (_SetIfTokenResponse) {}
 
   // Deprecated because we have SetIf - Absent to cover this case.
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {
@@ -35,6 +37,7 @@ service Scs {
   rpc UpdateTtl (_UpdateTtlRequest) returns (_UpdateTtlResponse) {}
   rpc ItemGetTtl (_ItemGetTtlRequest) returns (_ItemGetTtlResponse) {}
   rpc ItemGetType (_ItemGetTypeRequest) returns (_ItemGetTypeResponse) {}
+  rpc ItemGetToken (_ItemGetTokenRequest) returns (_ItemGetTokenResponse) {}
 
   rpc DictionaryGet (_DictionaryGetRequest) returns (_DictionaryGetResponse) {}
   rpc DictionaryFetch (_DictionaryFetchRequest) returns (_DictionaryFetchResponse) {}
@@ -177,6 +180,29 @@ message _SetIfNotExistsResponse {
   message _NotStored { }
 }
 
+// tokens are restricted to 8 bytes
+// When setting an item for the first time, previous token is set to 0
+message _SetIfTokenRequest {
+  bytes cache_key = 1;
+  uint64 previous_token = 2;
+  bytes cache_body = 3;
+  uint64 ttl_milliseconds = 4;
+  uint64 new_token = 5;
+}
+
+message _SetIfTokenResponse {
+  oneof result {
+    _Stored stored = 1;
+    _NotStored not_stored = 2;
+  }
+  // Stored with the new token
+  message _Stored {
+    uint64 token = 1;
+  }
+  // Not stored due to token mismatch
+  message _NotStored { }
+}
+
 message _KeysExistRequest {
   repeated bytes cache_keys = 1;
 }
@@ -254,6 +280,21 @@ message _ItemGetTypeResponse {
   }
   message _Found{
     ItemType item_type = 1;
+  }
+  message _Missing{}
+  oneof result {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+}
+
+message _ItemGetTokenRequest {
+  bytes cache_key = 1;
+}
+
+message _ItemGetTokenResponse {
+  message _Found{
+    uint64 token = 1;
   }
   message _Missing{}
   oneof result {
