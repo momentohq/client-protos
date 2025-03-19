@@ -35,7 +35,7 @@ message PresentAndNotHashEqual {
   bytes hash_to_check = 1;
 }
 
-message HashEqual {
+message PresentAndHashEqual {
   bytes hash_to_check = 1;
 }
 
@@ -43,7 +43,7 @@ message AbsentOrHashEqual {
   bytes hash_to_check = 1;
 }
 
-message NotHashEqual {
+message AbsentOrNotHashEqual {
   bytes hash_to_check = 1;
 }
 

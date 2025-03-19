@@ -89,9 +89,9 @@ function generate_proto() {
     $sed_command 's/common.AbsentOrEqual/AbsentOrEqual/g' ../proto/${f}
     $sed_command 's/common.NotEqual/NotEqual/g' ../proto/${f}
     $sed_command 's/common.PresentAndNotHashEqual/PresentAndNotHashEqual/g' ../proto/${f}
-    $sed_command 's/common.HashEqual/HashEqual/g' ../proto/${f}
+    $sed_command 's/common.PresentAndHashEqual/PresentAndHashEqual/g' ../proto/${f}
     $sed_command 's/common.AbsentOrHashEqual/AbsentOrHashEqual/g' ../proto/${f}
-    $sed_command 's/common.NotHashEqual/NotHashEqual/g' ../proto/${f}
+    $sed_command 's/common.AbsentOrNotHashEqual/AbsentOrNotHashEqual/g' ../proto/${f}
     $sed_command 's/common.Unconditional/Unconditional/g' ../proto/${f}
   done
 
