@@ -20,10 +20,15 @@ enum ECacheResult {
 
 service Scs {
   rpc Get (_GetRequest) returns (_GetResponse) {}
+  rpc GetWithHash (_GetWithHashRequest) returns (_GetWithHashResponse) {}
   rpc GetBatch (_GetBatchRequest) returns (stream _GetResponse) {}
   rpc Set (_SetRequest) returns (_SetResponse) {}
   rpc SetBatch (_SetBatchRequest) returns (stream _SetResponse) {}
   rpc SetIf (_SetIfRequest) returns (_SetIfResponse) {}
+  // Conditionally set the item value based on comparing the hashes computed on the item values
+  // instead of comparing the entire values. This is an alternative to SetIf that saves bandwidth
+  // by removing the need to send the entire value to compare against.
+  rpc SetIfHash (_SetIfHashRequest) returns (_SetIfHashResponse) {}
 
   // Deprecated because we have SetIf - Absent to cover this case.
   rpc SetIfNotExists (_SetIfNotExistsRequest) returns (_SetIfNotExistsResponse) {
@@ -114,6 +119,22 @@ message _GetResponse {
   string message = 3;
 }
 
+message _GetWithHashRequest {
+  bytes cache_key = 1;
+}
+
+message _GetWithHashResponse {
+  oneof result {
+    _Found found = 1;
+    _Missing missing = 2;
+  }
+  message _Found {
+     bytes value = 1;
+     bytes hash = 2;
+  }
+  message _Missing {}
+}
+
 message _GetBatchRequest {
   repeated _GetRequest items = 1;
 }
@@ -159,6 +180,40 @@ message _SetIfResponse {
     _NotStored not_stored = 2;
   }
   message _Stored { }
+  message _NotStored { }
+}
+
+message _SetIfHashRequest {
+  bytes cache_key = 1;
+  bytes cache_body = 2;
+  uint64 ttl_milliseconds = 3;
+  oneof condition {
+    // Update the item only if it exists and the hash of its current value
+    // does not match the hash passed in the request
+    common.PresentAndNotHashEqual present_and_not_hash_equal = 4;
+    // Update the item only if it exists and the hash of its current value
+    // matches the hash passed in the request    
+    common.PresentAndHashEqual present_and_hash_equal = 5;
+    // Update the item if it exists and the hash of its current value matches
+    // the hash passed in the request or create it if the item doesn't exist
+    common.AbsentOrHashEqual absent_or_hash_equal = 6;
+    // Update the item if it exists and the hash of its current value doesn't
+    // match the hash passed in the request or create it if the item doesn't exist
+    common.AbsentOrNotHashEqual absent_or_not_hash_equal = 7;
+    // Unconditionally update the item if it exists or create it if it doesn't
+    common.Unconditional unconditional = 8;
+  }
+}
+
+message _SetIfHashResponse {
+  oneof result {
+    _Stored stored = 1;
+    _NotStored not_stored = 2;
+  }
+  message _Stored {
+    // Hash computed on the newly stored value
+    bytes new_hash = 1;
+  }
   message _NotStored { }
 }
 
