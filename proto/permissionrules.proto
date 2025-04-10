@@ -128,7 +128,6 @@ message Rule {
     ResourceManagementRule resource_management_rule = 3;
     CacheRule cache_rule = 4;
     TopicRule topic_rule = 5;
-    StoreRule storage_rule = 6;
   }
 
   message AccountManagementRule {
