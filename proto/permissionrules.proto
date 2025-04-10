@@ -73,15 +73,6 @@ message CacheItemSelector {
   }
 }
 
-enum StoreAPIPermissions {
-  // Does not apply to individual resources
-  StoreList = 0;
-  // Restricts access to apis that read data from stores: No higher level resource description or modification.
-  StoreRead = 1;
-  // Restricts access to apis that write to stores: No higher level resource description or modification.
-  StoreWrite = 2;
-}
-
 // Allows specifying specific stores.
 message StoreSelector {
   oneof kind {
@@ -182,18 +173,6 @@ message Rule {
     oneof topic {
       All all_topics = 4;
       TopicSelector topic_selector = 5;
-    }
-  }
-
-  message StoreRule {
-    repeated StoreAPIPermissions permissions = 1;
-    oneof store {
-      All all_stores = 2;
-      StoreSelector store_selector = 3;
-    }
-    oneof store_item {
-      All all_items = 4;
-      StoreItemSelector item_selector = 5;
     }
   }
 }
