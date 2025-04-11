@@ -26,10 +26,6 @@ pub mod control_client {
   include!("control_client.rs");
 }
 
-pub mod store {
-  include!("store.rs");
-}
-
 pub mod leaderboard {
   include!("leaderboard.rs");
 }

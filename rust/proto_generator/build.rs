@@ -26,7 +26,6 @@ fn main() {
                 format!("{proto_dir}/cacheclient.proto"),
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),
-                format!("{proto_dir}/store.proto"),
                 format!("{proto_dir}/leaderboard.proto"),
             ],
             &[proto_dir],
