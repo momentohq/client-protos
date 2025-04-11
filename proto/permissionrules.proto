@@ -73,21 +73,6 @@ message CacheItemSelector {
   }
 }
 
-// Allows specifying specific stores.
-message StoreSelector {
-  oneof kind {
-    string store_name = 1;
-  }
-}
-
-// Allows specifying specific items within stores.
-message StoreItemSelector {
-  oneof kind {
-    bytes key = 1;
-    bytes key_prefix = 2;
-  }
-}
-
 // Topic API Restrictions
 enum TopicAPIPermissions {
   // Does not apply to individual resources
