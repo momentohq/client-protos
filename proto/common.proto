@@ -7,13 +7,13 @@ option csharp_namespace = "Momento.Protos.Common";
 
 package common;
 
-message Present { }
+message Present {}
 
 message PresentAndNotEqual {
   bytes value_to_check = 1;
 }
 
-message Absent { }
+message Absent {}
 
 message Equal {
   bytes value_to_check = 1;
@@ -27,7 +27,7 @@ message NotEqual {
   bytes value_to_check = 1;
 }
 
-message _Unbounded { }
+message _Unbounded {}
 
 message _Empty {}
 
@@ -47,4 +47,4 @@ message AbsentOrNotHashEqual {
   bytes hash_to_check = 1;
 }
 
-message Unconditional { }
+message Unconditional {}
