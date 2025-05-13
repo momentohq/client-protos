@@ -86,7 +86,7 @@ message _ListCachesRequest {
 
 message _CacheLimits {
   // The amount of transactions per second that can be exercised
-  uint32 max_traffic_rate = 1; 
+  uint32 max_traffic_rate = 1;
   // The amount of traffic per second that can be exercised in KiB
   uint32 max_throughput_kbps = 2;
   // The maximum size of a single item in KiB

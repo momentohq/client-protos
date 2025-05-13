@@ -14,13 +14,13 @@ service Token {
 }
 
 message _GenerateDisposableTokenRequest {
-    // generate a token that has an expiry
-    message Expires {
-        // how many seconds do you want the api token to be valid for?
-        uint32 valid_for_seconds = 1;
-    }
+  // generate a token that has an expiry
+  message Expires {
+    // how many seconds do you want the api token to be valid for?
+    uint32 valid_for_seconds = 1;
+  }
 
-    Expires expires = 1;
+  Expires expires = 1;
 
   string auth_token = 2;
 

@@ -58,38 +58,38 @@ message _LoginResponse {
 }
 
 message _GenerateApiTokenRequest {
-    // generate a token that will never expire
-    message Never {}
-    // generate a token that has an expiry
-    message Expires {
-        // how many seconds do you want the api token to be valid for?
-        uint32 valid_for_seconds = 1;
-    }
+  // generate a token that will never expire
+  message Never {}
+  // generate a token that has an expiry
+  message Expires {
+    // how many seconds do you want the api token to be valid for?
+    uint32 valid_for_seconds = 1;
+  }
 
-    oneof expiry {
-        Never never = 1;
-        Expires expires = 2;
-    }
+  oneof expiry {
+    Never never = 1;
+    Expires expires = 2;
+  }
 
-    string auth_token = 3;
+  string auth_token = 3;
 
-    permission_messages.Permissions permissions = 4;
+  permission_messages.Permissions permissions = 4;
 
-    string token_id = 5;
+  string token_id = 5;
 
-    string description = 6;
+  string description = 6;
 }
 
 message _GenerateApiTokenResponse {
-    // the api key used for authentication against Momento backend
-    string api_key = 1;
-    // the token that will allow the api token to be refreshed, which will
-    // give you back a new refresh and api token
-    string refresh_token = 2;
-    // the Momento endpoint that this token is allowed to make requests against
-    string endpoint = 3;
-    // epoch seconds when the api token expires
-    uint64 valid_until = 4;
+  // the api key used for authentication against Momento backend
+  string api_key = 1;
+  // the token that will allow the api token to be refreshed, which will
+  // give you back a new refresh and api token
+  string refresh_token = 2;
+  // the Momento endpoint that this token is allowed to make requests against
+  string endpoint = 3;
+  // epoch seconds when the api token expires
+  uint64 valid_until = 4;
 }
 
 message _RefreshApiTokenRequest {
