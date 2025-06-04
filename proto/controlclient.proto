@@ -73,17 +73,6 @@ message _DeleteCacheRequest {
 message _DeleteCacheResponse {
 }
 
-message _CreateCacheRequest {
-  string cache_name = 1;
-}
-
-message _CreateCacheResponse {
-}
-
-message _ListCachesRequest {
-  string next_token = 1;
-}
-
 message _CacheLimits {
   // The amount of transactions per second that can be exercised
   uint32 max_traffic_rate = 1;
@@ -108,6 +97,18 @@ message _Cache {
   string cache_name = 1;
   _CacheLimits cache_limits = 2;
   _TopicLimits topic_limits = 3;
+}
+
+message _CreateCacheRequest {
+  string cache_name = 1;
+}
+
+message _CreateCacheResponse {
+  _Cache cache = 1;
+}
+
+message _ListCachesRequest {
+  string next_token = 1;
 }
 
 message _ListCachesResponse {
