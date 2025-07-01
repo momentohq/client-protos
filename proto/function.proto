@@ -29,14 +29,19 @@ message _PutFunctionRequest {
   string name = 2;
   // Optional description for the Function. You can use this to keep some notes about this Function.
   string description = 3;
+  // The environment variables that are available to this function as virtual environment via the WASI interface.
+  map<string, function_types._EnvironmentValue> environment = 4;
   oneof wasm_location {
     // The wasm for the Function is here, in the message. Will be uploaded as a separate Wasm
     bytes inline = 20;
-    _WasmId wasm_id = 21;
+    // The wasm for the Function is this id
+    function_types._WasmId wasm_id = 21;
   }
 }
 
-message _PutFunctionResponse {}
+message _PutFunctionResponse {
+  function_types._Function function = 1;
+}
 
 message _PutWasmRequest {
   // Name for the Wasm
@@ -45,7 +50,7 @@ message _PutWasmRequest {
   string description = 2;
   oneof wasm_put_kind {
    // The wasm for the wasm are here in the message
-    bytes inline = 22; 
+    bytes inline = 22;
     // No bytes change necessary, just changing the metadata of the record (description, display name, etc.)
     _MetadataOnly metadata_only = 24;
   }
@@ -53,11 +58,8 @@ message _PutWasmRequest {
   message _MetadataOnly {}
 }
 
-message _PutWasmResponse {}
-
-message _WasmId {
-  string id = 1;
-  uint32 version = 2;
+message _PutWasmResponse {
+  function_types._Wasm wasm = 1;
 }
 
 message _ListWasmsRequest {

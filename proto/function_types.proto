@@ -32,25 +32,16 @@ message _CurrentFunctionVersion {
   };
 }
 
-// A specific version of a Function, it may contain differing values such as new environment variables,
-// a different Wasm, etc.
+// A specific version of a Function, with its versioned configuration data.
 message _FunctionVersion {
-  // This unique identifier should change when a function's metadata is updated.
+  // This unique identifier should change when a function's metadata is updated
   _FunctionId id = 1;
 
-  // Which wasm ID is this function using?
-  // Changing the wasm ID is a Function version change.
+  // The wasm ID this function uses
   _WasmId wasm_id = 20;
 
-  // The environment variables that are available to this function via the WASI environment interface.
-  // Changing the environment variables is a Function version change.
+  // The environment variables available to this function via the WASI environment interface
   map<string, _EnvironmentValue> environment = 40;
-
-  // ---------- Some possible future features ---------- //
-  // Extra host interfaces beyond the default that are available to this Function.
-  // repeated ExtraInterface extra_available_interfaces = 60;
-  // Function QoS tier.
-  // QualityOfService qos = 61;
 }
 
 message _EnvironmentValue {
@@ -75,14 +66,6 @@ message _Wasm {
 
     // The description of the wasm.
     string description = 3;
-
-    // The actual bytes of the wasm.
-    oneof location {
-        // The bytes of the wasm are here in this message.
-        bytes inline = 20;
-        // The wasm is at this s3 url.
-        string s3_location = 21;
-    }
 }
 
 message _FunctionId {
