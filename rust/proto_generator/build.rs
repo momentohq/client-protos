@@ -27,6 +27,8 @@ fn main() {
                 format!("{proto_dir}/cachepubsub.proto"),
                 format!("{proto_dir}/controlclient.proto"),
                 format!("{proto_dir}/leaderboard.proto"),
+                format!("{proto_dir}/function_types.proto"),
+                format!("{proto_dir}/function.proto"),
             ],
             &[proto_dir],
         )

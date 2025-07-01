@@ -29,3 +29,11 @@ pub mod control_client {
 pub mod leaderboard {
   include!("leaderboard.rs");
 }
+
+pub mod function_types {
+  include!("function_types.rs");
+}
+
+pub mod function {
+  include!("function.rs");
+}
