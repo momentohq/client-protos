@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option go_package = "github.com/momentohq/client-sdk-go;client_sdk_go";
+option java_multiple_files = true;
+option java_package = "grpc.function";
+option csharp_namespace = "Momento.Protos.Function";
+
+import "function_types.proto";
+package function;
+
+// A Function is an extension of Momento; for users to build their own Momento apis.
+// This is the registration and management interface.
+service FunctionRegistry {
+  // Register a new Function. This will overwrite any existing Function with the same name.
+  // Functions are registered within a cache, which namespaces them.
+  rpc PutFunction(_PutFunctionRequest) returns (_PutFunctionResponse) {}
+  rpc PutWasm(_PutWasmRequest) returns (_PutWasmResponse) {}
+  rpc ListFunctions(_ListFunctionsRequest) returns (stream function_types._Function) {}
+  rpc ListFunctionVersions(_ListFunctionVersionsRequest) returns (stream function_types._FunctionVersion) {}
+  rpc ListWasms(_ListWasmsRequest) returns (stream function_types._Wasm) {}
+
+  // List and delete rpcs are to be added later
+}
+
+message _PutFunctionRequest {
+  // The cache within which the Function is stored.
+  string cache_name = 1;
+  // Friendly name for the Function. This is used to call the Function, so call it what you want to use to call it.
+  string name = 2;
+  // Optional description for the Function. You can use this to keep some notes about this Function.
+  string description = 3;
+  oneof wasm_location {
+    // The wasm for the Function is here, in the message. Will be uploaded as a separate Wasm
+    bytes inline = 20;
+    _WasmId wasm_id = 21;
+  }
+}
+
+message _PutFunctionResponse {}
+
+message _PutWasmRequest {
+  // Name for the Wasm
+  string name = 1;
+  // Optional description for the Wasm. You can use this to keep some notes about this Wasm
+  string description = 2;
+  oneof wasm_put_kind {
+   // The wasm for the wasm are here in the message
+    bytes inline = 22; 
+    // No bytes change necessary, just changing the metadata of the record (description, display name, etc.)
+    _MetadataOnly metadata_only = 24;
+  }
+
+  message _MetadataOnly {}
+}
+
+message _PutWasmResponse {}
+
+message _WasmId {
+  string id = 1;
+  uint32 version = 2;
+}
+
+message _ListWasmsRequest {
+}
+
+message _ListFunctionsRequest {
+}
+
+message _ListFunctionVersionsRequest {
+  // List the versions of a given function
+  string function_id = 1;
+}
