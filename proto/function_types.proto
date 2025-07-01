@@ -7,20 +7,17 @@ message _Function {
   // This unique identifier should change when a function's metadata is updated.
   _FunctionId id = 1;
 
-  // The cache that owns this function, and thereby the context within which it executes.
-  string cache_id = 2;
-
   // The name of the function.
-  string name = 3;
+  string name = 2;
 
   // A convenience for consoles.
-  string description = 4;
+  string description = 3;
 
   // What is the current version of the function set to use upon invocation?
-  _CurrentFunctionVersion current_version = 5; 
+  _CurrentFunctionVersion current_version = 4; 
 
   // What is the actual latest version of the function?
-  uint32 latest_version = 6;
+  uint32 latest_version = 5;
 }
 
 message _CurrentFunctionVersion {
@@ -60,8 +57,6 @@ message _EnvironmentValue {
   oneof value {
     // An environment variable value
     string literal = 1;
-    // // A reference to a secret value.
-    // string secret_id = 2;
   }
 }
 
@@ -103,75 +98,3 @@ message _WasmId {
     // A sub-id of sorts. Together with the id, this is a unique identifier for a wasm binary.
     uint32 version = 2;
 }
-
-// Limits on function execution.
-message _FunctionLimits {
-  // At which level do these limits apply?
-  // When there are multiple matching Limits, greater specificity ___unconditionally___ takes precedence.
-  oneof applies_to {
-    // The limits apply to all functions in this whole cell.
-    // specificity 0, lowest
-    string the_whole_cell = 20;
-    // The limits apply to all functions in an account.
-    // specificity 1
-    string account_id = 21;
-    // The limits apply to all functions in a cache.
-    // specificity 2
-    string cache_id = 22;
-    // The limits apply to a specific function (irrespective of version).
-    // specificity 3, highest
-    string function_id = 23;
-  }
-
-  // How many concurrent instances of this function can be running?
-  // Default is 10.
-  _NumberLimit per_host_concurrency = 1;
-
-  // How many times can this function be called per second?
-  // Default is 10.
-  _NumberLimit per_host_rate = 2;
-
-  // How long can each instance of this function run for?
-  // Default is 10 seconds.
-  _NumberLimit wall_clock_timeout_seconds = 3;
-
-  // How much memory can each instance of this function use?
-  // Default is 8MiB.
-  _NumberLimit memory_bytes = 4;
-
-  message _NumberLimit {
-    oneof limit {
-      uint64 limit_value = 1;
-      _Unlimited unlimited = 2;
-      _Default default = 3;
-    }
-  }
-  message _Unlimited {}
-  message _Default {}
-}
-
-// ---------------- Possible futures ---------------- //
-
-// // Extra host interfaces beyond the default that are available to this Function.
-// message ExtraInterface {
-//     // Why is this interface available on this function?
-//     string comment = 1;
-//     oneof interface {
-//         SpecialFoxInterfaces fox = 100;
-//     }
-
-//     // an example of a declaration of a special host interface.
-//     // This is how you would declare and configure any special host interfaces that are not generally available
-//     message SpecialFoxInterfaces {
-//     }
-// }
-
-// // A possible enum for QoS.
-// enum QualityOfService {
-//     // Low priority. Low cost. When the host is busy, this class will receive less time than higher classes.
-//     ECONOMY = 0;
-//     // Normal priority. Normal cost. Functions in this class will receive a fair share of the host's resources.
-//     STANDARD = 1;
-//     // High priority. High cost. Functions in this class will receive preferential scheduling.
-//     REALTIME = 2;
-// }
