@@ -49,7 +49,7 @@ message _PutWasmRequest {
   // Optional description for the Wasm. You can use this to keep some notes about this Wasm
   string description = 2;
   oneof wasm_put_kind {
-   // The wasm for the wasm are here in the message
+    // The bytes for the wasm are here in the message
     bytes inline = 22;
     // No bytes change necessary, just changing the metadata of the record (description, display name, etc.)
     _MetadataOnly metadata_only = 24;
@@ -66,6 +66,8 @@ message _ListWasmsRequest {
 }
 
 message _ListFunctionsRequest {
+  // The cache to list functions in.
+  string cache_name = 1;
 }
 
 message _ListFunctionVersionsRequest {

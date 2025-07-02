@@ -4,8 +4,8 @@ package function_types;
 
 // A Function is an extension of Momento; for users to build their own Momento apis.
 message _Function {
-  // This unique identifier should change when a function's metadata is updated.
-  _FunctionId id = 1;
+  // This is an immutable unique identifier for the function, across versions.
+  string function_id = 1;
 
   // The name of the function.
   string name = 2;
@@ -14,7 +14,7 @@ message _Function {
   string description = 3;
 
   // What is the current version of the function set to use upon invocation?
-  _CurrentFunctionVersion current_version = 4; 
+  _CurrentFunctionVersion current_version = 4;
 
   // What is the actual latest version of the function?
   uint32 latest_version = 5;
@@ -56,28 +56,28 @@ message _EnvironmentValue {
 // In this way, we can manage Templates independently of concrete user Functions, and users can
 // reuse their wasms across multiple Functions (which would be different configurations).
 message _Wasm {
-    // The globally unique identifier tuple for this wasm.
-    // It may be a shared ID, as in the case of a Template Function, or it may be
-    // unique to one Function.
-    _WasmId id = 1;
+  // The globally unique identifier tuple for this wasm.
+  // It may be a shared ID, as in the case of a Template Function, or it may be
+  // unique to one Function.
+  _WasmId id = 1;
 
-    // The display name of the wasm.
-    string display_name = 2;
+  // The name of the wasm.
+  string name = 2;
 
-    // The description of the wasm.
-    string description = 3;
+  // The description of the wasm.
+  string description = 3;
 }
 
 message _FunctionId {
-    // Globally unique id, this is stable across versions of the Function.
-    string id = 1;
-    // A sub-id of sorts. Together with the id, this is a unique identifier for a function configuration.
-    uint32 version = 2;
+  // Globally unique id, this is stable across versions of the Function.
+  string id = 1;
+  // A sub-id of sorts. Together with the id, this is a unique identifier for a function configuration.
+  uint32 version = 2;
 }
 
 message _WasmId {
-    // Globally unique id, this is stable across versions of the wasm.
-    string id = 1;
-    // A sub-id of sorts. Together with the id, this is a unique identifier for a wasm binary.
-    uint32 version = 2;
+  // Globally unique id, this is stable across versions of the wasm.
+  string id = 1;
+  // A sub-id of sorts. Together with the id, this is a unique identifier for a wasm binary.
+  uint32 version = 2;
 }
