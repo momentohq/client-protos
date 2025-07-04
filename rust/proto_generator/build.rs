@@ -18,7 +18,7 @@ fn main() {
         .build_client(true)
         .build_server(true)
         .out_dir(out_dir)
-        .compile(
+        .compile_protos(
             &[
                 format!("{proto_dir}/permissionmessages.proto"),
                 format!("{proto_dir}/auth.proto"),
