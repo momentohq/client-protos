@@ -12,4 +12,4 @@ publish = false
 [lib]
 
 [build-dependencies]
-tonic-build = { version = "0.10", features = [] }
+tonic-build = { version = "0.13", features = [] }
