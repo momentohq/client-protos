@@ -73,6 +73,7 @@ function generate_proto() {
   $sed_command 's/SuperUserPermissions/SuperUserPermissionSet/g' ../proto/permissionrules.proto
   $sed_command 's/ExplicitPermissions/ExplicitPermissionSet/g' ../proto/permissionrules.proto
   $sed_command 's/SuperUser/SuperUserSet/g' ../proto/permissionrules.proto
+  $sed_command 's/FunctionInvoke/FunctionInvokeSet/g' ../proto/permissionrules.proto
 
   echo "Commenting out package declarations"
   for f in $proto_file_list
