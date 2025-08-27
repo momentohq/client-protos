@@ -24,4 +24,5 @@ path = "src/lib.rs"
 
 [dependencies]
 prost = "0.13"
+protosocket-rpc = "0"
 tonic = "0.13"

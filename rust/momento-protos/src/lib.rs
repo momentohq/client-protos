@@ -6,6 +6,10 @@ pub mod protosocket {
     pub mod cache {
         include!("protosocket/cache.rs");
     }
+
+    pub mod message_impls {
+        include!("protosocket/message_impls.rs");
+    }
 }
 
 pub mod permission_messages {

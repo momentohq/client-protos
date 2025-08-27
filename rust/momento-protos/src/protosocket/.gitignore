@@ -2,5 +2,7 @@
 *
 # Except this file
 !.gitignore
+# And the message impls.
+!message_impls.rs
 # TODO and the code files because I need a git dependency right now without releasing.
 !*.rs
