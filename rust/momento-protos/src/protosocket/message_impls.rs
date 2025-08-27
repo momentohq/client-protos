@@ -1,5 +1,7 @@
 use crate::protosocket::cache::{CacheCommand, CacheResponse};
+use crate::protosocket::common::CommandError;
 use protosocket_rpc::ProtosocketControlCode;
+use std::fmt::{Display, Formatter};
 
 impl protosocket_rpc::Message for CacheCommand {
     fn message_id(&self) -> u64 {
@@ -31,8 +33,7 @@ impl protosocket_rpc::Message for CacheCommand {
     }
 }
 
-impl protosocket_rpc::Message for CacheResponse
-{
+impl protosocket_rpc::Message for CacheResponse {
     fn message_id(&self) -> u64 {
         self.message_id
     }
@@ -61,3 +62,16 @@ impl protosocket_rpc::Message for CacheResponse
         }
     }
 }
+
+impl Display for CommandError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "CommandError {}: {}",
+            self.code().as_str_name(),
+            self.message
+        )
+    }
+}
+
+impl std::error::Error for CommandError {}
