@@ -2,3 +2,6 @@
 *
 # Except this file
 !.gitignore
+# TODO and the code files because I need a git dependency right now without releasing.
+!cache.rs
+!common.rs
