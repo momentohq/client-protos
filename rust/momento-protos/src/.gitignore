@@ -4,3 +4,5 @@
 # Need this file to list the proto module imports
 !lib.rs
 !protosocket/mod.rs
+# TODO and the code files because I need a git dependency right now without releasing.
+!*.rs
