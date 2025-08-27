@@ -3,3 +3,4 @@
 
 # Need this file to list the proto module imports
 !lib.rs
+!protosocket/mod.rs

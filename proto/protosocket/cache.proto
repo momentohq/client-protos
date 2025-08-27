@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+import "protosocket/common.proto";
+
+// This is the protobuf definition for the Momento Cache service.
+// It is available over protosocket-rpc.
+package cache;
+
+// All messages sent to the server by a client must be CacheCommands.
+message CacheCommand {
+  // This is the unique identifier used for the command. The server will return this id in the response.
+  // As protosocket-rpc does not necessarily respond in-order this is used to correlate responses with requests.
+  uint64 message_id = 2;
+  // The protosocket-rpc control code.
+  uint32 control_code = 3;
+  // The protosocket-rpc rpc kind.
+  oneof rpc_kind {
+    Unary unary = 10;
+  }
+}
+
+// These are Unary (single request -> single response) commands.
+message Unary {
+  oneof command {
+    // Authenticate provides the auth token to be used for all future requests on the connection.
+    // - It MUST be the first command sent on every cache connection.
+    // - It MAY be resent later in the connection to provide a different auth token.
+    //   - If sent mid-connection, clients SHOULD wait to pipeline further commands until the corresponding response is received.
+    //     If clients do not wait, it is indeterminate whether the prior or new auth token will be used for those requests.
+    AuthenticateCommand auth = 1;
+    // Retrieves an item from cache.
+    GetCommand get = 2;
+    // Set an item in cache.
+    SetCommand set = 3;
+    // Deletes an item from cache.
+    DeleteCommand delete = 4;
+  }
+}
+
+// All messages sent by the server to a client will be CacheResponses.
+message CacheResponse {
+  // This is the message id provided in the corresponding command.
+  uint64 message_id = 1;
+  // The protosocket-rpc control code.
+  uint32 control_code = 2;
+  // The specific response.
+  oneof kind {
+    common.CommandError error = 9;
+    AuthenticateResponse auth = 10;
+    GetResponse get = 11;
+    SetResponse set = 12;
+    DeleteResponse delete = 13;
+  }
+}
+
+message AuthenticateCommand {
+  string token = 1;
+}
+
+message AuthenticateResponse {}
+
+message GetCommand {
+  string namespace = 1;
+  bytes key = 2;
+}
+
+message GetResponse {
+  bytes value = 1;
+}
+
+message SetCommand {
+  string namespace = 1;
+  bytes key = 2;
+  bytes value = 3;
+  uint64 ttl_milliseconds = 4;
+}
+message SetResponse {}
+
+message DeleteCommand {
+  string namespace = 1;
+  bytes key = 2;
+}
+message DeleteResponse {
+}
