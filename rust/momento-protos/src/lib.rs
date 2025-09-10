@@ -1,3 +1,13 @@
+pub mod protosocket {
+    pub mod common {
+        include!("protosocket/common.rs");
+    }
+
+    pub mod cache {
+        include!("protosocket/cache.rs");
+    }
+}
+
 pub mod permission_messages {
   include!("permission_messages.rs");
 }

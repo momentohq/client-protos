@@ -6,12 +6,13 @@ repository = "https://github.com/momentohq/client_protos"
 license = "Apache-2.0"
 version = "0.1.0"
 authors = ["<eng@momentohq.com>"]
-edition = "2021"
+edition = "2024"
 keywords = ["service", "performance", "cache"]
 categories = ["web-programming"]
 includes = [
     "Cargo.toml",
     "src/**/*.rs",
+    "src/**/**/*.rs",
     "../proto",
 ]
 

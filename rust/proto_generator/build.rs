@@ -17,7 +17,7 @@ fn main() {
     tonic_build::configure()
         .build_client(true)
         .build_server(true)
-        .out_dir(out_dir)
+        .out_dir(out_dir.clone())
         .compile_protos(
             &[
                 format!("{proto_dir}/permissionmessages.proto"),
@@ -33,6 +33,19 @@ fn main() {
             &[proto_dir],
         )
         .unwrap_or_else(|e| panic!("Failed to compile protos {:?}", e));
+
+    tonic_build::configure()
+        .build_client(true)
+        .build_server(true)
+        .out_dir(out_dir.join("protosocket"))
+        .compile_protos(
+            &[
+            format!("{proto_dir}/protosocket/common.proto"),
+            format!("{proto_dir}/protosocket/cache.proto"),
+                ],
+            &[proto_dir],
+        )
+        .unwrap_or_else(|e| panic!("Failed to compile protosocket protos {:?}", e));
 
     println!("cargo:rerun-if-changed=../proto");
 }
