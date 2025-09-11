@@ -9,7 +9,7 @@ authors = ["<eng@momentohq.com>"]
 edition = "2024"
 keywords = ["service", "performance", "cache"]
 categories = ["web-programming"]
-includes = [
+include = [
     "Cargo.toml",
     "src/**/*.rs",
     "src/**/**/*.rs",
@@ -24,4 +24,5 @@ path = "src/lib.rs"
 
 [dependencies]
 prost = "0.13"
+protosocket-rpc = "0"
 tonic = "0.13"
