@@ -2,3 +2,5 @@
 *
 # Except this file
 !.gitignore
+# And the message impls.
+!message_impls.rs

@@ -8,6 +8,10 @@ pub mod protosocket {
     }
 }
 
+pub mod message_impls {
+  include!("protosocket/message_impls.rs");
+}
+
 pub mod permission_messages {
   include!("permission_messages.rs");
 }
