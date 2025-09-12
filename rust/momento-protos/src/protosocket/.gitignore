@@ -4,3 +4,6 @@
 !.gitignore
 # And the message impls.
 !message_impls.rs
+
+# TEMP: and all code files for a git dependency right now without releasing
+!*.rs
