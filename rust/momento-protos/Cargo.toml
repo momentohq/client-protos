@@ -24,5 +24,5 @@ path = "src/lib.rs"
 
 [dependencies]
 prost = "0.13"
-protosocket-rpc = "0"
+protosocket-rpc = { git = "https://github.com/kvc0/protosocket.git", rev = "c9d7a186b" }
 tonic = "0.13"
