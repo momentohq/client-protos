@@ -658,7 +658,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "07033963ba89ebaf1584d767badaa2e8fcec21aedea6b8c0346d487d49c28667"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.0",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -910,9 +910,9 @@ dependencies = [
 
 [[package]]
 name = "protosocket-rpc"
-version = "0.10.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49f8b555ffdfc507573ca5c94bb602b7d4ec948511ac1294a313b3cd8c3ee5ce"
+checksum = "4f2c8022612cf26d9e1f1d483b470e4beaf46bce366f8bdfb44abf7c363b95fb"
 dependencies = [
  "futures",
  "k-lock",
