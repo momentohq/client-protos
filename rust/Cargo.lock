@@ -896,9 +896,9 @@ dependencies = [
 
 [[package]]
 name = "protosocket"
-version = "0.8.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "073f39accdeb6f1b0368905d1b9de629193c363e1b4c1335ca239c119ebdc3e1"
+checksum = "75769d64f845347af49a595b19838ab3bdea21ee629216adde5219962dd2e13a"
 dependencies = [
  "bytes",
  "futures",
