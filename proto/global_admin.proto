@@ -11,9 +11,7 @@ package global_admin;
 
 service GlobalAdmin {
   rpc GetAccounts(_GetAccountsRequest) returns (_GetAccountsResponse) {}
-  rpc GetInvitationsForUser(_GetInvitationsForUserRequest) returns (_GetInvitationsForUserResponse) {
-
-  }
+  rpc GetInvitationsForUser(_GetInvitationsForUserRequest) returns (_GetInvitationsForUserResponse) {}
   rpc GetAccountSessionToken (_GetAccountSessionTokenRequest) returns(_GetAccountSessionTokenResponse) {}
   rpc RemoveMember(_RemoveMemberRequest) returns(_RemoveMemberResponse) {}
   rpc ListMembers(_ListMembersRequest) returns(_ListMembersResponse) {}
@@ -26,7 +24,9 @@ service GlobalAdmin {
   rpc RevokeInvitation(_RevokeInvitationRequest) returns (_RevokeInvitationResponse) {}
   rpc ListRolesForAccount(_ListRolesForAccountRequest) returns (_ListRolesForAccountResponse) {}
   rpc SetMemberRole(_SetMemberRoleRequest) returns (_SetMemberRoleResponse) {}
-
+  rpc GenerateGlobalApiKey(_GenerateGlobalApiKeyRequest) returns (_GenerateGlobalApiKeyResponse) {}
+  rpc ListGlobalApiKeys(_ListGlobalApiKeysRequest) returns (stream GlobalApiKey) {}
+  rpc RevokeGlobalApiKey(_RevokeGlobalApiKeyRequest) returns (_RevokeGlobalApiKeyResponse) {}
 }
 
 message _SetAccountNameRequest {
@@ -218,3 +218,45 @@ message _SetMemberRoleRequest {
 // 6. Role does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "role_not_found".
 message _SetMemberRoleResponse {
 }
+
+// Account Session Token provides relevant account.
+message _GenerateGlobalApiKeyRequest {
+  string role_id = 1;
+  string description = 2;
+  oneof expiry {
+    Never never = 3;
+    Expires expires = 4;
+  }
+
+  // generate a token that will never expire
+  message Never {}
+  // generate a token that has an expiry
+  message Expires {
+    // how many seconds do you want the api token to be valid for?
+    uint64 expiration_epoch_seconds = 1;
+  }
+}
+
+message _GenerateGlobalApiKeyResponse {
+  string api_key = 1;
+}
+
+// Account Session Token provides relevant account.
+message _ListGlobalApiKeysRequest {}
+
+message GlobalApiKey {
+  string key_id = 1;
+  string account_id = 2;
+  string description = 3;
+  string role_id = 4;
+  optional uint64 expires_at_epoch_seconds = 5;
+  uint64 issued_at_epoch_seconds = 6;
+}
+
+// Account Session Token provides relevant account
+// as well as user id of the revoking user
+message _RevokeGlobalApiKeyRequest {
+  string key_id = 1;
+}
+
+message _RevokeGlobalApiKeyResponse {}
