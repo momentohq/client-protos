@@ -238,7 +238,11 @@ message _GenerateGlobalApiKeyRequest {
 }
 
 message _GenerateGlobalApiKeyResponse {
+  // the actual key that will be used for authentication.
+  // this is the only time it's produced.
   string api_key = 1;
+  // details about the key, can also be retried via the ListGlobalApiKeys endpoint
+  GlobalApiKey key_info = 2;
 }
 
 // Account Session Token provides relevant account.
