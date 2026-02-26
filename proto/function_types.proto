@@ -18,6 +18,12 @@ message _Function {
 
   // What is the actual latest version of the function?
   uint32 latest_version = 5;
+
+  // How many concurrent invocations are allowed for this function
+  uint32 concurrency_limit = 6;
+
+  // Human-readable datetime string in UTC format
+  string last_updated_at = 7;
 }
 
 message _CurrentFunctionVersion {
