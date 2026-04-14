@@ -19,11 +19,13 @@ message _Function {
   // What is the actual latest version of the function?
   uint32 latest_version = 5;
 
-  // How many concurrent invocations are allowed for this function
+  // TODO: deprecate this when we have fully migrated to the _FunctionLimits type
   uint32 concurrency_limit = 6;
 
   // Human-readable datetime string in UTC format
   string last_updated_at = 7;
+
+  _FunctionLimits function_limits = 8;
 }
 
 message _CurrentFunctionVersion {
@@ -81,9 +83,24 @@ message _FunctionId {
   uint32 version = 2;
 }
 
+// Customer-friendly alternative to `string function_id` (NOT `_FunctionId function_version_id`)
+message _FunctionKey {
+  // The name of the cache the function belongs to
+  string cache_name = 1;
+  // The name of the function
+  string name = 2;
+}
+
 message _WasmId {
   // Globally unique id, this is stable across versions of the wasm.
   string id = 1;
   // A sub-id of sorts. Together with the id, this is a unique identifier for a wasm binary.
   uint32 version = 2;
+}
+
+message _FunctionLimits {
+  // How many concurrent executions of this function are allowed
+  uint32 concurrency_limit = 1;
+  // Maximum memory the function may consume, in bytes
+  uint64 memory_limit_bytes = 2;
 }

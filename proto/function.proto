@@ -14,12 +14,17 @@ service FunctionRegistry {
   // Register a new Function. This will overwrite any existing Function with the same name.
   // Functions are registered within a cache, which namespaces them.
   rpc PutFunction(_PutFunctionRequest) returns (_PutFunctionResponse) {}
+  rpc PutFunctionConfig(_PutFunctionConfigRequest) returns (_PutFunctionConfigResponse) {}
   rpc PutWasm(_PutWasmRequest) returns (_PutWasmResponse) {}
   rpc ListFunctions(_ListFunctionsRequest) returns (stream function_types._Function) {}
   rpc ListFunctionVersions(_ListFunctionVersionsRequest) returns (stream function_types._FunctionVersion) {}
   rpc ListWasms(_ListWasmsRequest) returns (stream function_types._Wasm) {}
+  rpc DeleteFunction(_DeleteFunctionRequest) returns (_DeleteFunctionResponse) {}
+  rpc DeleteWasm(_DeleteWasmRequest) returns (_DeleteWasmResponse) {}
+}
 
-  // List and delete rpcs are to be added later
+service FunctionHost {
+  rpc InvokeWebFunction(_InvokeWebFunctionRequest) returns (_InvokeWebFunctionResponse) {}
 }
 
 message _PutFunctionRequest {
@@ -40,6 +45,20 @@ message _PutFunctionRequest {
 }
 
 message _PutFunctionResponse {
+  function_types._Function function = 1;
+}
+
+message _PutFunctionConfigRequest {
+  // The function to update
+  oneof function_specifier {
+    function_types._FunctionKey function_key = 1;
+    string                      function_id  = 2;
+  }
+  // Updates the current function version
+  optional function_types._CurrentFunctionVersion new_version = 3;
+}
+
+message _PutFunctionConfigResponse {
   function_types._Function function = 1;
 }
 
@@ -73,4 +92,39 @@ message _ListFunctionsRequest {
 message _ListFunctionVersionsRequest {
   // List the versions of a given function
   string function_id = 1;
+}
+
+message _DeleteFunctionRequest {
+  // The cache the function belongs to
+  string cache_name = 1;
+
+  // The name of the function
+  string name = 2;
+}
+
+message _DeleteFunctionResponse {
+
+}
+
+message _DeleteWasmRequest {
+  // The name of the wasm
+  string name = 1;
+}
+
+message _DeleteWasmResponse {
+
+}
+
+message _InvokeWebFunctionRequest {
+  string              cache_name       = 1;
+  string              function_name    = 2;
+  map<string, string> request_headers  = 3;
+  bytes               request_body     = 4;
+  map<string, string> query_parameters = 5;
+}
+
+message _InvokeWebFunctionResponse {
+  uint32              status           = 1;
+  map<string, string> response_headers = 2;
+  bytes               response_body    = 3;
 }
