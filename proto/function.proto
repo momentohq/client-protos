@@ -23,6 +23,10 @@ service FunctionRegistry {
   // List and delete rpcs are to be added later
 }
 
+service FunctionHost {
+  rpc InvokeWebFunction(_InvokeWebFunctionRequest) returns (_InvokeWebFunctionResponse) {}
+}
+
 message _PutFunctionRequest {
   // The cache within which the Function is stored.
   string cache_name = 1;
@@ -88,4 +92,18 @@ message _ListFunctionsRequest {
 message _ListFunctionVersionsRequest {
   // List the versions of a given function
   string function_id = 1;
+}
+
+message _InvokeWebFunctionRequest {
+  string              cache_name       = 1;
+  string              function_name    = 2;
+  map<string, string> request_headers  = 3;
+  bytes               request_body     = 4;
+  map<string, string> query_parameters = 5;
+}
+
+message _InvokeWebFunctionResponse {
+  uint32              status           = 1;
+  map<string, string> response_headers = 2;
+  bytes               response_body    = 3;
 }
