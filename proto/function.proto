@@ -19,8 +19,8 @@ service FunctionRegistry {
   rpc ListFunctions(_ListFunctionsRequest) returns (stream function_types._Function) {}
   rpc ListFunctionVersions(_ListFunctionVersionsRequest) returns (stream function_types._FunctionVersion) {}
   rpc ListWasms(_ListWasmsRequest) returns (stream function_types._Wasm) {}
-
-  // List and delete rpcs are to be added later
+  rpc DeleteFunction(_DeleteFunctionRequest) returns (_DeleteFunctionResponse) {}
+  rpc DeleteWasm(_DeleteWasmRequest) returns (_DeleteWasmResponse) {}
 }
 
 service FunctionHost {
@@ -92,6 +92,27 @@ message _ListFunctionsRequest {
 message _ListFunctionVersionsRequest {
   // List the versions of a given function
   string function_id = 1;
+}
+
+message _DeleteFunctionRequest {
+  // The cache the function belongs to
+  string cache_name = 1;
+
+  // The name of the function
+  string name = 2;
+}
+
+message _DeleteFunctionResponse {
+
+}
+
+message _DeleteWasmRequest {
+  // The name of the wasm
+  string name = 1;
+}
+
+message _DeleteWasmResponse {
+
 }
 
 message _InvokeWebFunctionRequest {
