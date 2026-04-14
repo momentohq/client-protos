@@ -14,6 +14,7 @@ service FunctionRegistry {
   // Register a new Function. This will overwrite any existing Function with the same name.
   // Functions are registered within a cache, which namespaces them.
   rpc PutFunction(_PutFunctionRequest) returns (_PutFunctionResponse) {}
+  rpc PutFunctionConfig(_PutFunctionConfigRequest) returns (_PutFunctionConfigResponse) {}
   rpc PutWasm(_PutWasmRequest) returns (_PutWasmResponse) {}
   rpc ListFunctions(_ListFunctionsRequest) returns (stream function_types._Function) {}
   rpc ListFunctionVersions(_ListFunctionVersionsRequest) returns (stream function_types._FunctionVersion) {}
@@ -40,6 +41,20 @@ message _PutFunctionRequest {
 }
 
 message _PutFunctionResponse {
+  function_types._Function function = 1;
+}
+
+message _PutFunctionConfigRequest {
+  // The function to update
+  oneof function_specifier {
+    function_types._FunctionKey function_key = 1;
+    string                      function_id  = 2;
+  }
+  // Updates the current function version
+  optional function_types._CurrentFunctionVersion new_version = 3;
+}
+
+message _PutFunctionConfigResponse {
   function_types._Function function = 1;
 }
 
