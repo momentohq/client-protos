@@ -10,7 +10,7 @@ message _Function {
   // The name of the function.
   string name = 2;
 
-  // A convenience for consoles.
+  // The description of the function. TODO: deprecate this when we have fully migrated to _FunctionVersion descriptions
   string description = 3;
 
   // What is the current version of the function set to use upon invocation?
@@ -44,6 +44,9 @@ message _CurrentFunctionVersion {
 message _FunctionVersion {
   // This unique identifier should change when a function's metadata is updated
   _FunctionId id = 1;
+
+  // The description of the function or this specific version/implementation
+  string description = 2;
 
   // The wasm ID this function uses
   _WasmId wasm_id = 20;
