@@ -32,7 +32,7 @@ message _PutFunctionRequest {
   string cache_name = 1;
   // Friendly name for the Function. This is used to call the Function, so call it what you want to use to call it.
   string name = 2;
-  // Optional description for the Function. You can use this to keep some notes about this Function.
+  // Optional description for this Function version. You can use this to keep some notes about the overall Function or this specific implementation.
   string description = 3;
   // The environment variables that are available to this function as virtual environment via the WASI interface.
   map<string, function_types._EnvironmentValue> environment = 4;
