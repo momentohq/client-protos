@@ -10,7 +10,7 @@ message _Function {
   // The name of the function.
   string name = 2;
 
-  // The description for the function or this specific version/implementation
+  // The description of the function or this specific version/implementation
   string description = 3;
 
   // What is the current version of the function set to use upon invocation?
