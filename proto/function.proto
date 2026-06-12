@@ -36,6 +36,11 @@ message _PutFunctionRequest {
   string description = 3;
   // The environment variables that are available to this function as virtual environment via the WASI interface.
   map<string, function_types._EnvironmentValue> environment = 4;
+  // Optionally enable (or disable) delivery of this function's metrics to your own
+  // CloudWatch account. Omit to leave the account-wide default in place. When enabling,
+  // supply the IAM role Momento should assume to publish metrics into your account.
+  // Reach out to us at support@momenthq.com for proper set up.
+  optional function_types._FunctionMetricsConfig metrics_config = 5;
   oneof wasm_location {
     // The wasm for the Function is here, in the message. Will be uploaded as a separate Wasm
     bytes inline = 20;
@@ -56,6 +61,10 @@ message _PutFunctionConfigRequest {
   }
   // Updates the current function version
   optional function_types._CurrentFunctionVersion new_version = 3;
+  // Optionally enable (or disable) delivery of this function's metrics to your own
+  // CloudWatch account without re-uploading the wasm. Omit to leave the current setting
+  // unchanged. When enabling, supply the IAM role Momento should assume to publish metrics.
+  optional function_types._FunctionMetricsConfig metrics_config = 4;
 }
 
 message _PutFunctionConfigResponse {

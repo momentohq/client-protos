@@ -26,6 +26,21 @@ message _Function {
   string last_updated_at = 7;
 
   _FunctionLimits function_limits = 8;
+
+  // Per-function configuration for delivering metrics to a destination.
+  // If absent, the function will adhere to your account-wide settings.
+  _FunctionMetricsConfig metrics_config = 9;
+}
+
+message _FunctionMetricsConfig {
+  message _Disabled {}
+  message _Enabled {
+    string customer_iam_role = 1;
+  }
+  oneof kind {
+    _Disabled disabled = 2;
+    _Enabled enabled = 3;
+  }
 }
 
 message _CurrentFunctionVersion {
@@ -106,4 +121,6 @@ message _FunctionLimits {
   uint32 concurrency_limit = 1;
   // Maximum memory the function may consume, in bytes
   uint64 memory_limit_bytes = 2;
+  // Maximum wall-clock time, in seconds, a single execution of this function may run for
+  uint64 max_execution_seconds = 3;
 }
