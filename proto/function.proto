@@ -36,11 +36,12 @@ message _PutFunctionRequest {
   string description = 3;
   // The environment variables that are available to this function as virtual environment via the WASI interface.
   map<string, function_types._EnvironmentValue> environment = 4;
-  // Optionally enable (or disable) delivery of this function's metrics to your own
-  // CloudWatch account. Omit to leave the account-wide default in place. When enabling,
-  // supply the IAM role Momento should assume to publish metrics into your account.
+  // Optionally change this function's metrics-delivery override. Omit to leave the account-wide
+  // default in place. Set an explicit enabled (supplying the IAM role Momento should assume to
+  // publish metrics into your account) or disabled override, or remove a previously-set override
+  // so the function falls back to the account-wide default.
   // Reach out to us at support@momenthq.com for proper set up.
-  optional function_types._FunctionMetricsConfig metrics_config = 5;
+  optional function_types._FunctionMetricsConfigChange metrics_config = 5;
   oneof wasm_location {
     // The wasm for the Function is here, in the message. Will be uploaded as a separate Wasm
     bytes inline = 20;
@@ -61,10 +62,11 @@ message _PutFunctionConfigRequest {
   }
   // Updates the current function version
   optional function_types._CurrentFunctionVersion new_version = 3;
-  // Optionally enable (or disable) delivery of this function's metrics to your own
-  // CloudWatch account without re-uploading the wasm. Omit to leave the current setting
-  // unchanged. When enabling, supply the IAM role Momento should assume to publish metrics.
-  optional function_types._FunctionMetricsConfig metrics_config = 4;
+  // Optionally change this function's metrics-delivery override without re-uploading the wasm.
+  // Omit to leave the current setting unchanged. Set an explicit enabled (supplying the IAM role
+  // Momento should assume to publish metrics) or disabled override, or remove a previously-set
+  // override so the function falls back to the account-wide default.
+  optional function_types._FunctionMetricsConfigChange metrics_config = 4;
 }
 
 message _PutFunctionConfigResponse {
