@@ -43,6 +43,18 @@ message _FunctionMetricsConfig {
   }
 }
 
+// Describes a change to a function's per-function metrics override, used on the
+// PutFunction/PutFunctionConfig requests. `remove_override` clears any per-function override so
+// the function falls back to your account-wide default; `metrics_config` sets an explicit
+// disabled/enabled override. Leaving the enclosing `optional` field unset makes no change.
+message _FunctionMetricsConfigChange {
+  message _RemoveOverride {}
+  oneof change {
+    _RemoveOverride remove_override = 1;
+    _FunctionMetricsConfig metrics_config = 2;
+  }
+}
+
 message _CurrentFunctionVersion {
   oneof version {
     _Latest latest = 1;
