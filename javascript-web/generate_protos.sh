@@ -94,6 +94,9 @@ function generate_proto() {
     $sed_command 's/common.AbsentOrHashEqual/AbsentOrHashEqual/g' ../proto/${f}
     $sed_command 's/common.AbsentOrNotHashEqual/AbsentOrNotHashEqual/g' ../proto/${f}
     $sed_command 's/common.Unconditional/Unconditional/g' ../proto/${f}
+    # function.proto references function_types types (all `_`-prefixed); flatten them the same way (matches
+    # `function_types._Type`, not the `function_types.proto` import).
+    $sed_command 's/function_types\._/_/g' ../proto/${f}
   done
 
   protoc -I=../proto -I=/usr/local/include \
@@ -109,5 +112,5 @@ function generate_proto() {
     ${proto_file_list}
 }
 
-proto_file_list=" common.proto permissionrules.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto "
+proto_file_list=" common.proto permissionrules.proto permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cacheping.proto cachepubsub.proto token.proto webhook.proto leaderboard.proto global_admin.proto function_types.proto function.proto "
 generate_proto "${proto_file_list[@]}"
