@@ -23,6 +23,7 @@ path = "src/lib.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-prost = "0.13"
+prost = "0.14"
 protosocket-rpc = "2.0.0"
-tonic = "0.13"
+tonic = "0.14"
+tonic-prost = "0.14"
