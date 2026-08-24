@@ -15,7 +15,7 @@
   "author": "",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@grpc/grpc-js": "1.13.1",
+    "@grpc/grpc-js": "1.13.5",
     "@tsconfig/node16": "1.0.2",
     "@types/google-protobuf": "3.15.6",
     "@types/node": "16.10.3",
@@ -26,7 +26,7 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@grpc/grpc-js": "1.13.1",
+    "@grpc/grpc-js": "1.13.5",
     "google-protobuf": "3.21.2"
   },
   "files": [
