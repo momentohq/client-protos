@@ -27,7 +27,7 @@ classifiers = [
 include = ["momento_wire_types/**/*.py", "momento_wire_types/**/*.pyi"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.10"
 protobuf = ">=3,<5"
 grpcio = "*"
 
