@@ -5,7 +5,10 @@ set -x
 package_path=momento_wire_types
 
 # Array of versions
-python_protobuf_versions=("protobuf<3.20" "protobuf>4")
+# Codegen protobuf versions are bounded to match the package's own protobuf
+# constraint (>=3,<5). Leaving the upper bound off lets protoc drift to a newer
+# major and emit gencode the declared runtime cannot import.
+python_protobuf_versions=("protobuf<3.20" "protobuf>=4,<5")
 generated_code_dirs=("$package_path/v319" "$package_path/v4")
 
 # iterate over indexes of array python_protobuf_versions
@@ -16,11 +19,16 @@ do
 
     poetry add $python_protobuf_version
 
+    # grpcio-tools 1.48.2 (pinned by protobuf<3.20) imports pkg_resources, which
+    # setuptools removed in 82. Install a compatible setuptools into the venv for
+    # this step only; the lockfile keeps the current setuptools.
+    poetry run pip install --quiet 'setuptools<82'
+
     # Generate python code from proto files
     # The versions less than 3.20 do not support the --pyi_out flag
     # Regardless we generate once and put in the main package location.
     pyi_out=""
-    if [[ $python_protobuf_version == "protobuf>4" ]]; then
+    if [[ $python_protobuf_version == "protobuf>=4,<5" ]]; then
         pyi_out="--pyi_out=$src_path"
     fi
     poetry run python -m grpc_tools.protoc -I../proto --python_out=$src_path $pyi_out --grpc_python_out=$src_path permissionmessages.proto extensions.proto cacheclient.proto controlclient.proto auth.proto cachepubsub.proto token.proto common.proto
