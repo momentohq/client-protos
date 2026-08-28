@@ -28,12 +28,12 @@ include = ["momento_wire_types/**/*.py", "momento_wire_types/**/*.pyi"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-protobuf = ">=3,<5"
+protobuf = ">=7.35.1,<8"
 grpcio = "*"
 
 
 [tool.poetry.group.dev.dependencies]
-grpcio-tools = "^1.48.2"
+grpcio-tools = "^1.83.0"
 
 [build-system]
 requires = ["poetry-core"]

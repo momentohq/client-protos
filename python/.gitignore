@@ -6,5 +6,4 @@ LICENSE.txt
 dist/
 momento_wire_types/__init__.py
 momento_wire_types/*pb2*
-momento_wire_types/v319/*pb2*
-momento_wire_types/v4/*pb2*
+momento_wire_types/generated/*pb2*
