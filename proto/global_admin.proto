@@ -54,11 +54,35 @@ message _GetInvitationsForUserResponse {
   repeated UserInvitation invitations = 1;
 }
 
+message CacheV2Entitlement {
+  enum UsageTier {
+    NoAccess = 0;
+    FreeTier = 1;
+    Standard = 2;
+  }
+  UsageTier usage_tier = 1;
+}
+
+message SupportEntitlement {
+  enum SupportTier {
+    Basic = 0;
+    Production = 1;
+    Enterprise = 2;
+  }
+  SupportTier support_tier = 1;
+}
+
+message Entitlements {
+  CacheV2Entitlement cachev2_entitlement = 1;
+  SupportEntitlement support_entitlement = 2;
+}
+
 message _Account {
   string id = 1;
   string account_name = 2;
   string role_id = 3;
   string role_name = 4;
+  Entitlements entitlements = 5;
 }
 
 message _GetAccountSessionTokenRequest {
