@@ -15,8 +15,8 @@ plugins {
 // The version is specified here to prevent an inconsistent version from being seen by different tasks.
 version = System.getenv("JAVA_PROTOS_VERSION") ?: "0.1.0-SNAPSHOT"
 
-val grpcProtobufVersion = "3.22.2"
-val grpcVersion = "1.53.0"
+val grpcProtobufVersion = "4.36.1"
+val grpcVersion = "1.84.0"
 
 dependencies {
     implementation(platform("io.grpc:grpc-bom:$grpcVersion"))
@@ -26,8 +26,8 @@ dependencies {
     implementation("io.grpc:grpc-api")
     implementation("io.grpc:grpc-protobuf")
     implementation("com.google.protobuf:protobuf-java")
-    implementation("com.google.api.grpc:proto-google-common-protos:2.9.0") // version pulled from protobuf-java
-    implementation("com.google.guava:guava:31.1-android") // version pulled from protobuf-java
+    implementation("com.google.api.grpc:proto-google-common-protos:2.76.0")
+    implementation("com.google.guava:guava:33.6.0-android") // version pulled from grpc-protobuf
     compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 
     protobuf(files(fileTree("../proto") {
