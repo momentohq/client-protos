@@ -23,9 +23,17 @@ service GlobalAdmin {
   rpc ListInvitationsForAccount(_ListInvitationsForAccountRequest) returns (_ListInvitationsForAccountResponse) {}
   rpc RevokeInvitation(_RevokeInvitationRequest) returns (_RevokeInvitationResponse) {}
   rpc ListRolesForAccount(_ListRolesForAccountRequest) returns (_ListRolesForAccountResponse) {}
+  rpc ListRolesForAccountPaginated(_ListRolesForAccountPaginatedRequest) returns (_ListRolesForAccountPaginatedResponse) {}
+  rpc CreateCustomRole(_CreateCustomRoleRequest) returns (_CreateCustomRoleResponse) {}
+  rpc UpdateCustomRole(_UpdateCustomRoleRequest) returns (_UpdateCustomRoleResponse) {}
+  rpc DeleteCustomRole(_DeleteCustomRoleRequest) returns (_DeleteCustomRoleResponse) {}
   rpc SetMemberRole(_SetMemberRoleRequest) returns (_SetMemberRoleResponse) {}
   rpc GenerateGlobalApiKey(_GenerateGlobalApiKeyRequest) returns (_GenerateGlobalApiKeyResponse) {}
+  // authenticated with the refresh token itself, in the authorization header
+  rpc RefreshGlobalApiKey(_RefreshGlobalApiKeyRequest) returns (_RefreshGlobalApiKeyResponse) {}
+  // Deprecated: unpaginated; use ListGlobalApiKeysPaginated instead.
   rpc ListGlobalApiKeys(_ListGlobalApiKeysRequest) returns (stream GlobalApiKey) {}
+  rpc ListGlobalApiKeysPaginated(_ListGlobalApiKeysPaginatedRequest) returns (_ListGlobalApiKeysPaginatedResponse) {}
   rpc RevokeGlobalApiKey(_RevokeGlobalApiKeyRequest) returns (_RevokeGlobalApiKeyResponse) {}
 }
 
@@ -218,6 +226,7 @@ message AccountRole {
   string role_name = 2; // friendly name
   permission_rules.PermissionSet permissions = 3; // permissions associated with the role
   RoleType role_type = 4; // system or custom role
+  optional string description = 5; // role description
 }
 
 // This response is when we list all the roles for an account (system roles + custom roles).
@@ -225,6 +234,93 @@ message AccountRole {
 // 1. Account does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "account_not_found".
 message _ListRolesForAccountResponse {
   repeated AccountRole roles = 1;
+}
+
+// Account Session Token provides relevant account.
+// These are the error cases:
+// 1. Account does not exist. grpc code = NOT_FOUND. Metadata: "err" -> "account_not_found".
+// 2. limit is 0 or greater than 100. grpc code = INVALID_ARGUMENT.
+// 3. next_token is not a valid token. grpc code = INVALID_ARGUMENT.
+message _ListRolesForAccountPaginatedRequest {
+  // maximum number of roles to return in one page. unset means the default of 100.
+  // must be between 1 and 100.
+  optional uint32 limit = 1;
+  // opaque pagination cursor from a previous response. empty means start from the beginning.
+  string next_token = 2;
+  // filter to only system or only custom roles. unset returns both.
+  optional RoleType role_type = 3;
+}
+
+message _ListRolesForAccountPaginatedResponse {
+  repeated AccountRole roles = 1;
+  // opaque pagination cursor to pass in the next request. empty means there are no more results.
+  string next_token = 2;
+}
+
+// Account Session Token provides relevant account.
+// These are the error cases:
+// 1. permission_set is not provided. grpc code = INVALID_ARGUMENT.
+// 2. permission_set uses super_user permissions, which are not allowed for custom roles.
+//    grpc code = INVALID_ARGUMENT. Metadata: "err" -> "custom_role_superuser_not_allowed".
+// 3. role_name is already in use for this account. grpc code = ALREADY_EXISTS.
+//    Metadata: "err" -> "role_name_in_use".
+// 4. Account already has the maximum number of custom roles. grpc code = RESOURCE_EXHAUSTED.
+//    Metadata: "err" -> "max_custom_role_count_exceeded".
+message _CreateCustomRoleRequest {
+  string role_name = 1;
+  optional string description = 2;
+  permission_rules.PermissionSet permission_set = 3;
+}
+
+message _CreateCustomRoleResponse {
+  AccountRole role = 1;
+}
+
+// Account Session Token provides relevant account.
+// These are the error cases:
+// 1. Role does not exist (or belongs to a different account). grpc code = NOT_FOUND.
+//    Metadata: "err" -> "role_not_found".
+// 2. Role is a system role. grpc code = FAILED_PRECONDITION.
+//    Metadata: "err" -> "system_role_cannot_be_modified".
+// 3. permission_set uses super_user permissions, which are not allowed for custom roles.
+//    grpc code = INVALID_ARGUMENT. Metadata: "err" -> "custom_role_superuser_not_allowed".
+// 4. role_name is already in use for this account. grpc code = ALREADY_EXISTS.
+//    Metadata: "err" -> "role_name_in_use".
+message _UpdateCustomRoleRequest {
+  string role_id = 1;
+  string role_name = 2;
+  optional string description = 3;
+  permission_rules.PermissionSet permission_set = 4;
+}
+
+message _UpdateCustomRoleResponse {
+  AccountRole role = 1;
+}
+
+// Account Session Token provides relevant account.
+// These are the error cases:
+// 1. Role does not exist (or belongs to a different account). grpc code = NOT_FOUND.
+//    Metadata: "err" -> "role_not_found".
+// 2. Role is a system role. grpc code = FAILED_PRECONDITION.
+//    Metadata: "err" -> "system_role_cannot_be_modified".
+message _DeleteCustomRoleRequest {
+  string role_id = 1;
+}
+
+// Deletion is blocked (not an error) when the role is still assigned to a member,
+// invitation, or global API key.
+message _DeleteCustomRoleResponse {
+  message Deleted {}
+  message Blocked {
+    repeated _AccountMember account_members = 1;
+    repeated _Invitation invitations = 2;
+    repeated GlobalApiKey api_keys = 3;
+  }
+
+  oneof result {
+    Deleted deleted = 1;
+    Blocked blocked = 2;
+  }
 }
 
 message _SetMemberRoleRequest {
@@ -259,6 +355,10 @@ message _GenerateGlobalApiKeyRequest {
     // how many seconds do you want the api token to be valid for?
     uint64 expiration_epoch_seconds = 1;
   }
+
+  // By default, create a refresh token for an expiring key.
+  // Non-expiring keys are never given a refresh token.
+  optional bool exclude_refresh_token = 5;
 }
 
 message _GenerateGlobalApiKeyResponse {
@@ -267,6 +367,22 @@ message _GenerateGlobalApiKeyResponse {
   string api_key = 1;
   // details about the key, can also be retried via the ListGlobalApiKeys endpoint
   GlobalApiKey key_info = 2;
+  // present unless the key never expires or exclude_refresh_token was set
+  optional string refresh_token = 3;
+}
+
+// Authenticated with the refresh token issued for the key.
+message _RefreshGlobalApiKeyRequest {
+  // when to expire the new key. unset means the new key gets the same lifetime
+  // as the original key. May narrow the successor's lifetime, not extend it.
+  optional uint64 expiration_epoch_seconds = 1;
+}
+
+message _RefreshGlobalApiKeyResponse {
+  string api_key = 1;
+  string refresh_token = 2;
+  GlobalApiKey key_info = 3;
+  string previous_key_id = 4;
 }
 
 // Account Session Token provides relevant account.
@@ -283,6 +399,24 @@ message GlobalApiKey {
 
 // Account Session Token provides relevant account
 // as well as user id of the revoking user
+// Account Session Token provides relevant account.
+// These are the error cases:
+// 1. limit is 0 or greater than 100. grpc code = INVALID_ARGUMENT.
+// 2. next_token is not a valid token. grpc code = INVALID_ARGUMENT.
+message _ListGlobalApiKeysPaginatedRequest {
+  // maximum number of keys to return in one page. unset means the default of 100.
+  // must be between 1 and 100.
+  optional uint32 limit = 1;
+  // opaque pagination cursor from a previous response. empty means start from the beginning.
+  string next_token = 2;
+}
+
+message _ListGlobalApiKeysPaginatedResponse {
+  repeated GlobalApiKey api_keys = 1;
+  // opaque pagination cursor to pass in the next request. empty means there are no more results.
+  string next_token = 2;
+}
+
 message _RevokeGlobalApiKeyRequest {
   string key_id = 1;
 }
