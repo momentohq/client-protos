@@ -23,8 +23,8 @@ message All {}
 enum AccountManagementPermissions {
   // Can only read account information
   AccountRead = 0;
-  // Can take management actions
-  AccountWrite = 1;
+  // AccountWrite = 1; // removed; only superuser can perform former AccountWrite actions
+  reserved 1;
   // Can list accounts
   AccountList = 2;
 }
@@ -39,7 +39,7 @@ enum AuthManagementPermissions {
   AuthList = 2;
 }
 
-// Permissions related to managing Momento resources (Caches, Functions, etc.)
+// Permissions related to managing Momento resources (Caches, Stores, Functions, etc.)
 enum ResourceManagementPermissions {
   // Can only read resources
   ResourceRead = 0;
@@ -73,6 +73,30 @@ message CacheItemSelector {
   }
 }
 
+enum StoreAPIPermissions {
+  // Does not apply to individual resources
+  StoreList = 0;
+  // Restricts access to apis that read data from stores: No higher level resource description or modification.
+  StoreRead = 1;
+  // Restricts access to apis that write to stores: No higher level resource description or modification.
+  StoreWrite = 2;
+}
+
+// Allows specifying specific stores.
+message StoreSelector {
+  oneof kind {
+    string store_name = 1;
+  }
+}
+
+// Allows specifying specific items within stores.
+message StoreItemSelector {
+  oneof kind {
+    bytes key = 1;
+    bytes key_prefix = 2;
+  }
+}
+
 // Topic API Restrictions
 enum TopicAPIPermissions {
   // Does not apply to individual resources
@@ -91,6 +115,28 @@ message TopicSelector {
   }
 }
 
+enum DatabaseAPIPermissions {
+  DatabaseRead = 0;
+  DatabaseWrite = 1;
+}
+
+message DatabaseAPIPermissionList {
+  repeated DatabaseAPIPermissions permissions = 1;
+}
+
+message DatabaseSelector {
+  oneof kind {
+    string database_name = 1;
+  }
+}
+
+message DatabaseItemSelector {
+  oneof kind {
+    bytes key = 1;
+    bytes key_prefix = 2;
+  }
+}
+
 // Function API restrictions. This is for function _invocation_ - managing functions is a resource management action.
 enum FunctionAPIPermissions {
   FunctionInvoke = 0;
@@ -104,11 +150,13 @@ message FunctionSelector {
   }
 }
 
+// Top level permission container
 message PermissionSet {
   oneof kind {
     SuperUserPermissions super_user = 1;
     ExplicitPermissions explicit = 2;
   }
+  repeated Condition conditions = 3;
 }
 
 enum SuperUserPermissions {
@@ -120,14 +168,15 @@ message ExplicitPermissions {
 }
 
 message Rule {
-  reserved 6;
   oneof kind {
     AccountManagementRule account_management_rule = 1;
     AuthManagementRule auth_management_rule = 2;
     ResourceManagementRule resource_management_rule = 3;
     CacheRule cache_rule = 4;
     TopicRule topic_rule = 5;
+    StoreRule storage_rule = 6;
     FunctionRule function_rule = 7;
+    DatabaseRule database_rule = 8;
   }
 
   message AccountManagementRule {
@@ -175,6 +224,18 @@ message Rule {
     }
   }
 
+  message StoreRule {
+    repeated StoreAPIPermissions permissions = 1;
+    oneof store {
+      All all_stores = 2;
+      StoreSelector store_selector = 3;
+    }
+    oneof store_item {
+      All all_items = 4;
+      StoreItemSelector item_selector = 5;
+    }
+  }
+
   message FunctionRule {
     repeated FunctionAPIPermissions permissions = 1;
     oneof cache {
@@ -185,5 +246,40 @@ message Rule {
       All all_functions = 4;
       FunctionSelector function_selector = 5;
     }
+  }
+
+  message DatabaseRule {
+    oneof permissions {
+      DatabaseAPIPermissionList api_permissions = 1;
+    }
+    oneof database {
+      All all_databases = 2;
+      DatabaseSelector database_selector = 3;
+    }
+    oneof database_item {
+      All all_items = 4;
+      DatabaseItemSelector item_selector = 5;
+    }
+  }
+}
+
+// This condition restricts what source IP addresses are allowed to authorize with a permission set.
+message IpFilter {
+
+  message CidrRange {
+    oneof range {
+      string ipv4 = 1;
+      string ipv6 = 2;
+    }
+  }
+
+  // Each entry must be a CIDR-formatted IP range.
+  repeated CidrRange allowed_cidr_ranges = 1;
+}
+
+// A condition restricting the situations under which a permission set is allowed.
+message Condition {
+  oneof condition {
+    IpFilter ip_filter = 1;
   }
 }
