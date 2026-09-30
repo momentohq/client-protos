@@ -33,6 +33,7 @@ fn main() {
         .compile_protos(
             &[
                 format!("{proto_dir}/permissionmessages.proto"),
+                format!("{proto_dir}/permissionrules.proto"),
                 format!("{proto_dir}/auth.proto"),
                 format!("{proto_dir}/token.proto"),
                 format!("{proto_dir}/cacheclient.proto"),
